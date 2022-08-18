@@ -1,0 +1,10 @@
+Event - base event for all events
+KeyInputEvent <- Event
+    - KeyEvent event
+    - Set<Integer> pressedKeys - which keys are currently pressed at the time of the event
+        -> each view contains Set<Integer> pressedKeys which is copied on event
+
+
+Listener - handles events when they happen, stored where the event happens in, base listener for all listeners
+KeyInputListener <- Listener
+    -
