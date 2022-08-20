@@ -2,7 +2,7 @@ package com.alientation.aliengui.event.mouse;
 
 import com.alientation.aliengui.event.EventListener;
 
-public abstract class MouseInputListener extends EventListener {
+public abstract class MouseListener extends EventListener {
     void mouseClicked(MouseEvent mouseEvent) { }
     void mouseEntered(MouseEvent mouseInputEvent) { }
     void mouseExited(MouseEvent mouseInputEvent) { }

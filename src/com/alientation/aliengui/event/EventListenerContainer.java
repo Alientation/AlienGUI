@@ -1,34 +1,37 @@
 package com.alientation.aliengui.event;
 
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 
 public class EventListenerContainer<T extends EventListener> {
-    private final Map<Integer, Set<T>> eventListenerMap = new TreeMap<>();
+    public static final int PRIORITY_FIRST = 0;
+    public static final int PRIORITY_LAST = 1000;
+    private final TreeMap<Integer, ArrayList<T>> eventListenerMap = new TreeMap<>(Comparator.reverseOrder());
+
+    public void dispatch(EventDispatch<T> dispatch) {
+        for (int i : eventListenerMap.navigableKeySet())
+            for (T listener : eventListenerMap.get(i))
+                dispatch.dispatch(listener);
+    }
 
     public boolean addListener(T listener, int priority) {
+        if (priority < PRIORITY_FIRST) priority = PRIORITY_FIRST;
+        if (priority > PRIORITY_LAST) priority = PRIORITY_LAST;
         removeListener(listener);
-        eventListenerMap.computeIfAbsent(priority, k -> new HashSet<>());
+        eventListenerMap.computeIfAbsent(priority, k -> new ArrayList<>());
         return eventListenerMap.get(priority).add(listener);
     }
 
     public boolean addListenerAtEnd(T listener) {
-        int currentEnd = Integer.MIN_VALUE;
-        for (int i : eventListenerMap.keySet())
-            if (i > currentEnd)
-                currentEnd = i;
+        int currentEnd = eventListenerMap.lastKey() + 1;
+        if (currentEnd > PRIORITY_LAST) currentEnd = PRIORITY_LAST;
         return addListener(listener,currentEnd+1);
     }
 
     public boolean addListenerAtBeginning(T listener) {
-        int currentBeginning = Integer.MAX_VALUE;
-        for (int i : eventListenerMap.keySet())
-            if (i < currentBeginning)
-                currentBeginning = i;
-        return addListener(listener,currentBeginning-1);
+        int currentBeginning = eventListenerMap.firstKey() - 1;
+        if (currentBeginning < PRIORITY_FIRST) currentBeginning = PRIORITY_FIRST;
+        return addListener(listener,currentBeginning);
     }
 
     public boolean addListener(T listener) {
