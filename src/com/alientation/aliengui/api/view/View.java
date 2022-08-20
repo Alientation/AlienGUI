@@ -6,14 +6,12 @@ import com.alientation.aliengui.event.EventListenerContainer;
 import com.alientation.aliengui.event.key.KeyInputListener;
 import com.alientation.aliengui.event.model.ModelListener;
 import com.alientation.aliengui.event.mouse.MouseInputListener;
-import com.alientation.aliengui.event.mouse.MouseMotionListener;
 import com.alientation.aliengui.event.view.ViewListener;
 
 public class View {
     private EventListenerContainer<KeyInputListener> keyInputListeners = new EventListenerContainer<>();
     private EventListenerContainer<ModelListener> modelListeners = new EventListenerContainer<>();
     private EventListenerContainer<MouseInputListener> mouseInputListeners = new EventListenerContainer<>();
-    private EventListenerContainer<MouseMotionListener> mouseMotionListeners = new EventListenerContainer<>();
     private EventListenerContainer<ViewListener> viewListeners = new EventListenerContainer<>();
 
     protected ViewController controller;
@@ -32,7 +30,6 @@ public class View {
     public EventListenerContainer<KeyInputListener> getKeyInputListeners() { return keyInputListeners; }
     public EventListenerContainer<ModelListener> getModelListeners() { return modelListeners; }
     public EventListenerContainer<MouseInputListener> getMouseInputListeners() { return mouseInputListeners; }
-    public EventListenerContainer<MouseMotionListener> getMouseMotionListeners() { return mouseMotionListeners; }
     public EventListenerContainer<ViewListener> getViewListeners() { return viewListeners; }
     public ViewController getController() { return controller; }
 
