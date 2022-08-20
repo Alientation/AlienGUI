@@ -9,9 +9,9 @@ import java.util.Set;
 public abstract class KeyListener extends EventListener {
     private static final Set<Integer> KEYS_DOWN = new HashSet<>();
 
-    void keyPressed(KeyEvent event) { }
-    void keyTyped(KeyEvent event) { }
-    void keyReleased(KeyEvent event) { }
+    public void keyPressed(KeyEvent event) { }
+    public void keyTyped(KeyEvent event) { }
+    public void keyReleased(KeyEvent event) { }
 
     public static Set<Integer> getKeysDown() {
         return KEYS_DOWN;

@@ -5,11 +5,11 @@ import java.util.*;
 import java.util.List;
 
 public class WindowRenderer {
-    private final Window window;
+    private final WindowView windowView;
     private final List<View> sortedViewsByZIndex;
 
-    public WindowRenderer(Window canvas) {
-        this.window = canvas;
+    public WindowRenderer(WindowView windowView) {
+        this.windowView = windowView;
         this.sortedViewsByZIndex = new ArrayList<>();
     }
 
@@ -18,7 +18,7 @@ public class WindowRenderer {
 
         //bfs through to find all renderables in this window
         Queue<View> bfs = new LinkedList<>();
-        bfs.offer(window.windowView);
+        bfs.offer(windowView);
 
         Set<View> visitedViews = new HashSet<>(); //sanity check, this shouldn't be a problem, but who knows
 
@@ -35,38 +35,24 @@ public class WindowRenderer {
                 bfs.offer(view);
         }
         sortedViewsByZIndex.sort(Comparator.comparingInt(View::getZIndex));
-        /*
-        for (Renderable renderable : sortedZIndex) {
-            System.out.println(renderable.id());
-        }*/
     }
 
     /**
-     * Renders only the renderableComponents after the first one that requires a render update.
-     * Still would want maybe to check to make sure renderable components are within their bounds
+     * Renders only if the window requires a render update
      *
      * @param g Graphical output
-     * @return Whether a render update was actually required or not
      */
-    public boolean render(Graphics2D g) {
-        boolean requiredRenderUpdate = false;
-        for (View renderable : sortedViewsByZIndex) {
-            if (renderable.doesRequireRenderUpdate()) {
-                requiredRenderUpdate = true;
-                renderable.setRequireRenderUpdate(false);
-            }
-            //if (requiredRenderUpdate) TODO FIX BUG - requireRenderUpdate doesn't actually account for everything...
-            //renderable.render(g);
-        }
-        if (requiredRenderUpdate) {
-            g.setColor(Color.BLUE);
-            g.fillRect(0,0,window.getWidth(),window.getHeight());
-            for (View view : sortedViewsByZIndex)
-                view.render(g);
-        }
-        return requiredRenderUpdate;
+    public boolean render(Graphics g) {
+        if (!windowView.doesRequireRenderUpdate()) return false;
+        for (View view : sortedViewsByZIndex)
+            view.render(g);
+        return true;
     }
 
-    public Window getWindow() { return window; }
-    public List<View> getSortedViewsByZIndex() { return sortedViewsByZIndex; }
+    public WindowView getWindow() {
+        return windowView;
+    }
+    public List<View> getSortedViewsByZIndex() {
+        return sortedViewsByZIndex;
+    }
 }

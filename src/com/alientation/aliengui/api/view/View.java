@@ -20,11 +20,15 @@ public class View {
 
     protected ViewController controller;
 
+    protected int x, y, width, height, minWidth, minHeight, maxWidth, maxHeight; //make dimension class for this
+
+
+
     protected View container;
+    protected WindowView windowView;
     protected List<View> subviews;
     protected boolean initialized; //whether all properties are initialized and ready to render
     protected boolean visible;
-    protected boolean requireRenderUpdate;
     protected int zIndex;
 
     public View(Builder<?> builder) {
@@ -32,7 +36,7 @@ public class View {
 
     }
 
-    public void render(Graphics2D graphics2d) {
+    public void render(Graphics graphics) {
 
     }
 
@@ -46,6 +50,10 @@ public class View {
 
     public View getContainer() {
         return container;
+    }
+
+    public WindowView getWindowView() {
+        return windowView;
     }
 
     public List<View> getSubviews() {
@@ -64,10 +72,6 @@ public class View {
         return zIndex;
     }
 
-    public boolean doesRequireRenderUpdate() {
-        return requireRenderUpdate;
-    }
-
     public void setContainer(View container) { //TODO update references
         this.container = container;
     }
@@ -83,12 +87,6 @@ public class View {
     public void setZIndex(int zIndex) {
         this.zIndex = zIndex;
     }
-
-    public void setRequireRenderUpdate(boolean requireRenderUpdate) {
-        this.requireRenderUpdate = requireRenderUpdate;
-        container.setRequireRenderUpdate(requireRenderUpdate);
-    }
-
     public void registerController(ViewController controller) {
         //update old controller -> remove reference to this view
         this.controller = controller;
@@ -119,7 +117,7 @@ public class View {
 }
 
 /* Builder pattern boilerplate code
-static class Builder<T extends Builder<T>> {
+static class Builder<T extends Builder<T>> extends View.Builder<T> {
 
         public Builder() {
 
