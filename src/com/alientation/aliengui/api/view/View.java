@@ -12,6 +12,7 @@ import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class View {
     protected EventListenerContainer<KeyListener> keyListeners = new EventListenerContainer<>();
     protected EventListenerContainer<ModelListener> modelListeners = new EventListenerContainer<>();
@@ -65,7 +66,7 @@ public class View {
     }
 
     public boolean isVisible() {
-        return isVisible();
+        return visible;
     }
 
     public int getZIndex() {
@@ -99,6 +100,7 @@ public class View {
     public EventListenerContainer<ViewListener> getViewListeners() { return viewListeners; }
     public ViewController getController() { return controller; }
 
+    @SuppressWarnings("unused")
     static class Builder<T extends Builder<T>> {
 
         public Builder() {

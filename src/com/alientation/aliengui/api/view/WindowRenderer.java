@@ -4,6 +4,7 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class WindowRenderer {
     private final WindowView windowView;
     private final List<View> sortedViewsByZIndex;

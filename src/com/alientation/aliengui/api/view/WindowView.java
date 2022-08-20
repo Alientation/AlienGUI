@@ -1,8 +1,8 @@
 package com.alientation.aliengui.api.view;
 
 import java.awt.*;
-import java.awt.image.BufferStrategy;
 
+@SuppressWarnings("unused")
 public class WindowView extends View {//wrapper for Window
     public static final int INIT_WIDTH = 800, INIT_HEIGHT = 1000, INIT_TPS = 120, INIT_FPS = 60;
     public static final String INIT_TITLE = "Untitled";
@@ -43,6 +43,7 @@ public class WindowView extends View {//wrapper for Window
         return window;
     }
 
+    @SuppressWarnings("unchecked")
     static class Builder<T extends Builder<T>> extends View.Builder<T> {
         protected int x = -1, y = -1, width = 720, height = 576, minWidth = -1, minHeight = -1, maxWidth = Integer.MAX_VALUE, maxHeight = Integer.MAX_VALUE, preferredWidth, preferredHeight; //make all these dimensions, have this window subscribe to it
         protected int targetTPS = 60, targetFPS = 60;

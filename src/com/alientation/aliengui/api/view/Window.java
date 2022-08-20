@@ -10,6 +10,7 @@ import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import java.io.Serial;
 
+@SuppressWarnings("unused")
 public class Window extends Canvas implements Runnable {
     @Serial
     private static final long serialVersionUID = 1L;
