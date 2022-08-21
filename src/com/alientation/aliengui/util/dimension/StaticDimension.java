@@ -1,4 +1,4 @@
-package com.alientation.aliengui.dimension;
+package com.alientation.aliengui.util.dimension;
 
 
 @SuppressWarnings("unused")

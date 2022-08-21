@@ -2,7 +2,7 @@ package com.alientation.aliengui.api.view;
 
 
 import com.alientation.aliengui.api.controller.ViewController;
-import com.alientation.aliengui.dimension.Dimension;
+import com.alientation.aliengui.util.dimension.Dimension;
 import com.alientation.aliengui.event.EventListenerContainer;
 import com.alientation.aliengui.event.key.KeyListener;
 import com.alientation.aliengui.event.model.ModelListener;
