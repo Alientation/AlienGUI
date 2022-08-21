@@ -4,14 +4,28 @@ import com.alientation.aliengui.api.view.View;
 
 @SuppressWarnings("unused")
 public class ViewHierarchyChanged extends ViewEvent {
-    protected View movedView;
+    protected View changedChildView, oldParentView, newParentView;
 
-    public ViewHierarchyChanged(View view, View movedView) {
+    public ViewHierarchyChanged(View view, View changedChildView) {
         super(view);
-        this.movedView = movedView;
+        this.changedChildView = changedChildView;
     }
 
-    public View getMovedView() {
-        return movedView;
+    public ViewHierarchyChanged(View view, View oldParentView, View newParentView) {
+        super(view);
+        this.oldParentView = oldParentView;
+        this.newParentView = newParentView;
+    }
+
+    public View getChangedChildView() {
+        return changedChildView;
+    }
+
+    public View getOldParentView() {
+        return oldParentView;
+    }
+
+    public View getNewParentView() {
+        return newParentView;
     }
 }

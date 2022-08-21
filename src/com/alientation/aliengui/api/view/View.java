@@ -2,6 +2,9 @@ package com.alientation.aliengui.api.view;
 
 
 import com.alientation.aliengui.api.controller.ViewController;
+import com.alientation.aliengui.event.view.ViewDimensionEvent;
+import com.alientation.aliengui.event.view.ViewEvent;
+import com.alientation.aliengui.event.view.ViewHierarchyChanged;
 import com.alientation.aliengui.util.dimension.Dimension;
 import com.alientation.aliengui.event.EventListenerContainer;
 import com.alientation.aliengui.event.key.KeyListener;
@@ -78,8 +81,57 @@ public class View {
      * @param builder   Builder for this view
      */
     public View(Builder<?> builder) {
+        getViewListeners().addListenerAtBeginning(new ViewListener() {
+            @Override
+            public void childViewAdded(ViewHierarchyChanged event) {
+                windowView.requestZIndexUpdate();
+            }
 
+            @Override
+            public void childViewRemoved(ViewHierarchyChanged event) {
+                windowView.requestZIndexUpdate();
+            }
 
+            @Override
+            public void parentViewChanged(ViewHierarchyChanged event) {
+                windowView.requestRenderUpdate();
+            }
+
+            @Override
+            public void viewFocused(ViewEvent event) {
+                super.viewFocused(event);
+            }
+
+            @Override
+            public void viewUnfocused(ViewEvent event) {
+                super.viewUnfocused(event);
+            }
+
+            @Override
+            public void viewMoved(ViewEvent event) {
+                super.viewMoved(event);
+            }
+
+            @Override
+            public void viewHidden(ViewEvent event) {
+                windowView.requestRenderUpdate();
+            }
+
+            @Override
+            public void viewShown(ViewEvent event) {
+                windowView.requestRenderUpdate();
+            }
+
+            @Override
+            public void viewDimensionChanged(ViewDimensionEvent event) {
+                windowView.requestRenderUpdate();
+            }
+
+            @Override
+            public void viewStateChanged(ViewEvent event) {
+                windowView.requestZIndexUpdate();
+            }
+        });
     }
 
     /**
@@ -88,7 +140,7 @@ public class View {
      * @param dimension Dimension of this view that was changed
      */
     public void dimensionChanged(Dimension dimension) {
-
+        getViewListeners().dispatch(listener -> listener.viewDimensionChanged(new ViewDimensionEvent(this,dimension)));
     }
 
     /**
@@ -231,10 +283,11 @@ public class View {
      */
     public void setParentView(View parentView) { //TODO update references
         if (this.parentView == parentView) return;
+        ViewHierarchyChanged event = new ViewHierarchyChanged(this, this.parentView, parentView);
         this.parentView.getChildViews().remove(this);
         this.parentView = parentView;
         this.parentView.getChildViews().add(this);
-        windowView.requireRenderUpdate();
+        this.getViewListeners().dispatch(listener -> listener.parentViewChanged(event));
     }
 
 
@@ -249,6 +302,7 @@ public class View {
             if (view.parentView != null) view.parentView.removeChildViews(view);
             view.parentView = this;
             childViews.add(view);
+            this.getViewListeners().dispatch(listener -> listener.childViewAdded(new ViewHierarchyChanged(this,view)));
         }
     }
 
@@ -262,6 +316,7 @@ public class View {
         for (View view : views) {
             if (view.parentView == this) view.parentView = null;
             childViews.remove(view);
+            this.getViewListeners().dispatch(listener -> listener.childViewRemoved(new ViewHierarchyChanged(this,view)));
         }
     }
 
@@ -270,7 +325,7 @@ public class View {
      */
     public void setHidden() {
         this.visible = false;
-        windowView.requireRenderUpdate();
+        this.getViewListeners().dispatch(listener -> listener.viewHidden(new ViewEvent(this)));
     }
 
     /**
@@ -278,7 +333,7 @@ public class View {
      */
     public void setShown() {
         this.visible = true;
-        windowView.requireRenderUpdate();
+        this.getViewListeners().dispatch(listener -> listener.viewShown(new ViewEvent(this)));
     }
 
     /**
@@ -288,7 +343,7 @@ public class View {
      */
     public void setVisibilityAppliesToChildren(boolean visibilityAppliesToChildren) {
         this.visibilityAppliesToChildren = visibilityAppliesToChildren;
-        windowView.requireRenderUpdate();
+        this.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
     }
 
     /**
@@ -298,7 +353,7 @@ public class View {
      */
     public void setZIndex(int zIndex) {
         this.zIndex = zIndex;
-        windowView.requireZIndexUpdate();
+        this.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
     }
 
     /**
@@ -308,6 +363,7 @@ public class View {
      */
     public void setDynamicZIndexUpdate(boolean dynamicZIndexUpdate) {
         this.dynamicZIndexUpdate = dynamicZIndexUpdate;
+        this.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
     }
 
     /**
@@ -319,6 +375,7 @@ public class View {
         //update old controller -> remove reference to this view
         this.controller = controller;
         //update new controller -> add reference to this view
+        this.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
     }
 
     //GETTERS

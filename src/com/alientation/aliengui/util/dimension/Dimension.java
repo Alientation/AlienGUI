@@ -49,7 +49,7 @@ public abstract class Dimension {
 
     public void valueChanged() {
         for (View view : dependencies)
-            view.getViewListeners().dispatch(listener -> listener.viewDimensionChanged(new ViewDimensionEvent(view,this)));
+            view.dimensionChanged(this);
     }
     public void registerDependency(View v) { //Views that use this as a dimension
         dependencies.add(v);

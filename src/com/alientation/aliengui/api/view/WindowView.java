@@ -27,11 +27,11 @@ public class WindowView extends View {//wrapper for Window
         super.render(graphics);
     }
 
-    public void requireRenderUpdate() {
+    public void requestRenderUpdate() {
         requireRenderUpdate = true;
     }
 
-    public void requireZIndexUpdate() {
+    public void requestZIndexUpdate() {
         requireZIndexUpdate = true;
     }
 
