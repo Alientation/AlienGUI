@@ -1,0 +1,28 @@
+MVC
+Model
+    -   handles storing data and loading data from databases (files or through the cloud)
+
+View
+    -   display to the user, should never perform any logic based on user input, the controller should do that. All it does is render what is given
+    -   Controller listens to the view for state changes, user input, etc
+
+Controller
+    -   Controller listens to the view for user input, tells the model what happened, model does its logic
+    -   Controller listens for model state changes, tells view what has changed (ie updates the view's components and data)
+    -   The controller should handle most of the logic as it pertains to the application
+
+
+
+Ex. Chess
+Model
+    -   Win counts, saved games, current loaded game (saved to file)
+
+View
+    -   Board view, displays the board and all the pieces
+    -   Displays win/lose/draw popups
+    -   Draggable pieces
+
+Controller
+    -   Listens to the view for any clicks, pressed clicks and released clicks
+    -   Listens to the model for any state changes like what the board is like
+    -   Handles board, moving pieces, stuff like that (most application specific logic)
