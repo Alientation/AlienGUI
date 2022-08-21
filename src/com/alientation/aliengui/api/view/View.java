@@ -2,6 +2,7 @@ package com.alientation.aliengui.api.view;
 
 
 import com.alientation.aliengui.api.controller.ViewController;
+import com.alientation.aliengui.dimension.Dimension;
 import com.alientation.aliengui.event.EventListenerContainer;
 import com.alientation.aliengui.event.key.KeyListener;
 import com.alientation.aliengui.event.model.ModelListener;
@@ -21,8 +22,8 @@ public class View {
 
     protected ViewController controller;
 
-    protected int x, y, minX, maxX, minY, maxY, width, height, minWidth, minHeight, maxWidth, maxHeight, borderRadiusX, borderRadiusY, marginX, marginY; //make dimension class for this
-
+    //protected int x, y, minX, maxX, minY, maxY, width, height, minWidth, minHeight, maxWidth, maxHeight, borderRadiusX, borderRadiusY, marginX, marginY; //make dimension class for this
+    protected Dimension x, y, width, height, borderRadiusX, borderRadiusY, marginX, marginY;
 
     protected View parentView;
     protected WindowView windowView;
@@ -58,6 +59,38 @@ public class View {
         if (!initialized) return;
     }
 
+    public Dimension getX() {
+        return x;
+    }
+
+    public Dimension getY() {
+        return y;
+    }
+
+    public Dimension getWidth() {
+        return width;
+    }
+
+    public Dimension getHeight() {
+        return height;
+    }
+
+    public Dimension getBorderRadiusX() {
+        return borderRadiusX;
+    }
+
+    public Dimension getBorderRadiusY() {
+        return borderRadiusY;
+    }
+
+    public Dimension getMarginX() {
+        return marginX;
+    }
+
+    public Dimension getMarginY() {
+        return marginY;
+    }
+
     public void addSubviews(View...views) {
         subviews.addAll(Arrays.stream(views).toList());
     }
@@ -88,6 +121,62 @@ public class View {
 
     public boolean doDynamicZIndexUpdate() {
         return dynamicZIndexUpdate;
+    }
+
+    public void setX(Dimension x) {
+        this.x.unregisterDependency(this);
+        this.x = x;
+        this.x.registerDependency(this);
+        this.x.valueChanged();
+    }
+
+    public void setY(Dimension y) {
+        this.y.unregisterDependency(this);
+        this.y = y;
+        this.y.registerDependency(this);
+        this.y.valueChanged();
+    }
+
+    public void setWidth(Dimension width) {
+        this.width.unregisterDependency(this);
+        this.width = width;
+        this.width.registerDependency(this);
+        this.width.valueChanged();
+    }
+
+    public void setHeight(Dimension height) {
+        this.height.unregisterDependency(this);
+        this.height = height;
+        this.height.registerDependency(this);
+        this.height.valueChanged();
+    }
+
+    public void setBorderRadiusX(Dimension borderRadiusX) {
+        this.borderRadiusX.unregisterDependency(this);
+        this.borderRadiusX = borderRadiusX;
+        this.borderRadiusX.registerDependency(this);
+        this.borderRadiusX.valueChanged();
+    }
+
+    public void setBorderRadiusY(Dimension borderRadiusY) {
+        this.borderRadiusY.unregisterDependency(this);
+        this.borderRadiusY = borderRadiusY;
+        this.borderRadiusY.registerDependency(this);
+        this.borderRadiusY.valueChanged();
+    }
+
+    public void setMarginX(Dimension marginX) {
+        this.marginX.unregisterDependency(this);
+        this.marginX = marginX;
+        this.marginX.registerDependency(this);
+        this.marginX.valueChanged();
+    }
+
+    public void setMarginY(Dimension marginY) {
+        this.marginY.unregisterDependency(this);
+        this.marginY = marginY;
+        this.marginY.registerDependency(this);
+        this.marginY.valueChanged();
     }
 
     public void setParentView(View parentView) { //TODO update references
