@@ -40,7 +40,7 @@ public class WindowRenderer {
             }
             visitedViews.add(cur);
             sortedViewsByZIndex.add(cur);
-            for (View view : cur.getSubviews()) {
+            for (View view : cur.getChildViews()) {
                 if (view.zIndex <= cur.zIndex) //updates if required
                     view.zIndex = cur.zIndex+1;
                 bfs.offer(view);

@@ -10,213 +10,350 @@ import com.alientation.aliengui.event.mouse.MouseListener;
 import com.alientation.aliengui.event.view.ViewListener;
 
 import java.awt.*;
-import java.util.Arrays;
 import java.util.Set;
 
 @SuppressWarnings("unused")
 public class View {
+    /**
+     * Listeners for internal processes and applications to hook into
+     */
     protected EventListenerContainer<KeyListener> keyListeners = new EventListenerContainer<>();
     protected EventListenerContainer<ModelListener> modelListeners = new EventListenerContainer<>();
     protected EventListenerContainer<MouseListener> mouseListeners = new EventListenerContainer<>();
     protected EventListenerContainer<ViewListener> viewListeners = new EventListenerContainer<>();
 
+    /**
+     * ViewController that handles this view
+     */
     protected ViewController controller;
 
-    //protected int x, y, minX, maxX, minY, maxY, width, height, minWidth, minHeight, maxWidth, maxHeight, borderRadiusX, borderRadiusY, marginX, marginY; //make dimension class for this
+    /**
+     * Dimensions of this view
+     */
     protected Dimension x, y, width, height, borderRadiusX, borderRadiusY, marginX, marginY;
 
+    /**
+     * The view this view is enclosed in
+     */
     protected View parentView;
+
+    /**
+     * Window this view is a part of
+     */
     protected WindowView windowView;
-    protected Set<View> subviews;
-    protected boolean initialized; //whether all properties are initialized and ready to render
+
+    /**
+     * Views that are enclosed in this view
+     */
+    protected Set<View> childViews;
+
+    /**
+     * Whether this view is ready to be used after all properties are initialized
+     */
+    protected boolean initialized;
+
+    /**
+     * Visibility of this view, whether this view will be rendered or not
+     */
     protected boolean visible;
+
+    /**
+     * Whether the visibility of this view will affect the child views
+     */
+    protected boolean visibilityAppliesToChildren= false;
+
+    /**
+     * The Z Index of this view, used to order views to be rendered
+     */
     protected int zIndex;
+
+    /**
+     * Whether this view can dynamically update the z index based on parent view's z index
+     */
     protected boolean dynamicZIndexUpdate;
 
+    /**
+     * Constructs a new view using the Builder pattern
+     *
+     * @param builder   Builder for this view
+     */
     public View(Builder<?> builder) {
 
 
     }
 
+    /**
+     * One of this view's dimensions has changed
+     *
+     * @param dimension Dimension of this view that was changed
+     */
     public void dimensionChanged(Dimension dimension) {
 
     }
 
+    /**
+     * Initializes this view
+     */
     public void init() {
         if (initialized) return; //can't initialize twice!
-
 
         initialized = true;
     }
 
+    /**
+     * Render update
+     *
+     * @param g Graphics object to be drawn on
+     */
     public void render(Graphics g) {
         if (!initialized) return;
 
 
     }
 
+    /**
+     * Tick update
+     */
     public void tick() {
         if (!initialized) return;
     }
 
-    public Dimension getX() {
-        return x;
-    }
 
-    public Dimension getY() {
-        return y;
-    }
-
-    public Dimension getWidth() {
-        return width;
-    }
-
-    public Dimension getHeight() {
-        return height;
-    }
-
-    public Dimension getBorderRadiusX() {
-        return borderRadiusX;
-    }
-
-    public Dimension getBorderRadiusY() {
-        return borderRadiusY;
-    }
-
-    public Dimension getMarginX() {
-        return marginX;
-    }
-
-    public Dimension getMarginY() {
-        return marginY;
-    }
-
-    public void addSubviews(View...views) {
-        subviews.addAll(Arrays.stream(views).toList());
-    }
-
-    public View getParentView() {
-        return parentView;
-    }
-
-    public WindowView getWindowView() {
-        return windowView;
-    }
-
-    public Set<View> getSubviews() {
-        return subviews;
-    }
-
-    public boolean isInitialized() {
-        return initialized;
-    }
-
-    public boolean isVisible() {
-        return visible;
-    }
-
-    public int getZIndex() {
-        return zIndex;
-    }
-
-    public boolean doDynamicZIndexUpdate() {
-        return dynamicZIndexUpdate;
-    }
-
+    /**
+     * Sets dimensions and updates dependencies
+     *
+     * @param x The new X dimension
+     */
     public void setX(Dimension x) {
+        if (this.x == x) return;
         this.x.unregisterDependency(this);
         this.x = x;
         this.x.registerDependency(this);
         this.x.valueChanged();
     }
 
+    /**
+     * Sets dimensions and updates dependencies
+     *
+     * @param y The new y dimension
+     */
     public void setY(Dimension y) {
+        if (this.y == y) return;
         this.y.unregisterDependency(this);
         this.y = y;
         this.y.registerDependency(this);
         this.y.valueChanged();
     }
 
+    /**
+     * Sets dimensions and updates dependencies
+     *
+     * @param width The new Width dimension
+     */
     public void setWidth(Dimension width) {
+        if (this.width == width) return;
         this.width.unregisterDependency(this);
         this.width = width;
         this.width.registerDependency(this);
         this.width.valueChanged();
     }
 
+    /**
+     * Sets dimensions and updates dependencies
+     *
+     * @param height The new Height dimension
+     */
     public void setHeight(Dimension height) {
+        if (this.height == height) return;
         this.height.unregisterDependency(this);
         this.height = height;
         this.height.registerDependency(this);
         this.height.valueChanged();
     }
 
+    /**
+     * Sets dimensions and updates dependencies
+     *
+     * @param borderRadiusX The new Border Radius X dimension (curved borders)
+     */
     public void setBorderRadiusX(Dimension borderRadiusX) {
+        if (this.borderRadiusX == borderRadiusX) return;
         this.borderRadiusX.unregisterDependency(this);
         this.borderRadiusX = borderRadiusX;
         this.borderRadiusX.registerDependency(this);
         this.borderRadiusX.valueChanged();
     }
 
+    /**
+     * Sets dimensions and updates dependencies
+     *
+     * @param borderRadiusY The new Border Radius Y dimension (curved borders)
+     */
     public void setBorderRadiusY(Dimension borderRadiusY) {
+        if (this.borderRadiusY == borderRadiusY) return;
         this.borderRadiusY.unregisterDependency(this);
         this.borderRadiusY = borderRadiusY;
         this.borderRadiusY.registerDependency(this);
         this.borderRadiusY.valueChanged();
     }
 
+    /**
+     * Sets dimensions and updates dependencies
+     *
+     * @param marginX The new Margin X dimension
+     */
     public void setMarginX(Dimension marginX) {
+        if (this.marginX == marginX) return;
         this.marginX.unregisterDependency(this);
         this.marginX = marginX;
         this.marginX.registerDependency(this);
         this.marginX.valueChanged();
     }
 
+    /**
+     * Sets dimensions and updates dependencies
+     *
+     * @param marginY The new Margin Y dimension
+     */
     public void setMarginY(Dimension marginY) {
+        if (this.marginY == marginY) return;
         this.marginY.unregisterDependency(this);
         this.marginY = marginY;
         this.marginY.registerDependency(this);
         this.marginY.valueChanged();
     }
 
+    /**
+     * Sets parent view of this view and properly updates connections.
+     * Does so without depending on other public hierarchical update methods
+     *
+     * @param parentView    The new parent view of this view
+     */
     public void setParentView(View parentView) { //TODO update references
-        this.parentView.getSubviews().remove(this);
+        if (this.parentView == parentView) return;
+        this.parentView.getChildViews().remove(this);
         this.parentView = parentView;
-        this.parentView.getSubviews().add(this);
+        this.parentView.getChildViews().add(this);
         windowView.requireRenderUpdate();
     }
 
+
+    /**
+     * Adds child views to this view and properly updates connections
+     * Does so without depending on other public hierarchical update methods
+     *
+     * @param views child views to be added
+     */
+    public void addChildViews(View...views) {
+        for (View view : views) {
+            if (view.parentView != null) view.parentView.removeChildViews(view);
+            view.parentView = this;
+            childViews.add(view);
+        }
+    }
+
+    /**
+     * Removes child views to this view and properly updates connections
+     * Does so without depending on other public hierarchical update methods
+     *
+     * @param views child views to be removed
+     */
+    public void removeChildViews(View... views) {
+        for (View view : views) {
+            if (view.parentView == this) view.parentView = null;
+            childViews.remove(view);
+        }
+    }
+
+    /**
+     * Hides this view and requests a render update
+     */
     public void setHidden() {
         this.visible = false;
         windowView.requireRenderUpdate();
     }
 
+    /**
+     * Shows this view and requests a render update
+     */
     public void setShown() {
         this.visible = true;
         windowView.requireRenderUpdate();
     }
 
+    /**
+     * Sets whether children will adopt parent visibility
+     *
+     * @param visibilityAppliesToChildren   New visibility rule for children
+     */
+    public void setVisibilityAppliesToChildren(boolean visibilityAppliesToChildren) {
+        this.visibilityAppliesToChildren = visibilityAppliesToChildren;
+        windowView.requireRenderUpdate();
+    }
+
+    /**
+     * Updates the Z Index of this view and requests a Z Index update
+     *
+     * @param zIndex The new Z Index
+     */
     public void setZIndex(int zIndex) {
         this.zIndex = zIndex;
         windowView.requireZIndexUpdate();
     }
 
+    /**
+     * Sets whether this Z Index can be automatically changed during runtime
+     *
+     * @param dynamicZIndexUpdate   New Z Index update rule
+     */
     public void setDynamicZIndexUpdate(boolean dynamicZIndexUpdate) {
         this.dynamicZIndexUpdate = dynamicZIndexUpdate;
     }
 
+    /**
+     * Registers a ViewController to this view
+     *
+     * @param controller    The new ViewController
+     */
     public void registerController(ViewController controller) {
         //update old controller -> remove reference to this view
         this.controller = controller;
         //update new controller -> add reference to this view
     }
 
+    //GETTERS
+
+    //LISTENERS
     public EventListenerContainer<KeyListener> getKeyListeners() { return keyListeners; }
     public EventListenerContainer<ModelListener> getModelListeners() { return modelListeners; }
     public EventListenerContainer<MouseListener> getMouseListeners() { return mouseListeners; }
     public EventListenerContainer<ViewListener> getViewListeners() { return viewListeners; }
+
+    //VIEW CONTROLLER
     public ViewController getController() { return controller; }
 
+    //DIMENSIONS
+    public Dimension getX() { return x; }
+    public Dimension getY() { return y; }
+    public Dimension getWidth() { return width; }
+    public Dimension getHeight() { return height; }
+    public Dimension getBorderRadiusX() { return borderRadiusX; }
+    public Dimension getBorderRadiusY() { return borderRadiusY; }
+    public Dimension getMarginX() { return marginX; }
+    public Dimension getMarginY() { return marginY; }
+
+    //VIEW HIERARCHY
+    public View getParentView() { return parentView; }
+    public WindowView getWindowView() { return windowView; }
+    public Set<View> getChildViews() { return childViews; }
+
+    //RENDER PROPERTIES
+    public boolean isInitialized() { return initialized; }
+    public boolean isVisible() { return visible; }
+    public int getZIndex() { return zIndex; }
+    public boolean doDynamicZIndexUpdate() { return dynamicZIndexUpdate; }
+
+    //BUILDER
     @SuppressWarnings("unused")
     static class Builder<T extends Builder<T>> {
 
