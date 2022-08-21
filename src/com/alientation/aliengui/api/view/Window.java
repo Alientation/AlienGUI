@@ -2,7 +2,6 @@ package com.alientation.aliengui.api.view;
 
 import com.alientation.aliengui.event.EventListenerContainer;
 import com.alientation.aliengui.event.key.KeyListener;
-import com.alientation.aliengui.event.view.ViewDimensionEvent;
 import com.alientation.aliengui.event.view.ViewEvent;
 
 import javax.swing.*;
@@ -11,6 +10,10 @@ import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import java.io.Serial;
 
+/**
+ * Window that is displayed on the screen which all views are contained within.
+ * Handles rendering requests and acts as a connector between Java Swing and this GUI application.
+ */
 @SuppressWarnings("unused")
 public class Window extends Canvas implements Runnable {
     @Serial

@@ -15,6 +15,9 @@ import com.alientation.aliengui.event.view.ViewListener;
 import java.awt.*;
 import java.util.Set;
 
+/**
+ * Base View that renders, handles events, and communicates with the controller.
+ */
 @SuppressWarnings("unused")
 public class View {
     /**
