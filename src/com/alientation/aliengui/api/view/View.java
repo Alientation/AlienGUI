@@ -10,7 +10,7 @@ import com.alientation.aliengui.event.view.ViewListener;
 
 import java.awt.*;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Set;
 
 @SuppressWarnings("unused")
 public class View {
@@ -21,43 +21,56 @@ public class View {
 
     protected ViewController controller;
 
-    protected int x, y, width, height, minWidth, minHeight, maxWidth, maxHeight; //make dimension class for this
+    protected int x, y, minX, maxX, minY, maxY, width, height, minWidth, minHeight, maxWidth, maxHeight, borderRadiusX, borderRadiusY, marginX, marginY; //make dimension class for this
 
 
-
-    protected View container;
+    protected View parentView;
     protected WindowView windowView;
-    protected List<View> subviews;
+    protected Set<View> subviews;
     protected boolean initialized; //whether all properties are initialized and ready to render
     protected boolean visible;
     protected int zIndex;
+    protected boolean dynamicZIndexUpdate;
 
     public View(Builder<?> builder) {
 
 
     }
 
-    public void render(Graphics graphics) {
+    public void dimensionChanged(Dimension dimension) {
+
+    }
+
+    public void init() {
+        if (initialized) return; //can't initialize twice!
+
+
+        initialized = true;
+    }
+
+    public void render(Graphics g) {
+        if (!initialized) return;
+
 
     }
 
     public void tick() {
-
+        if (!initialized) return;
     }
 
     public void addSubviews(View...views) {
         subviews.addAll(Arrays.stream(views).toList());
     }
 
-    public View getContainer() {
-        return container;
+    public View getParentView() {
+        return parentView;
     }
 
     public WindowView getWindowView() {
         return windowView;
     }
 
-    public List<View> getSubviews() {
+    public Set<View> getSubviews() {
         return subviews;
     }
 
@@ -73,21 +86,36 @@ public class View {
         return zIndex;
     }
 
-    public void setContainer(View container) { //TODO update references
-        this.container = container;
+    public boolean doDynamicZIndexUpdate() {
+        return dynamicZIndexUpdate;
+    }
+
+    public void setParentView(View parentView) { //TODO update references
+        this.parentView.getSubviews().remove(this);
+        this.parentView = parentView;
+        this.parentView.getSubviews().add(this);
+        windowView.requireRenderUpdate();
     }
 
     public void setHidden() {
         this.visible = false;
+        windowView.requireRenderUpdate();
     }
 
     public void setShown() {
         this.visible = true;
+        windowView.requireRenderUpdate();
     }
 
     public void setZIndex(int zIndex) {
         this.zIndex = zIndex;
+        windowView.requireZIndexUpdate();
     }
+
+    public void setDynamicZIndexUpdate(boolean dynamicZIndexUpdate) {
+        this.dynamicZIndexUpdate = dynamicZIndexUpdate;
+    }
+
     public void registerController(ViewController controller) {
         //update old controller -> remove reference to this view
         this.controller = controller;

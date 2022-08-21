@@ -13,13 +13,13 @@ public class WindowView extends View {//wrapper for Window
     public static final String FONTS = RESOURCE + "fonts\\";
 
     protected WindowRenderer windowRenderer;
-    protected boolean requireRenderUpdate;
+    protected boolean requireRenderUpdate = true;
+    protected boolean requireZIndexUpdate = true;
     protected Window window;
 
     public WindowView(Builder<?> builder) {
         super(builder);
         windowRenderer = new WindowRenderer(this);
-        requireRenderUpdate = true;
     }
 
     @Override
@@ -27,16 +27,24 @@ public class WindowView extends View {//wrapper for Window
         super.render(graphics);
     }
 
-    public WindowRenderer getWindowRenderer() {
-        return windowRenderer;
-    }
-
     public void requireRenderUpdate() {
         requireRenderUpdate = true;
     }
 
+    public void requireZIndexUpdate() {
+        requireZIndexUpdate = true;
+    }
+
+    public WindowRenderer getWindowRenderer() {
+        return windowRenderer;
+    }
+
     public boolean doesRequireRenderUpdate() {
         return requireRenderUpdate;
+    }
+
+    public boolean doesRequireZIndexUpdate() {
+        return requireZIndexUpdate;
     }
 
     public Window getWindow() {

@@ -2,6 +2,7 @@ package com.alientation.aliengui.api.view;
 
 import com.alientation.aliengui.event.EventListenerContainer;
 import com.alientation.aliengui.event.key.KeyListener;
+import com.alientation.aliengui.event.view.ViewDimensionEvent;
 import com.alientation.aliengui.event.view.ViewEvent;
 
 import javax.swing.*;
@@ -99,39 +100,38 @@ public class Window extends Canvas implements Runnable {
             @Override
             public void focusGained(FocusEvent e) {
                 super.focusGained(e);
-                windowView.getViewListeners().dispatch(listener -> listener.viewFocused(new ViewEvent()));
+                windowView.getViewListeners().dispatch(listener -> listener.viewFocused(new ViewEvent(windowView)));
             }
 
             @Override
             public void focusLost(FocusEvent e) {
                 super.focusLost(e);
-                windowView.getViewListeners().dispatch(listener -> listener.viewUnfocused(new ViewEvent()));
+                windowView.getViewListeners().dispatch(listener -> listener.viewUnfocused(new ViewEvent(windowView)));
             }
         });
 
         frame.addComponentListener(new ComponentAdapter() {
             @Override
-            public void componentResized(ComponentEvent e) {
+            public void componentResized(ComponentEvent e) { //Dimensions will handle the resizing
                 super.componentResized(e);
-                windowView.getViewListeners().dispatch(listener -> listener.viewResized(new ViewEvent()));
             }
 
             @Override
             public void componentMoved(ComponentEvent e) {
                 super.componentMoved(e);
-                windowView.getViewListeners().dispatch(listener -> listener.viewMoved(new ViewEvent()));
+                windowView.getViewListeners().dispatch(listener -> listener.viewMoved(new ViewEvent(windowView)));
             }
 
             @Override
             public void componentShown(ComponentEvent e) {
                 super.componentShown(e);
-                windowView.getViewListeners().dispatch(listener -> listener.viewShown(new ViewEvent()));
+                windowView.getViewListeners().dispatch(listener -> listener.viewShown(new ViewEvent(windowView)));
             }
 
             @Override
             public void componentHidden(ComponentEvent e) {
                 super.componentHidden(e);
-                windowView.getViewListeners().dispatch(listener -> listener.viewHidden(new ViewEvent()));
+                windowView.getViewListeners().dispatch(listener -> listener.viewHidden(new ViewEvent(windowView)));
             }
         });
 
@@ -178,7 +178,8 @@ public class Window extends Canvas implements Runnable {
     }
 
     public void tick() {
-
+        windowView.tick();
+        windowView.windowRenderer.updateZIndexing();
     }
 
     @Override

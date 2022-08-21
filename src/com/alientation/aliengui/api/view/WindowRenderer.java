@@ -14,7 +14,15 @@ public class WindowRenderer {
         this.sortedViewsByZIndex = new ArrayList<>();
     }
 
-    public void update() {
+    /**
+     * Compiles a Z Index ordering of the components while updating necessary components
+     * if their z index is out of place (not greater than the z index of the parent view)
+     *
+     */
+    public void updateZIndexing() {
+        if (!windowView.requireZIndexUpdate) return;
+        windowView.requireRenderUpdate = true; //when z index has been updated, it needs to render
+
         this.sortedViewsByZIndex.clear();
 
         //bfs through to find all renderables in this window
@@ -32,8 +40,11 @@ public class WindowRenderer {
             }
             visitedViews.add(cur);
             sortedViewsByZIndex.add(cur);
-            for (View view : cur.getSubviews())
+            for (View view : cur.getSubviews()) {
+                if (view.zIndex <= cur.zIndex) //updates if required
+                    view.zIndex = cur.zIndex+1;
                 bfs.offer(view);
+            }
         }
         sortedViewsByZIndex.sort(Comparator.comparingInt(View::getZIndex));
     }
