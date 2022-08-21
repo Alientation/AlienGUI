@@ -19,19 +19,45 @@ public class Window extends Canvas implements Runnable {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    protected static final int NANOSECONDS = 1000000000;
+
+    /**
+     * View this Window is enclosed in
+     */
     protected WindowView windowView;
 
+    /**
+     * Current Graphics render this window has
+     */
     protected Graphics g;
     protected BufferStrategy bs;
 
-    protected static final int NANOSECONDS = 1000000000;
+    /**
+     * Rendering properties
+     */
     protected double nsPerTick, nsPerFrame;
     protected int targetTPS, tps, targetFPS, fps;
+
+    /**
+     * Backend loop that handles ticking and rendering
+     */
     protected Thread windowThread;
+
+    /**
+     * Whether this Window is active
+     */
     protected boolean running;
 
+    /**
+     * Swing component that creates a window
+     */
     protected JFrame frame;
 
+    /**
+     * Constructs a Window
+     *
+     * @param builder   Builder
+     */
     public Window(Builder<?> builder) {
         frame = new JFrame(builder.title);
 
@@ -153,12 +179,20 @@ public class Window extends Canvas implements Runnable {
 
     }
 
+    /**
+     * Override paint to allow this window to render immediately after to eliminate flickering (I think)
+     *
+     * @param g   the specified Graphics context
+     */
     @Override
     public void paint(Graphics g) {
         super.paint(g);
         windowView.render(g);
     }
 
+    /**
+     * Updates current Graphics context, requests a render update in window renderer
+     */
     public void render() {
         //prerender
         bs = this.getBufferStrategy();
@@ -180,11 +214,17 @@ public class Window extends Canvas implements Runnable {
 
     }
 
+    /**
+     * Tick update, update z indexing
+     */
     public void tick() {
         windowView.tick();
         windowView.windowRenderer.updateZIndexing();
     }
 
+    /**
+     * Thread runner
+     */
     @Override
     public void run() {
         this.requestFocus();
@@ -227,6 +267,11 @@ public class Window extends Canvas implements Runnable {
         stop();
     }
 
+    /**
+     * Conserves cpu by sleeping this thread in small increments until it is needed again
+     *
+     * @param endTime   Time to stop
+     */
     public void sync(double endTime) {
         while (System.nanoTime() < endTime) {
             try {
@@ -237,6 +282,9 @@ public class Window extends Canvas implements Runnable {
         }
     }
 
+    /**
+     * Starts this window process
+     */
     public synchronized void start() {
         this.createBufferStrategy(3);
         bs = this.getBufferStrategy();
@@ -247,6 +295,9 @@ public class Window extends Canvas implements Runnable {
         windowThread.start();
     }
 
+    /**
+     * Ends this window process
+     */
     public synchronized void stop() {
         try {
             windowThread.join();
@@ -256,56 +307,52 @@ public class Window extends Canvas implements Runnable {
         running = false;
     }
 
+    /**
+     * Updates the render properties
+     */
     public void updateTimeBetweenUpdates() {
         nsPerTick = ((float)NANOSECONDS) / targetTPS;
         nsPerFrame = ((float) NANOSECONDS) / targetFPS;
     }
 
+
+    //SETTERS
+
+    /**
+     * Update target tps and time between updates
+     *
+     * @param targetTPS Target ticks per second
+     */
     public void setTargetTPS(int targetTPS) {
         this.targetTPS = targetTPS;
         updateTimeBetweenUpdates();
     }
 
+    /**
+     * Update target fps and time between updates
+     *
+     * @param targetFPS Target frames per second
+     */
     public void setTargetFPS(int targetFPS) {
         this.targetFPS = targetFPS;
         updateTimeBetweenUpdates();
     }
 
-    public Graphics getGraphics() {
-        return this.g;
-    }
 
-    public WindowView getWindowView() {
-        return windowView;
-    }
+    //GETTERS
 
-    public double getNsPerTick() {
-        return nsPerTick;
-    }
+    public Graphics getGraphics() { return this.g; }
+    public WindowView getWindowView() { return windowView; }
+    public double getNsPerTick() { return nsPerTick; }
+    public double getNsPerFrame() { return nsPerFrame; }
+    public int getTargetTPS() { return targetTPS; }
+    public int getTps() { return tps; }
+    public int getTargetFPS() { return targetFPS; }
+    public int getFps() { return fps; }
+    public boolean isRunning() { return running; }
 
-    public double getNsPerFrame() {
-        return nsPerFrame;
-    }
 
-    public int getTargetTPS() {
-        return targetTPS;
-    }
-
-    public int getTps() {
-        return tps;
-    }
-
-    public int getTargetFPS() {
-        return targetFPS;
-    }
-
-    public int getFps() {
-        return fps;
-    }
-
-    public boolean isRunning() {
-        return running;
-    }
+    //BUILDER
 
     @SuppressWarnings("unchecked")
     static class Builder<T extends Builder<T>> {
