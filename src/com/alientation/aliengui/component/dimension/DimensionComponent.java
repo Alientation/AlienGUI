@@ -1,18 +1,17 @@
-package com.alientation.aliengui.util.dimension;
+package com.alientation.aliengui.component.dimension;
 
 import com.alientation.aliengui.api.view.View;
-import com.alientation.aliengui.event.view.ViewDimensionEvent;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @SuppressWarnings("unused")
-public abstract class Dimension {
+public abstract class DimensionComponent {
 
     protected int val;
-    protected Dimension min, max;
+    protected DimensionComponent min, max;
     protected Set<View> dependencies = new HashSet<>();
-    public Dimension() {
+    public DimensionComponent() {
 
     }
 
@@ -24,11 +23,11 @@ public abstract class Dimension {
         return val;
     }
 
-    public Dimension getMinVal() {
+    public DimensionComponent getMinVal() {
         return min;
     }
 
-    public Dimension getMaxVal() {
+    public DimensionComponent getMaxVal() {
         return max;
     }
 
@@ -37,12 +36,12 @@ public abstract class Dimension {
         valueChanged();
     }
 
-    public void setMin(Dimension min) {
+    public void setMin(DimensionComponent min) {
         this.min = min;
         valueChanged();
     }
 
-    public void setMax(Dimension max) {
+    public void setMax(DimensionComponent max) {
         this.max = max;
         valueChanged();
     }

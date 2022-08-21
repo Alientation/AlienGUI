@@ -1,4 +1,4 @@
-package com.alientation.aliengui.util.dimension;
+package com.alientation.aliengui.component.dimension;
 
 
 import com.alientation.aliengui.api.view.View;
@@ -6,7 +6,7 @@ import com.alientation.aliengui.event.view.ViewDimensionEvent;
 import com.alientation.aliengui.event.view.ViewListener;
 
 @SuppressWarnings("unused")
-public class RelativeDimension extends Dimension {
+public class RelativeDimensionComponent extends DimensionComponent {
     protected View relTo;
     protected float relVal;
     protected boolean multiplied = true;
@@ -20,7 +20,7 @@ public class RelativeDimension extends Dimension {
     };
 
 
-    public RelativeDimension(View relTo, float relVal, DimensionRelation dimensionRelation) {
+    public RelativeDimensionComponent(View relTo, float relVal, DimensionRelation dimensionRelation) {
         this.relTo = relTo;
         this.relVal = relVal;
         this.dimensionRelation = dimensionRelation;
@@ -28,7 +28,7 @@ public class RelativeDimension extends Dimension {
         this.relTo.getViewListeners().addListenerAtBeginning(viewListener);
     }
 
-    public RelativeDimension(View relTo, float relVal, boolean multiplied, DimensionRelation dimensionRelation) {
+    public RelativeDimensionComponent(View relTo, float relVal, boolean multiplied, DimensionRelation dimensionRelation) {
         this(relTo,relVal,dimensionRelation);
         this.multiplied = multiplied;
     }
@@ -81,56 +81,56 @@ public class RelativeDimension extends Dimension {
 abstract class DimensionRelation {
     public static final DimensionRelation X = new DimensionRelation() {
         @Override
-        public Dimension getDimension(View view) {
+        public DimensionComponent getDimension(View view) {
             return view.getX();
         }
     };
 
     public static final DimensionRelation Y = new DimensionRelation() {
         @Override
-        public Dimension getDimension(View view) {
+        public DimensionComponent getDimension(View view) {
             return view.getY();
         }
     };
 
     public static final DimensionRelation WIDTH = new DimensionRelation() {
         @Override
-        public Dimension getDimension(View view) {
+        public DimensionComponent getDimension(View view) {
             return view.getWidth();
         }
     };
 
     public static final DimensionRelation HEIGHT = new DimensionRelation() {
         @Override
-        public Dimension getDimension(View view) {
+        public DimensionComponent getDimension(View view) {
             return view.getHeight();
         }
     };
 
     public static final DimensionRelation MARGIN_X = new DimensionRelation() {
         @Override
-        public Dimension getDimension(View view) {
+        public DimensionComponent getDimension(View view) {
             return view.getMarginX();
         }
     };
 
     public static final DimensionRelation MARGIN_Y = new DimensionRelation() {
         @Override
-        public Dimension getDimension(View view) {
+        public DimensionComponent getDimension(View view) {
             return view.getMarginY();
         }
     };
 
     public static final DimensionRelation BORDER_RADIUS_X = new DimensionRelation() {
         @Override
-        public Dimension getDimension(View view) {
+        public DimensionComponent getDimension(View view) {
             return view.getBorderRadiusX();
         }
     };
 
     public static final DimensionRelation BORDER_RADIUS_Y = new DimensionRelation() {
         @Override
-        public Dimension getDimension(View view) {
+        public DimensionComponent getDimension(View view) {
             return view.getBorderRadiusY();
         }
     };
@@ -141,5 +141,5 @@ abstract class DimensionRelation {
 
     }
 
-    public abstract Dimension getDimension(View view);
+    public abstract DimensionComponent getDimension(View view);
 }

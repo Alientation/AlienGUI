@@ -1,18 +1,18 @@
 package com.alientation.aliengui.event.view;
 
 import com.alientation.aliengui.api.view.View;
-import com.alientation.aliengui.util.dimension.Dimension;
+import com.alientation.aliengui.component.dimension.DimensionComponent;
 
 @SuppressWarnings("unused")
 public class ViewDimensionEvent extends ViewEvent {
-    protected Dimension dimension;
+    protected DimensionComponent dimensionComponent;
 
-    public ViewDimensionEvent(View view, Dimension dimension) {
+    public ViewDimensionEvent(View view, DimensionComponent dimensionComponent) {
         super(view);
-        this.dimension = dimension;
+        this.dimensionComponent = dimensionComponent;
     }
 
-    public Dimension getDimension() {
-        return dimension;
+    public DimensionComponent getDimension() {
+        return dimensionComponent;
     }
 }

@@ -5,7 +5,7 @@ import com.alientation.aliengui.api.controller.ViewController;
 import com.alientation.aliengui.event.view.ViewDimensionEvent;
 import com.alientation.aliengui.event.view.ViewEvent;
 import com.alientation.aliengui.event.view.ViewHierarchyChanged;
-import com.alientation.aliengui.util.dimension.Dimension;
+import com.alientation.aliengui.component.dimension.DimensionComponent;
 import com.alientation.aliengui.event.EventListenerContainer;
 import com.alientation.aliengui.event.key.KeyListener;
 import com.alientation.aliengui.event.model.ModelListener;
@@ -33,7 +33,7 @@ public class View {
     /**
      * Dimensions of this view
      */
-    protected Dimension x, y, width, height, borderRadiusX, borderRadiusY, marginX, marginY;
+    protected DimensionComponent x, y, width, height, borderRadiusX, borderRadiusY, marginX, marginY;
 
     /**
      * The view this view is enclosed in
@@ -137,10 +137,10 @@ public class View {
     /**
      * One of this view's dimensions has changed
      *
-     * @param dimension Dimension of this view that was changed
+     * @param dimensionComponent Dimension of this view that was changed
      */
-    public void dimensionChanged(Dimension dimension) {
-        getViewListeners().dispatch(listener -> listener.viewDimensionChanged(new ViewDimensionEvent(this,dimension)));
+    public void dimensionChanged(DimensionComponent dimensionComponent) {
+        getViewListeners().dispatch(listener -> listener.viewDimensionChanged(new ViewDimensionEvent(this, dimensionComponent)));
     }
 
     /**
@@ -176,7 +176,7 @@ public class View {
      *
      * @param x The new X dimension
      */
-    public void setX(Dimension x) {
+    public void setX(DimensionComponent x) {
         if (this.x == x) return;
         this.x.unregisterDependency(this);
         this.x = x;
@@ -189,7 +189,7 @@ public class View {
      *
      * @param y The new y dimension
      */
-    public void setY(Dimension y) {
+    public void setY(DimensionComponent y) {
         if (this.y == y) return;
         this.y.unregisterDependency(this);
         this.y = y;
@@ -202,7 +202,7 @@ public class View {
      *
      * @param width The new Width dimension
      */
-    public void setWidth(Dimension width) {
+    public void setWidth(DimensionComponent width) {
         if (this.width == width) return;
         this.width.unregisterDependency(this);
         this.width = width;
@@ -215,7 +215,7 @@ public class View {
      *
      * @param height The new Height dimension
      */
-    public void setHeight(Dimension height) {
+    public void setHeight(DimensionComponent height) {
         if (this.height == height) return;
         this.height.unregisterDependency(this);
         this.height = height;
@@ -228,7 +228,7 @@ public class View {
      *
      * @param borderRadiusX The new Border Radius X dimension (curved borders)
      */
-    public void setBorderRadiusX(Dimension borderRadiusX) {
+    public void setBorderRadiusX(DimensionComponent borderRadiusX) {
         if (this.borderRadiusX == borderRadiusX) return;
         this.borderRadiusX.unregisterDependency(this);
         this.borderRadiusX = borderRadiusX;
@@ -241,7 +241,7 @@ public class View {
      *
      * @param borderRadiusY The new Border Radius Y dimension (curved borders)
      */
-    public void setBorderRadiusY(Dimension borderRadiusY) {
+    public void setBorderRadiusY(DimensionComponent borderRadiusY) {
         if (this.borderRadiusY == borderRadiusY) return;
         this.borderRadiusY.unregisterDependency(this);
         this.borderRadiusY = borderRadiusY;
@@ -254,7 +254,7 @@ public class View {
      *
      * @param marginX The new Margin X dimension
      */
-    public void setMarginX(Dimension marginX) {
+    public void setMarginX(DimensionComponent marginX) {
         if (this.marginX == marginX) return;
         this.marginX.unregisterDependency(this);
         this.marginX = marginX;
@@ -267,7 +267,7 @@ public class View {
      *
      * @param marginY The new Margin Y dimension
      */
-    public void setMarginY(Dimension marginY) {
+    public void setMarginY(DimensionComponent marginY) {
         if (this.marginY == marginY) return;
         this.marginY.unregisterDependency(this);
         this.marginY = marginY;
@@ -390,14 +390,14 @@ public class View {
     public ViewController getController() { return controller; }
 
     //DIMENSIONS
-    public Dimension getX() { return x; }
-    public Dimension getY() { return y; }
-    public Dimension getWidth() { return width; }
-    public Dimension getHeight() { return height; }
-    public Dimension getBorderRadiusX() { return borderRadiusX; }
-    public Dimension getBorderRadiusY() { return borderRadiusY; }
-    public Dimension getMarginX() { return marginX; }
-    public Dimension getMarginY() { return marginY; }
+    public DimensionComponent getX() { return x; }
+    public DimensionComponent getY() { return y; }
+    public DimensionComponent getWidth() { return width; }
+    public DimensionComponent getHeight() { return height; }
+    public DimensionComponent getBorderRadiusX() { return borderRadiusX; }
+    public DimensionComponent getBorderRadiusY() { return borderRadiusY; }
+    public DimensionComponent getMarginX() { return marginX; }
+    public DimensionComponent getMarginY() { return marginY; }
 
     //VIEW HIERARCHY
     public View getParentView() { return parentView; }
