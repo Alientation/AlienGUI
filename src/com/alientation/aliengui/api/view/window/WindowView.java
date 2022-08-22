@@ -1,4 +1,6 @@
-package com.alientation.aliengui.api.view;
+package com.alientation.aliengui.api.view.window;
+
+import com.alientation.aliengui.api.view.View;
 
 import java.awt.*;
 
@@ -91,7 +93,7 @@ public class WindowView extends View {
 
 
     @SuppressWarnings("unchecked")
-    static class Builder<T extends Builder<T>> extends View.Builder<T> {
+    public static class Builder<T extends Builder<T>> extends View.Builder<T> {
         protected Window window;
         public Builder(Window window) {
             this.window = window;

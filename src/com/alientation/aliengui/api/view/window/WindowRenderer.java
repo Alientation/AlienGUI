@@ -1,4 +1,6 @@
-package com.alientation.aliengui.api.view;
+package com.alientation.aliengui.api.view.window;
+
+import com.alientation.aliengui.api.view.View;
 
 import java.awt.*;
 import java.util.*;
@@ -41,8 +43,8 @@ public class WindowRenderer {
             visitedViews.add(cur);
             sortedViewsByZIndex.add(cur);
             for (View view : cur.getChildViews()) {
-                if (view.zIndex <= cur.zIndex) //updates if required
-                    view.zIndex = cur.zIndex+1;
+                if (view.getZIndex() <= cur.getZIndex()) //updates if required
+                    view.setZIndex(cur.getZIndex()+1);
                 bfs.offer(view);
             }
         }

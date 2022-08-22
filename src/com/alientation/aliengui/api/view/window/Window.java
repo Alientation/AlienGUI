@@ -1,4 +1,4 @@
-package com.alientation.aliengui.api.view;
+package com.alientation.aliengui.api.view.window;
 
 import com.alientation.aliengui.event.EventListenerContainer;
 import com.alientation.aliengui.event.key.KeyListener;
@@ -165,7 +165,7 @@ public class Window extends Canvas implements Runnable {
         });
 
         windowView = builder.windowView;
-        windowView.keyListeners.addListener(new KeyListener() {
+        windowView.getKeyListeners().addListener(new KeyListener() {
             public void keyPressed(KeyEvent event) {
                 getKeysDown().add(event.getKeyCode());
             }

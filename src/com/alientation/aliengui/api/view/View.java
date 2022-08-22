@@ -2,6 +2,7 @@ package com.alientation.aliengui.api.view;
 
 
 import com.alientation.aliengui.api.controller.ViewController;
+import com.alientation.aliengui.api.view.window.WindowView;
 import com.alientation.aliengui.component.dimension.StaticDimensionComponent;
 import com.alientation.aliengui.event.view.ViewDimensionEvent;
 import com.alientation.aliengui.event.view.ViewEvent;
@@ -568,7 +569,7 @@ public class View {
 
     //BUILDER
     @SuppressWarnings({"unused", "unchecked"})
-    static class Builder<T extends Builder<T>> {
+    public static class Builder<T extends Builder<T>> {
         protected DimensionComponent x = StaticDimensionComponent.MIN;
         protected DimensionComponent y = StaticDimensionComponent.MIN;
         protected DimensionComponent width = StaticDimensionComponent.BASE;
@@ -683,7 +684,7 @@ public class View {
 }
 
 /* Builder pattern boilerplate code
-static class Builder<T extends Builder<T>> extends View.Builder<T> {
+    public static class Builder<T extends Builder<T>> extends View.Builder<T> {
 
         public Builder() {
 
