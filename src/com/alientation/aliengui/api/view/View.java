@@ -13,6 +13,7 @@ import com.alientation.aliengui.event.mouse.MouseListener;
 import com.alientation.aliengui.event.view.ViewListener;
 
 import java.awt.*;
+import java.awt.geom.RoundRectangle2D;
 import java.util.Set;
 
 /**
@@ -171,6 +172,7 @@ public class View {
      */
     public void tick() {
         if (!initialized) return;
+        for (View childView : childViews) childView.tick();
     }
 
 
@@ -394,13 +396,35 @@ public class View {
 
     //DIMENSIONS
     public DimensionComponent getX() { return x; }
+    public int x() { return x.val(); }
+    public int absX() { return x() + parentView.absX(); } //potentially compose a new dimension component - perhaps a new type of component that is essentially a combination of 2 dimensions
+    public int safeX() { return x() + marginX(); }
+    public int absSafeX() { return marginX() + absX(); }
     public DimensionComponent getY() { return y; }
+    public int y() { return y.val(); }
+    public int absY() { return y() + parentView.absY(); }
+    public int safeY() { return y() + marginY(); }
+    public int absSafeY() { return marginY() + absY(); }
     public DimensionComponent getWidth() { return width; }
+    public int width() { return width.val(); }
+    public int safeWidth() { return width() - marginX() << 1; }
     public DimensionComponent getHeight() { return height; }
+    public int height() { return height.val(); }
+    public int safeHeight() { return height() - marginY() << 1; }
     public DimensionComponent getBorderRadiusX() { return borderRadiusX; }
+    public int borderRadiusX() { return borderRadiusX.val(); }
     public DimensionComponent getBorderRadiusY() { return borderRadiusY; }
+    public int borderRadiusY() { return borderRadiusY.val(); }
     public DimensionComponent getMarginX() { return marginX; }
+    public int marginX() { return marginX.val(); }
     public DimensionComponent getMarginY() { return marginY; }
+    public int marginY() { return marginY.val(); }
+
+    //PROPERTIES
+    public RoundRectangle2D getArea() { return new RoundRectangle2D.Float(x(), y(), width(), height(), borderRadiusX(), borderRadiusY()); }
+    public RoundRectangle2D getSafeArea() { return new RoundRectangle2D.Float(x(), y(), width(), height(), borderRadiusX(), borderRadiusY()); }
+    public RoundRectangle2D getAbsoluteArea() { return new RoundRectangle2D.Float(absX(), absY(), width(), height(), borderRadiusX(), borderRadiusY()); } //TODO use the Area class to perform accurate collision box detectors (for clicks)
+    public RoundRectangle2D getAbsoluteSafeArea() { return new RoundRectangle2D.Float(x(), y(), width(), height(), borderRadiusX(), borderRadiusY()); }
 
     //VIEW HIERARCHY
     public View getParentView() { return parentView; }

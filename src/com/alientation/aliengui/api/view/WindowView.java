@@ -81,6 +81,11 @@ public class WindowView extends View {
     public boolean doesRequireZIndexUpdate() { return requireZIndexUpdate; }
     public Window getWindow() { return window; }
 
+    @Override
+    public int absX() { return x.val(); }
+    @Override
+    public int absY() { return y.val(); }
+
     @SuppressWarnings("unchecked")
     static class Builder<T extends Builder<T>> extends View.Builder<T> {
         protected int x = -1, y = -1, width = 720, height = 576, minWidth = -1, minHeight = -1, maxWidth = Integer.MAX_VALUE, maxHeight = Integer.MAX_VALUE, preferredWidth, preferredHeight; //make all these dimensions, have this window subscribe to it
