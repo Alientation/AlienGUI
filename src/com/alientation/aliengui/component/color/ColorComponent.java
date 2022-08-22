@@ -2,6 +2,9 @@ package com.alientation.aliengui.component.color;
 
 import java.awt.*;
 
+/**
+ * TODO implement this in the main project and allow shaders to be applied (ie getColor(int x, int y))
+ */
 public class ColorComponent {
     protected Color color;
 
@@ -28,4 +31,13 @@ public class ColorComponent {
     public void setColor(Color color) {
         this.color = color;
     }
+    public void setOpacity(float opacity) {
+        this.opacity = opacity;
+    }
+
+
+    //GETTERS
+
+    public Color getColor() { return color; }
+    public float getOpacity() { return opacity; }
 }

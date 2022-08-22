@@ -68,7 +68,7 @@ public class View {
     /**
      * Whether the visibility of this view will affect the child views
      */
-    protected boolean visibilityAppliesToChildren= false;
+    protected boolean visibilityAppliesToChildren;
 
     /**
      * The Z Index of this view, used to order views to be rendered
@@ -80,12 +80,34 @@ public class View {
      */
     protected boolean dynamicZIndexUpdate;
 
+    /**
+     * Background color of this view (initial layer) TODO use ColorComponent instead
+     */
     protected Color backgroundColor;
+
+    /**
+     * Background transparency of this view (initial layer)
+     */
     protected float backgroundTransparency;
+
+    /**
+     * The image on the background of this view (initial layer) TODO use ImageComponent instead
+     */
     protected Image backgroundImage;
+
+    /**
+     * The transparency of the background image (to be multiplied on the image's existing transparency value)
+     */
     protected float backgroundImageTransparency;
 
+    /**
+     * Color of the edge around this view TODO use ColorComponent instead
+     */
     protected Color frameColor;
+
+    /**
+     * Transparency of the edge around this view (1f opaque, 0f transparent)
+     */
     protected float frameTransparency;
 
     /**
@@ -94,6 +116,31 @@ public class View {
      * @param builder   Builder for this view
      */
     public View(Builder<?> builder) {
+        x = builder.x;
+        y = builder.y;
+        width = builder.width;
+        height = builder.height;
+        marginX = builder.marginX;
+        marginY = builder.marginY;
+        borderRadiusX = builder.borderRadiusX;
+        borderRadiusY = builder.borderRadiusY;
+        borderThickness = builder.borderThickness;
+
+        visible = builder.visible;
+        visibilityAppliesToChildren = builder.visibilityAppliesToChildren;
+
+        zIndex = builder.zIndex;
+        dynamicZIndexUpdate = builder.dynamicZIndexUpdate;
+
+        backgroundColor = builder.backgroundColor;
+        backgroundTransparency = builder.backgroundTransparency;
+        backgroundImage = builder.backgroundImage;
+        backgroundImageTransparency = builder.backgroundImageTransparency;
+
+        frameColor = builder.frameColor;
+        frameTransparency = builder.frameTransparency;
+
+
         getViewListeners().addListenerAtBeginning(new ViewListener() {
             @Override
             public void childViewAdded(ViewHierarchyChanged event) {

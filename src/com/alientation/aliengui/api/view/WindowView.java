@@ -46,6 +46,7 @@ public class WindowView extends View {
     public WindowView(Builder<?> builder) {
         super(builder);
         windowRenderer = new WindowRenderer(this);
+        window = builder.window;
     }
 
     /**
@@ -91,96 +92,13 @@ public class WindowView extends View {
 
     @SuppressWarnings("unchecked")
     static class Builder<T extends Builder<T>> extends View.Builder<T> {
-        protected int x = -1, y = -1, width = 720, height = 576, minWidth = -1, minHeight = -1, maxWidth = Integer.MAX_VALUE, maxHeight = Integer.MAX_VALUE, preferredWidth, preferredHeight; //make all these dimensions, have this window subscribe to it
-        protected int targetTPS = 60, targetFPS = 60;
-        protected String title = "Untitled", iconImagePath;
-        protected boolean resizable = true, visible = true;
-        public Builder() {
-
-        }
-
-        public T x(int x) {
-            this.x = x;
-            return (T) this;
-        }
-
-        public T y(int y) {
-            this.y = y;
-            return (T) this;
-        }
-
-        public T width(int width) {
-            this.width = width;
-            return (T) this;
-        }
-
-        public T height(int height) {
-            this.height = height;
-            return (T) this;
-        }
-
-        public T minWidth(int minWidth) {
-            this.minWidth = minWidth;
-            return (T) this;
-        }
-
-        public T minHeight(int minHeight) {
-            this.minHeight = minHeight;
-            return (T) this;
-        }
-
-        public T maxWidth(int maxWidth) {
-            this.maxWidth = maxWidth;
-            return (T) this;
-        }
-
-        public T maxHeight(int maxHeight) {
-            this.maxHeight = maxHeight;
-            return (T) this;
-        }
-
-        public T preferredWidth(int preferredWidth) {
-            this.preferredWidth = preferredWidth;
-            return (T) this;
-        }
-
-        public T preferredHeight(int preferredHeight) {
-            this.preferredHeight = preferredHeight;
-            return (T) this;
-        }
-
-        public T targetTPS(int targetTPS) {
-            this.targetTPS = targetTPS;
-            return (T) this;
-        }
-
-        public T targetFPS(int targetFPS) {
-            this.targetFPS = targetFPS;
-            return (T) this;
-        }
-
-        public T title(String title) {
-            this.title = title;
-            return (T) this;
-        }
-
-        public T iconImagePath(String iconImagePath) {
-            this.iconImagePath = iconImagePath;
-            return (T) this;
-        }
-
-        public T resizable(boolean resizable) {
-            this.resizable = resizable;
-            return (T) this;
-        }
-
-        public T visible(boolean visible) {
-            this.visible = visible;
-            return (T) this;
+        protected Window window;
+        public Builder(Window window) {
+            this.window = window;
         }
 
         public void validate() {
-
+            if (window == null) throw new IllegalStateException("Window must be valid");
         }
 
         public View build() {
