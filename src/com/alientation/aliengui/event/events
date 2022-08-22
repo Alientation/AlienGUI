@@ -7,4 +7,17 @@ KeyInputEvent <- Event
 
 Listener - handles events when they happen, stored where the event happens in, base listener for all listeners
 KeyInputListener <- Listener
-    -
+
+
+
+ViewListener
+- Dimension Changed (ViewDimensionEvent -> ViewEvent + DimensionComponent)
+- Init (ViewEvent)
+- Render (ViewRenderEvent -> ViewEvent + Graphics)
+- Tick (ViewEvent)
+- Registered Controller (ViewEvent)
+- Child View Added (ViewHierarchyEvent -> ViewEvent + View)
+- Child View Removed (ViewHierarchyEvent -> ViewEvent + View)
+- Hidden (ViewEvent)
+- Shown (ViewEvent)
+- View Properties Changed (ViewPropertyEvent -> ViewEvent + int ID) *used for any extra properties

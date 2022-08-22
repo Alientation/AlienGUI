@@ -6,7 +6,7 @@ import com.alientation.aliengui.api.view.window.WindowView;
 import com.alientation.aliengui.component.dimension.StaticDimensionComponent;
 import com.alientation.aliengui.event.view.ViewDimensionEvent;
 import com.alientation.aliengui.event.view.ViewEvent;
-import com.alientation.aliengui.event.view.ViewHierarchyChanged;
+import com.alientation.aliengui.event.view.ViewHierarchyEvent;
 import com.alientation.aliengui.component.dimension.DimensionComponent;
 import com.alientation.aliengui.event.EventListenerContainer;
 import com.alientation.aliengui.event.key.KeyListener;
@@ -144,17 +144,17 @@ public class View {
 
         getViewListeners().addListenerAtBeginning(new ViewListener() {
             @Override
-            public void childViewAdded(ViewHierarchyChanged event) {
+            public void childViewAdded(ViewHierarchyEvent event) {
                 getWindowView().requestZIndexUpdate();
             }
 
             @Override
-            public void childViewRemoved(ViewHierarchyChanged event) {
+            public void childViewRemoved(ViewHierarchyEvent event) {
                 getWindowView().requestZIndexUpdate();
             }
 
             @Override
-            public void parentViewChanged(ViewHierarchyChanged event) {
+            public void parentViewChanged(ViewHierarchyEvent event) {
                 getWindowView().requestRenderUpdate();
             }
 
@@ -390,7 +390,7 @@ public class View {
      */
     public void setParentView(View parentView) { //TODO update references
         if (this.parentView == parentView) return;
-        ViewHierarchyChanged event = new ViewHierarchyChanged(this, this.parentView, parentView);
+        ViewHierarchyEvent event = new ViewHierarchyEvent(this, this.parentView, parentView);
         this.parentView.getChildViews().remove(this);
         this.parentView = parentView;
         this.parentView.getChildViews().add(this);
@@ -409,7 +409,7 @@ public class View {
             if (view.parentView != null) view.parentView.removeChildViews(view);
             view.parentView = this;
             childViews.add(view);
-            this.getViewListeners().dispatch(listener -> listener.childViewAdded(new ViewHierarchyChanged(this,view)));
+            this.getViewListeners().dispatch(listener -> listener.childViewAdded(new ViewHierarchyEvent(this,view)));
         }
     }
 
@@ -423,7 +423,7 @@ public class View {
         for (View view : views) {
             if (view.parentView == this) view.parentView = null;
             childViews.remove(view);
-            this.getViewListeners().dispatch(listener -> listener.childViewRemoved(new ViewHierarchyChanged(this,view)));
+            this.getViewListeners().dispatch(listener -> listener.childViewRemoved(new ViewHierarchyEvent(this,view)));
         }
     }
 

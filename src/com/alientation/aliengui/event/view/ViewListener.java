@@ -4,9 +4,9 @@ import com.alientation.aliengui.event.EventListener;
 
 @SuppressWarnings("unused")
 public abstract class ViewListener extends EventListener {
-    public void childViewAdded(ViewHierarchyChanged event) {}
-    public void childViewRemoved(ViewHierarchyChanged event) {}
-    public void parentViewChanged(ViewHierarchyChanged event) {}
+    public void childViewAdded(ViewHierarchyEvent event) {}
+    public void childViewRemoved(ViewHierarchyEvent event) {}
+    public void parentViewChanged(ViewHierarchyEvent event) {}
     public void viewFocused(ViewEvent event) {}
     public void viewUnfocused(ViewEvent event) {}
     public void viewMoved(ViewEvent event) {}
