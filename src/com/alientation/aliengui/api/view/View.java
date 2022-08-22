@@ -2,6 +2,7 @@ package com.alientation.aliengui.api.view;
 
 
 import com.alientation.aliengui.api.controller.ViewController;
+import com.alientation.aliengui.component.dimension.StaticDimensionComponent;
 import com.alientation.aliengui.event.view.ViewDimensionEvent;
 import com.alientation.aliengui.event.view.ViewEvent;
 import com.alientation.aliengui.event.view.ViewHierarchyChanged;
@@ -37,7 +38,7 @@ public class View {
     /**
      * Dimensions of this view
      */
-    protected DimensionComponent x, y, width, height, borderRadiusX, borderRadiusY, marginX, marginY;
+    protected DimensionComponent x, y, width, height, borderRadiusX, borderRadiusY, borderThickness, marginX, marginY;
 
     /**
      * The view this view is enclosed in
@@ -79,6 +80,14 @@ public class View {
      */
     protected boolean dynamicZIndexUpdate;
 
+    protected Color backgroundColor;
+    protected float backgroundTransparency;
+    protected Image backgroundImage;
+    protected float backgroundImageTransparency;
+
+    protected Color frameColor;
+    protected float frameTransparency;
+
     /**
      * Constructs a new view using the Builder pattern
      *
@@ -88,17 +97,17 @@ public class View {
         getViewListeners().addListenerAtBeginning(new ViewListener() {
             @Override
             public void childViewAdded(ViewHierarchyChanged event) {
-                windowView.requestZIndexUpdate();
+                getWindowView().requestZIndexUpdate();
             }
 
             @Override
             public void childViewRemoved(ViewHierarchyChanged event) {
-                windowView.requestZIndexUpdate();
+                getWindowView().requestZIndexUpdate();
             }
 
             @Override
             public void parentViewChanged(ViewHierarchyChanged event) {
-                windowView.requestRenderUpdate();
+                getWindowView().requestRenderUpdate();
             }
 
             @Override
@@ -118,24 +127,36 @@ public class View {
 
             @Override
             public void viewHidden(ViewEvent event) {
-                windowView.requestRenderUpdate();
+                getWindowView().requestRenderUpdate();
             }
 
             @Override
             public void viewShown(ViewEvent event) {
-                windowView.requestRenderUpdate();
+                getWindowView().requestRenderUpdate();
             }
 
             @Override
             public void viewDimensionChanged(ViewDimensionEvent event) {
-                windowView.requestRenderUpdate();
+                getWindowView().requestRenderUpdate();
             }
 
             @Override
             public void viewStateChanged(ViewEvent event) {
-                windowView.requestZIndexUpdate();
+                getWindowView().requestZIndexUpdate();
             }
         });
+
+        //registering dependencies
+        x.registerDependency(this);
+        y.registerDependency(this);
+        width.registerDependency(this);
+        height.registerDependency(this);
+        borderRadiusX.registerDependency(this);
+        borderRadiusY.registerDependency(this);
+        borderThickness.registerDependency(this);
+        marginX.registerDependency(this);
+        marginY.registerDependency(this);
+
     }
 
     /**
@@ -150,9 +171,11 @@ public class View {
     /**
      * Initializes this view
      */
-    public void init() {
+    public void init(View parentView) {
         if (initialized) return; //can't initialize twice!
-
+        this.parentView = parentView;
+        parentView.childViews.add(this);
+        windowView = parentView.getWindowView();
         initialized = true;
     }
 
@@ -175,6 +198,20 @@ public class View {
         for (View childView : childViews) childView.tick();
     }
 
+
+    //SETTERS
+
+    /**
+     * Registers a ViewController to this view
+     *
+     * @param controller    The new ViewController
+     */
+    public void registerController(ViewController controller) {
+        //update old controller -> remove reference to this view
+        this.controller = controller;
+        //update new controller -> add reference to this view
+        this.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
+    }
 
     /**
      * Sets dimensions and updates dependencies
@@ -252,6 +289,19 @@ public class View {
         this.borderRadiusY = borderRadiusY;
         this.borderRadiusY.registerDependency(this);
         this.borderRadiusY.valueChanged();
+    }
+
+    /**
+     * Sets dimensions and updates dependencies
+     *
+     * @param borderThickness The new Border Thickness dimension
+     */
+    public void setBorderThickness(DimensionComponent borderThickness) {
+        if (this.borderThickness == borderThickness) return;
+        this.borderThickness.unregisterDependency(this);
+        this.borderThickness = borderThickness;
+        this.borderThickness.registerDependency(this);
+        this.borderThickness.valueChanged();
     }
 
     /**
@@ -371,17 +421,36 @@ public class View {
         this.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
     }
 
-    /**
-     * Registers a ViewController to this view
-     *
-     * @param controller    The new ViewController
-     */
-    public void registerController(ViewController controller) {
-        //update old controller -> remove reference to this view
-        this.controller = controller;
-        //update new controller -> add reference to this view
+    public void setBackgroundColor(Color backgroundColor) {
+        this.backgroundColor = backgroundColor;
         this.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
     }
+
+    public void setBackgroundTransparency(float backgroundTransparency) {
+        this.backgroundTransparency = backgroundTransparency;
+        this.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
+    }
+
+    public void setBackgroundImage(Image backgroundImage) {
+        this.backgroundImage = backgroundImage;
+        this.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
+    }
+
+    public void setBackgroundImageTransparency(float backgroundImageTransparency) {
+        this.backgroundImageTransparency = backgroundImageTransparency;
+        this.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
+    }
+
+    public void setFrameColor(Color frameColor) {
+        this.frameColor = frameColor;
+        this.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
+    }
+
+    public void setFrameTransparency(float frameTransparency) {
+        this.frameTransparency = frameTransparency;
+        this.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
+    }
+
 
     //GETTERS
 
@@ -415,6 +484,8 @@ public class View {
     public int borderRadiusX() { return borderRadiusX.val(); }
     public DimensionComponent getBorderRadiusY() { return borderRadiusY; }
     public int borderRadiusY() { return borderRadiusY.val(); }
+    public DimensionComponent getBorderThickness() { return borderThickness; }
+    public int borderThickness() { return borderThickness.val(); }
     public DimensionComponent getMarginX() { return marginX; }
     public int marginX() { return marginX.val(); }
     public DimensionComponent getMarginY() { return marginY; }
@@ -428,7 +499,7 @@ public class View {
 
     //VIEW HIERARCHY
     public View getParentView() { return parentView; }
-    public WindowView getWindowView() { return windowView; }
+    public WindowView getWindowView() { return windowView == null && parentView != null ? parentView.getWindowView() : windowView; } //attempts to return a valid window view
     public Set<View> getChildViews() { return childViews; }
 
     //RENDER PROPERTIES
@@ -436,13 +507,117 @@ public class View {
     public boolean isVisible() { return visible; }
     public int getZIndex() { return zIndex; }
     public boolean doDynamicZIndexUpdate() { return dynamicZIndexUpdate; }
+    public boolean doesVisibilityAppliesToChildren() { return visibilityAppliesToChildren; }
+    public Color getBackgroundColor() { return backgroundColor; }
+    public float getBackgroundTransparency() { return backgroundTransparency; }
+    public Image getBackgroundImage() { return backgroundImage; }
+    public float getBackgroundImageTransparency() { return backgroundImageTransparency; }
+    public Color getFrameColor() { return frameColor; }
+    public float getFrameTransparency() { return frameTransparency; }
 
     //BUILDER
-    @SuppressWarnings("unused")
+    @SuppressWarnings({"unused", "unchecked"})
     static class Builder<T extends Builder<T>> {
+        protected DimensionComponent x = StaticDimensionComponent.MIN;
+        protected DimensionComponent y = StaticDimensionComponent.MIN;
+        protected DimensionComponent width = StaticDimensionComponent.BASE;
+        protected DimensionComponent height = StaticDimensionComponent.BASE;
+        protected DimensionComponent borderRadiusX = StaticDimensionComponent.MIN;
+        protected DimensionComponent borderRadiusY = StaticDimensionComponent.MIN;
+        protected DimensionComponent borderThickness = StaticDimensionComponent.MIN;
+        protected DimensionComponent marginX = StaticDimensionComponent.MIN;
+        protected DimensionComponent marginY = StaticDimensionComponent.MIN;
+        protected boolean visible = true;
+        protected boolean visibilityAppliesToChildren= false;
+        protected int zIndex = 0;
+        protected boolean dynamicZIndexUpdate = true;
 
+        protected Color backgroundColor = Color.WHITE;
+        protected float backgroundTransparency = 1f;
+        protected Image backgroundImage;
+        protected float backgroundImageTransparency = 1f;
+
+        protected Color frameColor = Color.WHITE;
+        protected float frameTransparency = 1f;
         public Builder() {
 
+        }
+
+        public T x(DimensionComponent x) {
+            this.x = x;
+            return (T) this;
+        }
+        public T y(DimensionComponent y) {
+            this.y = y;
+            return (T) this;
+        }
+        public T width(DimensionComponent width) {
+            this.width = width;
+            return (T) this;
+        }
+        public T height(DimensionComponent height) {
+            this.height = height;
+            return (T) this;
+        }
+        public T borderRadiusX(DimensionComponent borderRadiusX) {
+            this.borderRadiusX = borderRadiusX;
+            return (T) this;
+        }
+        public T borderRadiusY(DimensionComponent borderRadiusY) {
+            this.borderRadiusY = borderRadiusY;
+            return (T) this;
+        }
+        public T borderThickness(DimensionComponent borderThickness) {
+            this.borderThickness = borderThickness;
+            return (T) this;
+        }
+        public T marginX(DimensionComponent marginX) {
+            this.marginX = marginX;
+            return (T) this;
+        }
+        public T marginY(DimensionComponent marginY) {
+            this.marginY = marginY;
+            return (T) this;
+        }
+        public T visible(boolean visible) {
+            this.visible = visible;
+            return (T) this;
+        }
+        public T visibilityAppliesToChildren(boolean visibilityAppliesToChildren) {
+            this.visibilityAppliesToChildren = visibilityAppliesToChildren;
+            return (T) this;
+        }
+        public T zIndex(int zIndex) {
+            this.zIndex = zIndex;
+            return (T) this;
+        }
+        public T dynamicZIndexUpdate(boolean dynamicZIndexUpdate) {
+            this.dynamicZIndexUpdate = dynamicZIndexUpdate;
+            return (T) this;
+        }
+        public T backgroundColor(Color backgroundColor) {
+            this.backgroundColor = backgroundColor;
+            return (T) this;
+        }
+        public T backgroundTransparency(float backgroundTransparency) {
+            this.backgroundTransparency = backgroundTransparency;
+            return (T) this;
+        }
+        public T backgroundImage(Image backgroundImage) {
+            this.backgroundImage = backgroundImage;
+            return (T) this;
+        }
+        public T backgroundImageTransparency(float backgroundImageTransparency) {
+            this.backgroundImageTransparency = backgroundImageTransparency;
+            return (T) this;
+        }
+        public T frameColor(Color frameColor) {
+            this.frameColor = frameColor;
+            return (T) this;
+        }
+        public T frameTransparency(float frameTransparency) {
+            this.frameTransparency = frameTransparency;
+            return (T) this;
         }
 
         public void validate() {

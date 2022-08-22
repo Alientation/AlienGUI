@@ -85,6 +85,9 @@ public class WindowView extends View {
     public int absX() { return x.val(); }
     @Override
     public int absY() { return y.val(); }
+    @Override
+    public WindowView getWindowView() { return this; }
+
 
     @SuppressWarnings("unchecked")
     static class Builder<T extends Builder<T>> extends View.Builder<T> {
