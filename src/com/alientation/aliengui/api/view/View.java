@@ -220,9 +220,13 @@ public class View {
      */
     public void init(View parentView) {
         if (initialized) return; //can't initialize twice!
+
         this.parentView = parentView;
         parentView.childViews.add(this);
         windowView = parentView.getWindowView();
+
+        if (controller == null) controller = new ViewController();
+
         initialized = true;
     }
 
