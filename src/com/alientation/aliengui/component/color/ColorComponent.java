@@ -37,7 +37,7 @@ public class ColorComponent {
      */
     public ColorComponent(Color color, float opacity) {
         this.color = color;
-        this.opacity = opacity;
+        this.opacity = Math.min(Math.max(opacity,0f),1f);
     }
 
     /**
@@ -70,12 +70,8 @@ public class ColorComponent {
 
     //SETTERS
 
-    public void setColor(Color color) {
-        this.color = color;
-    }
-    public void setOpacity(float opacity) {
-        this.opacity = opacity;
-    }
+    public void setColor(Color color) { this.color = color; }
+    public void setOpacity(float opacity) { this.opacity = Math.min(Math.max(opacity,0f),1f); }
     public void registerDependency(View dependency) { this.dependencies.add(dependency); }
     public void unregisterDependency(View dependency) { this.dependencies.remove(dependency); }
 
@@ -92,5 +88,6 @@ public class ColorComponent {
 
     public Color getColor() { return color; } //shouldn't use this
     public float getOpacity() { return opacity; }
+    public int getAlpha() { return (int) (255 * opacity); }
     public List<View> getDependencies() { return dependencies.stream().toList(); }
 }
