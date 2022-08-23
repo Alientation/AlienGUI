@@ -52,26 +52,38 @@ public class ColorComponent {
     /**
      * Draws the shape in the specified color
      *
+     * Override for custom draw (for shaders)
+     *
+     * @param view      The view that requested this draw
      * @param shape     The shape to be drawn
+     * @return The image to be drawn
      */
-    public BufferedImage draw(Shape shape) {
+    public BufferedImage draw(View view, Shape shape) {
         Rectangle bounds = shape.getBounds();
         BufferedImage image = new BufferedImage(bounds.width,bounds.height,BufferedImage.TYPE_INT_ARGB);
-
-        int alpha = (int)(255 * opacity);
 
         for (int x = 0; x < bounds.width; x++)
             for (int y = 0; y < bounds.height; y++)
                 if (shape.contains(x,y))
-                    image.setRGB(x,y,color.getRGB() & (alpha << 24));
+                    image.setRGB(x,y,color.getRGB() & ((getAlpha() << 24) | 0x00ffffff));
 
         return image;
     }
 
     //SETTERS
 
-    public void setColor(Color color) { this.color = color; }
-    public void setOpacity(float opacity) { this.opacity = Math.min(Math.max(opacity,0f),1f); }
+    public void setColor(Color color) {
+        this.color = color;
+        stateChanged();
+    }
+    public void setOpacity(float opacity) {
+        this.opacity = Math.min(Math.max(opacity,0f),1f);
+        stateChanged();
+    }
+    public void setAlpha(int alpha) {
+        this.opacity = Math.max(Math.min(alpha,255),0) / 255f;
+        stateChanged();
+    }
     public void registerDependency(View dependency) { this.dependencies.add(dependency); }
     public void unregisterDependency(View dependency) { this.dependencies.remove(dependency); }
 
