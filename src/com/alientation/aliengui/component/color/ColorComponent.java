@@ -2,6 +2,8 @@ package com.alientation.aliengui.component.color;
 
 import com.alientation.aliengui.api.view.View;
 import com.alientation.aliengui.event.view.ViewEvent;
+import com.alientation.aliengui.util.ColorUtil;
+import com.alientation.aliengui.util.NumberUtil;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -36,8 +38,8 @@ public class ColorComponent {
      * @param opacity   Opacity
      */
     public ColorComponent(Color color, float opacity) {
-        this.color = color;
-        this.opacity = Math.min(Math.max(opacity,0f),1f);
+        setColor(color);
+        setOpacity(opacity);
     }
 
     /**
@@ -64,8 +66,9 @@ public class ColorComponent {
 
         for (int x = 0; x < bounds.width; x++)
             for (int y = 0; y < bounds.height; y++)
-                if (shape.contains(x,y))
-                    image.setRGB(x,y,color.getRGB() & ((getAlpha() << 24) | 0x00ffffff));
+                if (shape.contains(x,y)) {
+                    image.setRGB(x, y, color.getRGB() & ((getAlpha() << 24) | 0x00ffffff));
+                }
 
         return image;
     }
@@ -77,11 +80,11 @@ public class ColorComponent {
         stateChanged();
     }
     public void setOpacity(float opacity) {
-        this.opacity = Math.min(Math.max(opacity,0f),1f);
+        this.opacity = NumberUtil.clamp(opacity,0f,1f);
         stateChanged();
     }
     public void setAlpha(int alpha) {
-        this.opacity = Math.max(Math.min(alpha,255),0) / 255f;
+        this.opacity = ColorUtil.alphaToOpacity(NumberUtil.clamp(alpha,0,255));
         stateChanged();
     }
     public void registerDependency(View dependency) { this.dependencies.add(dependency); }
@@ -100,6 +103,6 @@ public class ColorComponent {
 
     public Color getColor() { return color; } //shouldn't use this
     public float getOpacity() { return opacity; }
-    public int getAlpha() { return (int) (255 * opacity); }
+    public int getAlpha() { return ColorUtil.opacityToAlpha(opacity); }
     public List<View> getDependencies() { return dependencies.stream().toList(); }
 }

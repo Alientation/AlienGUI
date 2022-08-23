@@ -2,6 +2,8 @@ package com.alientation.aliengui.component.image;
 
 import com.alientation.aliengui.api.view.View;
 import com.alientation.aliengui.event.view.ViewEvent;
+import com.alientation.aliengui.util.ColorUtil;
+import com.alientation.aliengui.util.NumberUtil;
 
 import java.awt.image.BufferedImage;
 import java.util.HashSet;
@@ -60,8 +62,10 @@ public class ImageComponent {
     public BufferedImage draw(View view) {
         BufferedImage newImage = new BufferedImage(image.getWidth(),image.getHeight(),BufferedImage.TYPE_INT_ARGB);
         for (int x = 0; x < image.getWidth(); x++)
-            for (int y = 0; y < image.getHeight(); y++)
-                newImage.setRGB(x,y,image.getRGB(x,y) & ((getAlpha() << 24) | 0x00ffffff)); //TODO fix this, need to multiply the opacity levels, not overwrite
+            for (int y = 0; y < image.getHeight(); y++) {
+                int newAlpha = ColorUtil.opacityToAlpha(ColorUtil.alphaToOpacity(getAlpha()) * opacity);
+                newImage.setRGB(x, y, image.getRGB(x, y) & ((newAlpha << 24) | 0x00ffffff));
+            }
         return newImage;
     }
 
@@ -73,11 +77,11 @@ public class ImageComponent {
         stateChanged();
     }
     public void setOpacity(float opacity) {
-        this.opacity = Math.min(Math.max(opacity,0f),1f);
+        this.opacity = NumberUtil.clamp(opacity,0f,1f);
         stateChanged();
     }
     public void setAlpha(int alpha) {
-        this.opacity = Math.max(Math.min(alpha,255),0) / 255f;
+        this.opacity = ColorUtil.alphaToOpacity(NumberUtil.clamp(alpha,0,255));
         stateChanged();
     }
     public void registerDependency(View dependency) { this.dependencies.add(dependency); }
