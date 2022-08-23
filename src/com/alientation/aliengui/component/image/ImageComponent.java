@@ -14,14 +14,36 @@ import java.util.Set;
 @SuppressWarnings("unused")
 public class ImageComponent {
 
+    /**
+     *
+     */
     protected BufferedImage image;
+
+    /**
+     *
+     */
     protected float opacity;
+
+    /**
+     *
+     */
     protected Set<View> dependencies = new HashSet<>();
 
+    /**
+     * Constructs an ImageComponent
+     *
+     * @param image     Image of this component
+     */
     public ImageComponent(BufferedImage image) {
         this(image,1f);
     }
 
+    /**
+     * Constructs an ImageComponent with opacity
+     *
+     * @param image     Image of this component
+     * @param opacity   Opacity of this component
+     */
     public ImageComponent(BufferedImage image, float opacity) {
         this.image = image;
         this.opacity = Math.min(Math.max(opacity,0f),1f);
@@ -39,7 +61,7 @@ public class ImageComponent {
         BufferedImage newImage = new BufferedImage(image.getWidth(),image.getHeight(),BufferedImage.TYPE_INT_ARGB);
         for (int x = 0; x < image.getWidth(); x++)
             for (int y = 0; y < image.getHeight(); y++)
-                newImage.setRGB(x,y,image.getRGB(x,y) & ((getAlpha() << 24) | 0x00ffffff));
+                newImage.setRGB(x,y,image.getRGB(x,y) & ((getAlpha() << 24) | 0x00ffffff)); //TODO fix this, need to multiply the opacity levels, not overwrite
         return newImage;
     }
 
