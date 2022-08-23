@@ -208,15 +208,6 @@ public class View {
     }
 
     /**
-     * One of this view's dimensions has changed
-     *
-     * @param dimensionComponent Dimension of this view that was changed
-     */
-    public void dimensionChanged(DimensionComponent dimensionComponent) {
-        getViewListeners().dispatch(listener -> listener.viewDimensionChanged(new ViewDimensionEvent(this, dimensionComponent)));
-    }
-
-    /**
      * Initializes this view
      */
     public void init(View parentView) {
@@ -239,7 +230,17 @@ public class View {
     public void render(Graphics g) {
         if (!initialized) return;
 
+        //frame outline
+        g.setColor(frameColor);
+        g.fillRoundRect(x() - borderThickness(),y() - borderThickness(),width() + borderThickness()<<1,height() + borderThickness()<<1, borderRadiusX() + borderThickness(), borderRadiusY() + borderThickness());
 
+        //background
+        g.setColor(backgroundColor);
+        g.fillRoundRect(x(),y(),width(),height(),borderRadiusX(),borderRadiusY());
+
+        //background image
+        if (backgroundImage != null)
+            g.drawImage(backgroundImage,x(),y(),width(),height(),null);
     }
 
     /**

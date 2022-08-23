@@ -1,8 +1,10 @@
 package com.alientation.aliengui.component.dimension;
 
 import com.alientation.aliengui.api.view.View;
+import com.alientation.aliengui.event.view.ViewEvent;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @SuppressWarnings("unused")
@@ -48,16 +50,15 @@ public abstract class DimensionComponent {
 
     public void valueChanged() {
         for (View view : dependencies)
-            view.dimensionChanged(this);
+            //view.dimensionChanged(this); TODO determine whether to offload logic to the view
+            view.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(view)));
     }
-    public void registerDependency(View v) { //Views that use this as a dimension
+
+    public void registerDependency(View v) {
         dependencies.add(v);
     }
     public void unregisterDependency(View v) {
         dependencies.remove(v);
     }
-
-    public Set<View> getDependencies() {
-        return dependencies;
-    }
+    public List<View> getDependencies() { return dependencies.stream().toList(); }
 }
