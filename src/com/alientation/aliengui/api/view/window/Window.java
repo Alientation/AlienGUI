@@ -9,6 +9,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import java.io.Serial;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Window that is displayed on the screen which all views are contained within.
@@ -37,6 +39,9 @@ public class Window extends Canvas implements Runnable {
      */
     protected double nsPerTick, nsPerFrame;
     protected int targetTPS, tps, targetFPS, fps;
+    protected double sBetweenFrames, sBetweenTicks; //for animation time delta purposes TODO finish implementation
+    protected List<Double> previousSBetweenFrames = new LinkedList<>();
+    protected List<Double> previousSBetweenTicks = new LinkedList<>();
 
     /**
      * Backend loop that handles ticking and rendering
@@ -46,7 +51,7 @@ public class Window extends Canvas implements Runnable {
     /**
      * Whether this Window is active
      */
-    protected boolean running;
+    protected boolean running = false;
 
     /**
      * Swing component that creates a window
