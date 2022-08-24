@@ -49,7 +49,7 @@ public abstract class DimensionComponent extends Component {
     /**
      * Dispatches event to registered subscribers
      */
-    public void notifySubscribers() { //TODO determine whether to create Observer interface and Subscriber interface for more structured format of these Observer patterns across this library
+    public void notifySubscribers() {
         for (View view : subscribers)
             view.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(view)));
     }
