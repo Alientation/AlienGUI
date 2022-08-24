@@ -1,12 +1,12 @@
 package com.alientation.aliengui.api.view;
 
-import java.awt.*;
+import com.alientation.aliengui.component.text.TextComponent;
 
+@SuppressWarnings("unused")
 public class TextLabelView extends View {
 
-
-    protected Font font;
-
+    protected TextComponent textLabel;
+    //perhaps have additional margin for text (around the sides)
 
 
 
@@ -39,7 +39,7 @@ public class TextLabelView extends View {
     }
 }
 
-/*
+/*  Builder pattern boilerplate code
     public static class Builder<T extends Builder<T>> extends TextLabelView.Builder<T> {
 
         public Builder() {
