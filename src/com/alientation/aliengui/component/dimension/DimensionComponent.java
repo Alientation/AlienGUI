@@ -1,18 +1,16 @@
 package com.alientation.aliengui.component.dimension;
 
 import com.alientation.aliengui.api.view.View;
+import com.alientation.aliengui.component.Component;
 import com.alientation.aliengui.event.view.ViewEvent;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @SuppressWarnings("unused")
-public abstract class DimensionComponent {
+public abstract class DimensionComponent extends Component {
 
     protected int val;
     protected DimensionComponent min, max;
-    protected Set<View> subscribers = new HashSet<>();
     public DimensionComponent() {
 
     }
@@ -35,29 +33,24 @@ public abstract class DimensionComponent {
 
     public void setVal(int val) {
         this.val = val;
-        valueChanged();
+        notifySubscribers();
     }
 
     public void setMin(DimensionComponent min) {
         this.min = min;
-        valueChanged();
+        notifySubscribers();
     }
 
     public void setMax(DimensionComponent max) {
         this.max = max;
-        valueChanged();
+        notifySubscribers();
     }
 
-    public void valueChanged() { //TODO determine whether to create Observer interface and Subscriber interface for more structured format of these Observer patterns across this library
+    /**
+     * Dispatches event to registered subscribers
+     */
+    public void notifySubscribers() { //TODO determine whether to create Observer interface and Subscriber interface for more structured format of these Observer patterns across this library
         for (View view : subscribers)
             view.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(view)));
     }
-
-    public void registerSubscriber(View subscriber) {
-        subscribers.add(subscriber);
-    }
-    public void unregisterSubscriber(View subscriber) {
-        subscribers.remove(subscriber);
-    }
-    public List<View> getSubscribers() { return subscribers.stream().toList(); }
 }

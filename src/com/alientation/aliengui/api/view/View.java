@@ -260,7 +260,7 @@ public class View {
         this.x.unregisterSubscriber(this);
         this.x = x;
         this.x.registerSubscriber(this);
-        this.x.valueChanged();
+        this.x.notifySubscribers();
     }
 
     /**
@@ -273,7 +273,7 @@ public class View {
         this.y.unregisterSubscriber(this);
         this.y = y;
         this.y.registerSubscriber(this);
-        this.y.valueChanged();
+        this.y.notifySubscribers();
     }
 
     /**
@@ -286,7 +286,7 @@ public class View {
         this.width.unregisterSubscriber(this);
         this.width = width;
         this.width.registerSubscriber(this);
-        this.width.valueChanged();
+        this.width.notifySubscribers();
     }
 
     /**
@@ -299,7 +299,7 @@ public class View {
         this.height.unregisterSubscriber(this);
         this.height = height;
         this.height.registerSubscriber(this);
-        this.height.valueChanged();
+        this.height.notifySubscribers();
     }
 
     /**
@@ -312,7 +312,7 @@ public class View {
         this.borderRadiusX.unregisterSubscriber(this);
         this.borderRadiusX = borderRadiusX;
         this.borderRadiusX.registerSubscriber(this);
-        this.borderRadiusX.valueChanged();
+        this.borderRadiusX.notifySubscribers();
     }
 
     /**
@@ -325,7 +325,7 @@ public class View {
         this.borderRadiusY.unregisterSubscriber(this);
         this.borderRadiusY = borderRadiusY;
         this.borderRadiusY.registerSubscriber(this);
-        this.borderRadiusY.valueChanged();
+        this.borderRadiusY.notifySubscribers();
     }
 
     /**
@@ -338,7 +338,7 @@ public class View {
         this.borderThickness.unregisterSubscriber(this);
         this.borderThickness = borderThickness;
         this.borderThickness.registerSubscriber(this);
-        this.borderThickness.valueChanged();
+        this.borderThickness.notifySubscribers();
     }
 
     /**
@@ -351,7 +351,7 @@ public class View {
         this.marginX.unregisterSubscriber(this);
         this.marginX = marginX;
         this.marginX.registerSubscriber(this);
-        this.marginX.valueChanged();
+        this.marginX.notifySubscribers();
     }
 
     /**
@@ -364,7 +364,7 @@ public class View {
         this.marginY.unregisterSubscriber(this);
         this.marginY = marginY;
         this.marginY.registerSubscriber(this);
-        this.marginY.valueChanged();
+        this.marginY.notifySubscribers();
     }
 
     /**

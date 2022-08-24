@@ -1,6 +1,7 @@
 package com.alientation.aliengui.component.color;
 
 import com.alientation.aliengui.api.view.View;
+import com.alientation.aliengui.component.Component;
 import com.alientation.aliengui.event.view.ViewEvent;
 import com.alientation.aliengui.util.ColorUtil;
 import com.alientation.aliengui.util.NumberUtil;
@@ -8,14 +9,13 @@ import com.alientation.aliengui.util.NumberUtil;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
  * TODO implement this in the main project and allow shaders to be applied (ie getColor(int x, int y))
  */
 @SuppressWarnings("unused")
-public class ColorComponent {
+public class ColorComponent extends Component {
     protected Color color;
 
     /**
@@ -77,23 +77,22 @@ public class ColorComponent {
 
     public void setColor(Color color) {
         this.color = color;
-        stateChanged();
+        notifySubscribers();
     }
     public void setOpacity(float opacity) {
         this.opacity = NumberUtil.clamp(opacity,0f,1f);
-        stateChanged();
+        notifySubscribers();
     }
     public void setAlpha(int alpha) {
-        this.opacity = ColorUtil.alphaToOpacity(NumberUtil.clamp(alpha,0,255));
-        stateChanged();
+        this.opacity = ColorUtil.alphaToOpacity(NumberUtil.clamp(alpha, 0, 255));
+        notifySubscribers();
     }
-    public void registerSubscriber(View subscriber) { this.subscribers.add(subscriber); }
-    public void unregisterSubscriber(View subscriber) { this.subscribers.remove(subscriber); }
 
     /**
-     * Dispatches event to registered dependencies
+     * Dispatches event to registered subscribers
      */
-    public void stateChanged() {
+    @Override
+    public void notifySubscribers() {
         for (View view : subscribers)
             view.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(view)));
     }
@@ -104,5 +103,4 @@ public class ColorComponent {
     public Color getColor() { return color; } //shouldn't use this
     public float getOpacity() { return opacity; }
     public int getAlpha() { return ColorUtil.opacityToAlpha(opacity); }
-    public List<View> getSubscribers() { return subscribers.stream().toList(); }
 }

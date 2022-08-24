@@ -15,7 +15,7 @@ public class RelativeDimensionComponent extends DimensionComponent {
     protected ViewListener viewListener = new ViewListener() {
         @Override
         public void viewDimensionChanged(ViewDimensionEvent event) {
-            valueChanged();
+            notifySubscribers();
         }
     };
 
@@ -34,31 +34,31 @@ public class RelativeDimensionComponent extends DimensionComponent {
     }
 
     @Override
-    public void valueChanged() {
+    public void notifySubscribers() {
         val = Math.round(multiplied ? dimensionRelation.getDimension(relTo).val * relVal : dimensionRelation.getDimension(relTo).val + relVal);
-        super.valueChanged();
+        super.notifySubscribers();
     }
 
     public void setRelTo(View relTo) {
         this.relTo.getViewListeners().removeListener(viewListener);
         this.relTo = relTo;
         this.relTo.getViewListeners().addListener(viewListener);
-        valueChanged();
+        notifySubscribers();
     }
 
     public void setRelVal(float relVal) {
         this.relVal = relVal;
-        valueChanged();
+        notifySubscribers();
     }
 
     public void setMultiplied(boolean multiplied) {
         this.multiplied = multiplied;
-        valueChanged();
+        notifySubscribers();
     }
 
     public void setDimensionRelation(DimensionRelation dimensionRelation) {
         this.dimensionRelation = dimensionRelation;
-        valueChanged();
+        notifySubscribers();
     }
 
     public View getRelTo() {
