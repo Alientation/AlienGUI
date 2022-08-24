@@ -29,7 +29,7 @@ public class ImageComponent {
     /**
      *
      */
-    protected Set<View> dependencies = new HashSet<>();
+    protected Set<View> subscribers = new HashSet<>();
 
     /**
      * Constructs an ImageComponent
@@ -84,14 +84,14 @@ public class ImageComponent {
         this.opacity = ColorUtil.alphaToOpacity(NumberUtil.clamp(alpha,0,255));
         stateChanged();
     }
-    public void registerDependency(View dependency) { this.dependencies.add(dependency); }
-    public void unregisterDependency(View dependency) { this.dependencies.remove(dependency); }
+    public void registerSubscriber(View subscriber) { this.subscribers.add(subscriber); }
+    public void unregisterSubscriber(View subscriber) { this.subscribers.remove(subscriber); }
 
     /**
      * Dispatches event to registered dependencies
      */
     public void stateChanged() {
-        for (View view : dependencies)
+        for (View view : subscribers)
             view.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(view)));
     }
 
@@ -101,5 +101,5 @@ public class ImageComponent {
     public BufferedImage getImage() { return image; } //shouldn't use this
     public float getOpacity() { return opacity; }
     public int getAlpha() { return (int) (255 * opacity); }
-    public List<View> getDependencies() { return dependencies.stream().toList(); }
+    public List<View> getSubscribers() { return subscribers.stream().toList(); }
 }

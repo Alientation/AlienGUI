@@ -3,7 +3,9 @@ package com.alientation.aliengui.api.view;
 
 import com.alientation.aliengui.api.controller.ViewController;
 import com.alientation.aliengui.api.view.window.WindowView;
+import com.alientation.aliengui.component.color.ColorComponent;
 import com.alientation.aliengui.component.dimension.StaticDimensionComponent;
+import com.alientation.aliengui.component.image.ImageComponent;
 import com.alientation.aliengui.event.view.ViewDimensionEvent;
 import com.alientation.aliengui.event.view.ViewEvent;
 import com.alientation.aliengui.event.view.ViewHierarchyEvent;
@@ -16,6 +18,7 @@ import com.alientation.aliengui.event.view.ViewListener;
 
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
+import java.awt.image.BufferedImage;
 import java.util.Set;
 
 /**
@@ -84,32 +87,12 @@ public class View {
     /**
      * Background color of this view (initial layer) TODO use ColorComponent instead
      */
-    protected Color backgroundColor;
 
-    /**
-     * Background transparency of this view (initial layer)
-     */
-    protected float backgroundTransparency;
+    protected ColorComponent backgroundColor;
+    protected ImageComponent backgroundImage;
+    protected ColorComponent frameColor;
 
-    /**
-     * The image on the background of this view (initial layer) TODO use ImageComponent instead
-     */
-    protected Image backgroundImage;
 
-    /**
-     * The transparency of the background image (to be multiplied on the image's existing transparency value)
-     */
-    protected float backgroundImageTransparency;
-
-    /**
-     * Color of the edge around this view TODO use ColorComponent instead
-     */
-    protected Color frameColor;
-
-    /**
-     * Transparency of the edge around this view (1f opaque, 0f transparent)
-     */
-    protected float frameTransparency;
 
     /**
      * Constructs a new view using the Builder pattern
@@ -134,13 +117,8 @@ public class View {
         dynamicZIndexUpdate = builder.dynamicZIndexUpdate;
 
         backgroundColor = builder.backgroundColor;
-        backgroundTransparency = builder.backgroundTransparency;
         backgroundImage = builder.backgroundImage;
-        backgroundImageTransparency = builder.backgroundImageTransparency;
-
         frameColor = builder.frameColor;
-        frameTransparency = builder.frameTransparency;
-
 
         getViewListeners().addListenerAtBeginning(new ViewListener() {
             @Override
@@ -195,16 +173,19 @@ public class View {
         });
 
         //registering dependencies
-        x.registerDependency(this);
-        y.registerDependency(this);
-        width.registerDependency(this);
-        height.registerDependency(this);
-        borderRadiusX.registerDependency(this);
-        borderRadiusY.registerDependency(this);
-        borderThickness.registerDependency(this);
-        marginX.registerDependency(this);
-        marginY.registerDependency(this);
+        x.registerSubscriber(this);
+        y.registerSubscriber(this);
+        width.registerSubscriber(this);
+        height.registerSubscriber(this);
+        borderRadiusX.registerSubscriber(this);
+        borderRadiusY.registerSubscriber(this);
+        borderThickness.registerSubscriber(this);
+        marginX.registerSubscriber(this);
+        marginY.registerSubscriber(this);
 
+        frameColor.registerSubscriber(this);
+        backgroundColor.registerSubscriber(this);
+        if (backgroundImage != null) backgroundImage.registerSubscriber(this);
     }
 
     /**
@@ -231,16 +212,19 @@ public class View {
         if (!initialized) return;
 
         //frame outline
-        g.setColor(frameColor);
-        g.fillRoundRect(x() - borderThickness(),y() - borderThickness(),width() + borderThickness()<<1,height() + borderThickness()<<1, borderRadiusX() + borderThickness(), borderRadiusY() + borderThickness());
+        BufferedImage frameColorImage = frameColor.draw(this,new RoundRectangle2D.Float(x() - borderThickness(),y() - borderThickness(),width() + borderThickness()<<1,height() + borderThickness()<<1,
+                borderRadiusX() + borderThickness(), borderRadiusY() + borderThickness()));
+        g.drawImage(frameColorImage,x() - borderThickness(), y() - borderThickness(),null);
 
         //background
-        g.setColor(backgroundColor);
-        g.fillRoundRect(x(),y(),width(),height(),borderRadiusX(),borderRadiusY());
+        BufferedImage backgroundColorImage = backgroundColor.draw(this,new RoundRectangle2D.Float(x(),y(),width(),height(),borderRadiusX(),borderRadiusY()));
+        g.drawImage(backgroundColorImage,x(),y(),null);
 
         //background image
-        if (backgroundImage != null)
-            g.drawImage(backgroundImage,x(),y(),width(),height(),null);
+        if (backgroundImage != null) {
+            BufferedImage backgroundImage = this.backgroundImage.draw(this);
+            g.drawImage(backgroundImage, x(), y(), width(), height(), null);
+        }
     }
 
     /**
@@ -273,9 +257,9 @@ public class View {
      */
     public void setX(DimensionComponent x) {
         if (this.x == x) return;
-        this.x.unregisterDependency(this);
+        this.x.unregisterSubscriber(this);
         this.x = x;
-        this.x.registerDependency(this);
+        this.x.registerSubscriber(this);
         this.x.valueChanged();
     }
 
@@ -286,9 +270,9 @@ public class View {
      */
     public void setY(DimensionComponent y) {
         if (this.y == y) return;
-        this.y.unregisterDependency(this);
+        this.y.unregisterSubscriber(this);
         this.y = y;
-        this.y.registerDependency(this);
+        this.y.registerSubscriber(this);
         this.y.valueChanged();
     }
 
@@ -299,9 +283,9 @@ public class View {
      */
     public void setWidth(DimensionComponent width) {
         if (this.width == width) return;
-        this.width.unregisterDependency(this);
+        this.width.unregisterSubscriber(this);
         this.width = width;
-        this.width.registerDependency(this);
+        this.width.registerSubscriber(this);
         this.width.valueChanged();
     }
 
@@ -312,9 +296,9 @@ public class View {
      */
     public void setHeight(DimensionComponent height) {
         if (this.height == height) return;
-        this.height.unregisterDependency(this);
+        this.height.unregisterSubscriber(this);
         this.height = height;
-        this.height.registerDependency(this);
+        this.height.registerSubscriber(this);
         this.height.valueChanged();
     }
 
@@ -325,9 +309,9 @@ public class View {
      */
     public void setBorderRadiusX(DimensionComponent borderRadiusX) {
         if (this.borderRadiusX == borderRadiusX) return;
-        this.borderRadiusX.unregisterDependency(this);
+        this.borderRadiusX.unregisterSubscriber(this);
         this.borderRadiusX = borderRadiusX;
-        this.borderRadiusX.registerDependency(this);
+        this.borderRadiusX.registerSubscriber(this);
         this.borderRadiusX.valueChanged();
     }
 
@@ -338,9 +322,9 @@ public class View {
      */
     public void setBorderRadiusY(DimensionComponent borderRadiusY) {
         if (this.borderRadiusY == borderRadiusY) return;
-        this.borderRadiusY.unregisterDependency(this);
+        this.borderRadiusY.unregisterSubscriber(this);
         this.borderRadiusY = borderRadiusY;
-        this.borderRadiusY.registerDependency(this);
+        this.borderRadiusY.registerSubscriber(this);
         this.borderRadiusY.valueChanged();
     }
 
@@ -351,9 +335,9 @@ public class View {
      */
     public void setBorderThickness(DimensionComponent borderThickness) {
         if (this.borderThickness == borderThickness) return;
-        this.borderThickness.unregisterDependency(this);
+        this.borderThickness.unregisterSubscriber(this);
         this.borderThickness = borderThickness;
-        this.borderThickness.registerDependency(this);
+        this.borderThickness.registerSubscriber(this);
         this.borderThickness.valueChanged();
     }
 
@@ -364,9 +348,9 @@ public class View {
      */
     public void setMarginX(DimensionComponent marginX) {
         if (this.marginX == marginX) return;
-        this.marginX.unregisterDependency(this);
+        this.marginX.unregisterSubscriber(this);
         this.marginX = marginX;
-        this.marginX.registerDependency(this);
+        this.marginX.registerSubscriber(this);
         this.marginX.valueChanged();
     }
 
@@ -377,9 +361,9 @@ public class View {
      */
     public void setMarginY(DimensionComponent marginY) {
         if (this.marginY == marginY) return;
-        this.marginY.unregisterDependency(this);
+        this.marginY.unregisterSubscriber(this);
         this.marginY = marginY;
-        this.marginY.registerDependency(this);
+        this.marginY.registerSubscriber(this);
         this.marginY.valueChanged();
     }
 
@@ -474,33 +458,24 @@ public class View {
         this.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
     }
 
-    public void setBackgroundColor(Color backgroundColor) {
+    public void setBackgroundColor(ColorComponent backgroundColor) {
+        this.backgroundColor.unregisterSubscriber(this);
         this.backgroundColor = backgroundColor;
+        this.backgroundColor.registerSubscriber(this);
         this.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
     }
 
-    public void setBackgroundTransparency(float backgroundTransparency) {
-        this.backgroundTransparency = backgroundTransparency;
-        this.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
-    }
-
-    public void setBackgroundImage(Image backgroundImage) {
+    public void setBackgroundImage(ImageComponent backgroundImage) {
+        this.backgroundImage.unregisterSubscriber(this);
         this.backgroundImage = backgroundImage;
+        this.backgroundImage.registerSubscriber(this);
         this.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
     }
 
-    public void setBackgroundImageTransparency(float backgroundImageTransparency) {
-        this.backgroundImageTransparency = backgroundImageTransparency;
-        this.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
-    }
-
-    public void setFrameColor(Color frameColor) {
+    public void setFrameColor(ColorComponent frameColor) {
+        this.frameColor.unregisterSubscriber(this);
         this.frameColor = frameColor;
-        this.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
-    }
-
-    public void setFrameTransparency(float frameTransparency) {
-        this.frameTransparency = frameTransparency;
+        this.frameColor.registerSubscriber(this);
         this.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
     }
 
@@ -561,12 +536,9 @@ public class View {
     public int getZIndex() { return zIndex; }
     public boolean doDynamicZIndexUpdate() { return dynamicZIndexUpdate; }
     public boolean doesVisibilityAppliesToChildren() { return visibilityAppliesToChildren; }
-    public Color getBackgroundColor() { return backgroundColor; }
-    public float getBackgroundTransparency() { return backgroundTransparency; }
-    public Image getBackgroundImage() { return backgroundImage; }
-    public float getBackgroundImageTransparency() { return backgroundImageTransparency; }
-    public Color getFrameColor() { return frameColor; }
-    public float getFrameTransparency() { return frameTransparency; }
+    public ColorComponent getBackgroundColor() { return backgroundColor; }
+    public ImageComponent getBackgroundImage() { return backgroundImage; }
+    public ColorComponent getFrameColor() { return frameColor; }
 
     //BUILDER
     @SuppressWarnings({"unused", "unchecked"})
@@ -585,13 +557,9 @@ public class View {
         protected int zIndex = 0;
         protected boolean dynamicZIndexUpdate = true;
 
-        protected Color backgroundColor = Color.WHITE;
-        protected float backgroundTransparency = 1f;
-        protected Image backgroundImage;
-        protected float backgroundImageTransparency = 1f;
-
-        protected Color frameColor = Color.WHITE;
-        protected float frameTransparency = 1f;
+        protected ColorComponent backgroundColor = new ColorComponent(Color.WHITE);
+        protected ImageComponent backgroundImage;
+        protected ColorComponent frameColor = new ColorComponent(Color.WHITE);
         public Builder() {
 
         }
@@ -648,28 +616,16 @@ public class View {
             this.dynamicZIndexUpdate = dynamicZIndexUpdate;
             return (T) this;
         }
-        public T backgroundColor(Color backgroundColor) {
+        public T backgroundColor(ColorComponent backgroundColor) {
             this.backgroundColor = backgroundColor;
             return (T) this;
         }
-        public T backgroundTransparency(float backgroundTransparency) {
-            this.backgroundTransparency = backgroundTransparency;
-            return (T) this;
-        }
-        public T backgroundImage(Image backgroundImage) {
+        public T backgroundImage(ImageComponent backgroundImage) {
             this.backgroundImage = backgroundImage;
             return (T) this;
         }
-        public T backgroundImageTransparency(float backgroundImageTransparency) {
-            this.backgroundImageTransparency = backgroundImageTransparency;
-            return (T) this;
-        }
-        public T frameColor(Color frameColor) {
+        public T frameColor(ColorComponent frameColor) {
             this.frameColor = frameColor;
-            return (T) this;
-        }
-        public T frameTransparency(float frameTransparency) {
-            this.frameTransparency = frameTransparency;
             return (T) this;
         }
 

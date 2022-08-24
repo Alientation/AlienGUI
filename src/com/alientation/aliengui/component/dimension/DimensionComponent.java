@@ -12,7 +12,7 @@ public abstract class DimensionComponent {
 
     protected int val;
     protected DimensionComponent min, max;
-    protected Set<View> dependencies = new HashSet<>();
+    protected Set<View> subscribers = new HashSet<>();
     public DimensionComponent() {
 
     }
@@ -48,17 +48,16 @@ public abstract class DimensionComponent {
         valueChanged();
     }
 
-    public void valueChanged() {
-        for (View view : dependencies)
-            //view.dimensionChanged(this); TODO determine whether to offload logic to the view
+    public void valueChanged() { //TODO determine whether to create Observer interface and Subscriber interface for more structured format of these Observer patterns across this library
+        for (View view : subscribers)
             view.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(view)));
     }
 
-    public void registerDependency(View v) {
-        dependencies.add(v);
+    public void registerSubscriber(View subscriber) {
+        subscribers.add(subscriber);
     }
-    public void unregisterDependency(View v) {
-        dependencies.remove(v);
+    public void unregisterSubscriber(View subscriber) {
+        subscribers.remove(subscriber);
     }
-    public List<View> getDependencies() { return dependencies.stream().toList(); }
+    public List<View> getSubscribers() { return subscribers.stream().toList(); }
 }
