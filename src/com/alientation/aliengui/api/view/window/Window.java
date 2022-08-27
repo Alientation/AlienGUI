@@ -23,39 +23,27 @@ public class Window extends Canvas implements Runnable {
 
     protected static final int NANOSECONDS = 1000000000;
 
-    /**
-     * View this Window is enclosed in
-     */
+    //View this Window is enclosed in
     protected WindowView windowView;
 
-    /**
-     * Current Graphics render this window has
-     */
+    //Current Graphics render this window has
     protected Graphics g;
     protected BufferStrategy bs;
 
-    /**
-     * Rendering properties
-     */
+    //Rendering properties
     protected double nsPerTick, nsPerFrame;
     protected int targetTPS, tps, targetFPS, fps;
     protected double sBetweenFrames, sBetweenTicks; //for animation time delta purposes TODO finish implementation
     protected List<Double> previousSBetweenFrames = new LinkedList<>();
     protected List<Double> previousSBetweenTicks = new LinkedList<>();
 
-    /**
-     * Backend loop that handles ticking and rendering
-     */
+    //Backend thread that handles ticking and rendering
     protected Thread windowThread;
 
-    /**
-     * Whether this Window is active
-     */
+    //Whether this Window is active
     protected boolean running = false;
 
-    /**
-     * Swing component that creates a window
-     */
+    //Swing component that creates a window
     protected JFrame frame;
 
     /**

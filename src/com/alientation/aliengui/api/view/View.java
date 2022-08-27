@@ -26,72 +26,46 @@ import java.util.Set;
  */
 @SuppressWarnings("unused")
 public class View {
-    /**
-     * Listeners for internal processes and applications to hook into
-     */
+    //Listeners for internal processes and applications to hook into
     protected EventListenerContainer<KeyListener> keyListeners = new EventListenerContainer<>();
     protected EventListenerContainer<ModelListener> modelListeners = new EventListenerContainer<>();
     protected EventListenerContainer<MouseListener> mouseListeners = new EventListenerContainer<>();
     protected EventListenerContainer<ViewListener> viewListeners = new EventListenerContainer<>();
 
-    /**
-     * ViewController that handles this view
-     */
+    //ViewController that handles this view
     protected ViewController controller;
 
-    /**
-     * Dimensions of this view
-     */
+    //Dimensions of this view
     protected DimensionComponent x, y, width, height, borderRadiusX, borderRadiusY, borderThickness, marginX, marginY;
 
-    /**
-     * The view this view is enclosed in
-     */
+    //The view this view is enclosed in
     protected View parentView;
 
-    /**
-     * Window this view is a part of
-     */
+    //Window this view is a part of
     protected WindowView windowView;
 
-    /**
-     * Views that are enclosed in this view
-     */
+    //Views that are enclosed in this view
     protected Set<View> childViews;
 
-    /**
-     * Whether this view is ready to be used after all properties are initialized
-     */
+    //Whether this view is ready to be used after all properties are initialized
     protected boolean initialized;
 
-    /**
-     * Visibility of this view, whether this view will be rendered or not
-     */
+    //Visibility of this view, whether this view will be rendered or not
     protected boolean visible;
 
-    /**
-     * Whether the visibility of this view will affect the child views
-     */
+    //Whether the visibility of this view will affect the child views
     protected boolean visibilityAppliesToChildren;
 
-    /**
-     * The Z Index of this view, used to order views to be rendered
-     */
+    //The Z Index of this view, used to order views to be rendered
     protected int zIndex;
 
-    /**
-     * Whether this view can dynamically update the z index based on parent view's z index
-     */
+    //Whether this view can dynamically update the z index based on parent view's z index
     protected boolean dynamicZIndexUpdate;
 
-    /**
-     * Background color of this view (initial layer) TODO use ColorComponent instead
-     */
-
+    //Background and Frame Components
     protected ColorComponent backgroundColor;
     protected ImageComponent backgroundImage;
     protected ColorComponent frameColor;
-
 
 
     /**
@@ -208,7 +182,7 @@ public class View {
      *
      * @param g Graphics object to be drawn on
      */
-    public void render(Graphics g) {
+    public void render(Graphics g) { //TODO might wanna let the component draw itself onto the graphics context
         if (!initialized) return;
 
         //frame outline
@@ -641,6 +615,7 @@ public class View {
 }
 
 /* Builder pattern boilerplate code
+    @SuppressWarnings("unchecked")
     public static class Builder<T extends Builder<T>> extends View.Builder<T> {
 
         public Builder() {

@@ -13,17 +13,13 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class TextComponent extends Component {
 
-    /**
-     * Text to be displayed by lines
-     */
+    //Text to be displayed by lines
     protected List<String> linedText;
 
-    /**
-     * Default font to be used for the text
-     */
+    //Default font to be used for the text
     protected Font font;
 
-    /**
+    /*
      * Fonts rules for each character in each line
      *
      * Essentially, if there is a font registered for the current character, change the drawn font to it and
@@ -31,21 +27,20 @@ public class TextComponent extends Component {
      */
     protected List<List<Font>> textFont;
 
-    /**
-     * Whether to dynamically wrap text
-     */
+    //Whether to dynamically wrap text
     protected boolean dynamicWrapping = true;
 
-    /**
-     * Whether dynamic wrapping will wrap characters around
-     */
+    //Whether dynamic wrapping will wrap characters around
     protected boolean wrappingOfCharacters = false;
 
-    /**
-     * Whether to dynamically resize text if dynamic wrapping is disabled
-     */
+    //Whether to dynamically resize text if dynamic wrapping is disabled
     protected boolean dynamicResizing = true;
 
+    /**
+     * Constructs a multi lined Text Component
+     *
+     * @param text  Text lines
+     */
     public TextComponent(String... text) {
         linedText = new ArrayList<>(Arrays.stream(text).toList());
     }

@@ -4,6 +4,8 @@ import com.alientation.aliengui.api.view.View;
 import com.alientation.aliengui.component.Component;
 import com.alientation.aliengui.event.view.ViewEvent;
 
+import java.awt.image.BufferedImage;
+
 /**
  * Figure out how to work this in with the current system
  *
@@ -17,6 +19,18 @@ import com.alientation.aliengui.event.view.ViewEvent;
 public class AnimationComponent extends Component {
 
 
+
+
+
+    public BufferedImage draw(View view, float deltaFrame) {
+        BufferedImage image = new BufferedImage(view.width(),view.height(),BufferedImage.TYPE_INT_ARGB);
+
+        return image;
+    }
+
+    public void tick(float deltaTick) {
+
+    }
 
 
     /**
