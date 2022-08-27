@@ -4,45 +4,53 @@ import com.alientation.aliengui.api.view.View;
 import com.alientation.aliengui.component.Component;
 import com.alientation.aliengui.event.view.ViewEvent;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.text.AttributedCharacterIterator;
+import java.text.AttributedString;
+import java.text.CharacterIterator;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 @SuppressWarnings("unused")
 public class TextComponent extends Component {
 
+    enum TextUpdateState {
+        DYNAMIC_WRAPPING_WORDS, //Whether to dynamically wrap text
+        DYNAMIC_WRAPPING_CHARACTERS, //Whether dynamic wrapping will wrap characters around
+        DYNAMIC_RESIZING //Whether to dynamically resize text if dynamic wrapping is disabled
+    }
+
     //Text to be displayed by lines
-    protected List<String> linedText;
+    protected List<AttributedString> linedText;
 
-    //Default font to be used for the text
-    protected Font font;
-
-    /*
-     * Fonts rules for each character in each line
-     *
-     * Essentially, if there is a font registered for the current character, change the drawn font to it and
-     * continue drawing. If there is no font registered for the current character, continue with the current font
-     */
-    protected List<List<Font>> textFont;
-
-    //Whether to dynamically wrap text
-    protected boolean dynamicWrapping = true;
-
-    //Whether dynamic wrapping will wrap characters around
-    protected boolean wrappingOfCharacters = false;
-
-    //Whether to dynamically resize text if dynamic wrapping is disabled
-    protected boolean dynamicResizing = true;
+    //Text rendering state
+    protected TextUpdateState textUpdateState = TextUpdateState.DYNAMIC_WRAPPING_WORDS;
 
     /**
      * Constructs a multi lined Text Component
      *
      * @param text  Text lines
      */
-    public TextComponent(String... text) {
+    public TextComponent(TextUpdateState textUpdateState, AttributedString... text) {
+        this(text);
+        this.textUpdateState = textUpdateState;
+    }
+
+    public TextComponent(AttributedString... text) {
         linedText = new ArrayList<>(Arrays.stream(text).toList());
+    }
+
+    public TextComponent(TextUpdateState textUpdateState, String... text) {
+        this(text);
+        this.textUpdateState = textUpdateState;
+    }
+
+    public TextComponent(String... text) {
+        linedText = new ArrayList<>();
+        for (String s : text)
+            linedText.add(new AttributedString(s));
     }
 
     /**
@@ -58,20 +66,48 @@ public class TextComponent extends Component {
         return image;
     }
 
+    private List<AttributedString> wrappedString(int maxWidth) {
+        List<AttributedString> wrappedString = new ArrayList<>();
 
+        return wrappedString;
+    }
 
-    public void addLine(String line, int index) {
+    public void setStringLine(String line, int index) {
+        setAttributedStringLine(new AttributedString(line), index);
+    }
+
+    public void setAttributedStringLine(AttributedString line, int index) {
         while (linedText.size() < index)
-            linedText.add("");
+            linedText.add(new AttributedString(""));
         linedText.add(index,line);
         notifySubscribers();
     }
-    public void addLine(String line) {
-        addLine(line,linedText.size());
+
+    public void addStringLine(String line) {
+        setStringLine(line,linedText.size());
     }
-    public void addLines(String... lines) {
-        for (String line : lines) addLine(line);
+
+    public void addAttributedStringLine(AttributedString line) {
+        setAttributedStringLine(line, linedText.size());
+
     }
+
+    public void addStringLines(String... lines) {
+        for (String line : lines) addStringLine(line);
+    }
+
+    public void addStringLines(Collection<String> lines) {
+        for (String line : lines) addStringLines(line);
+    }
+
+    public void addAttributedStringLines(AttributedString... lines) {
+        for (AttributedString line : lines) addAttributedStringLine(line);
+    }
+
+    public void addAttributedStringLines(Collection<AttributedString> lines) {
+        for (AttributedString line : lines) addAttributedStringLine(line);
+    }
+
     public void removeLine(int index) {
         linedText.remove(index);
         notifySubscribers();
@@ -84,14 +120,45 @@ public class TextComponent extends Component {
         }
     }
 
-    public void setLinedText(List<String> linedText) {
-        this.linedText = linedText;
+    public void clearLines() {
+        linedText.clear();
         notifySubscribers();
     }
 
-    public List<String> getLinedText() { return new ArrayList<>(linedText); }
+    public void clearLines(int start) {
+        linedText.subList(start,linedText.size()).clear();
+    }
+
+    public void clearLines(int start, int end) {
+        linedText.subList(start,end).clear();
+    }
+
+    public void setLinedText(Collection<AttributedString> linedText) {
+        this.linedText = new ArrayList<>(linedText);
+        notifySubscribers();
+    }
+
+    public List<AttributedString> getAttributedStringLinedText() { return new ArrayList<>(linedText); }
+    public List<String> getStringLinedText() {
+        List<String> stringLinedText = new ArrayList<>();
+        for (int i = 0; i < linedText.size(); i++) stringLinedText.add(getStringLine(i));
+        return stringLinedText;
+    }
     public int getNumberLines() { return linedText.size(); }
-    public String getLine(int index) { return linedText.get(index); }
+    public AttributedString getAttributedStringLine(int index) { return linedText.get(index); }
+
+    public String getStringLine(int index) {
+        AttributedCharacterIterator it = linedText.get(index).getIterator();
+        StringBuilder sb = new StringBuilder();
+
+        char ch  = it.current();
+        while (ch != CharacterIterator.DONE) {
+            sb.append(ch);
+            ch = it.next();
+        }
+
+        return sb.toString();
+    }
 
     @Override
     public void notifySubscribers() {
