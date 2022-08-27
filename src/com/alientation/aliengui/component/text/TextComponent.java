@@ -25,6 +25,13 @@ public class TextComponent extends Component {
     //Text to be displayed by lines
     protected List<AttributedString> linedText;
 
+    //Alignment of each line
+    //protected List<TextAlignment> alignments; TODO determine whether to have line specific text alignment (if so, rework vertical alignment)
+
+    //Alignment of this text component
+    protected TextAlignment textAlignment;
+
+
     //Text rendering state
     protected TextUpdateState textUpdateState = TextUpdateState.DYNAMIC_WRAPPING_WORDS;
 
@@ -66,10 +73,17 @@ public class TextComponent extends Component {
         return image;
     }
 
-    private List<AttributedString> wrappedString(int maxWidth) {
+    //TODO determine whether to have line specific maxWidths and maxHeights -> could be useful for embedded components like images
+    private List<AttributedString> wrappedString(int maxHeight, int maxWidth) {
         List<AttributedString> wrappedString = new ArrayList<>();
 
         return wrappedString;
+    }
+
+    private List<AttributedString> resizedString(int maxHeight, int maxWidth) {
+        List<AttributedString> resizedString = new ArrayList<>();
+
+        return resizedString;
     }
 
     public void setStringLine(String line, int index) {
