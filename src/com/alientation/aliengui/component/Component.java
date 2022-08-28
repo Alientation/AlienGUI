@@ -18,6 +18,10 @@ public abstract class Component {
     //This way, instead of have tons of tiny events, the events are grouped in batches between tick events
     public abstract void notifySubscribers();
 
+
+    //HOLY THIS IS SO MUCH CODE REPETITION TODO CLEAN THIS STUFF UP!!!!
+    //HAVE ANOTHER CLASS SIMPLY TO STORE THE HASHSET AND HANDLE ADDING AND REMOVING, THIS CLASS CAN SIMPLY JUST BE AN ADAPTER TO THAT
+    //PROBABLY GONNA NEED TO SUPPLY AN INTERFACE FOR THE ACTUAL ADD AND REMOVE STUFF
     public void registerSubscriber(View subscriber) { this.subscribers.add(subscriber); }
     public void registerSubscribers(View... subscribers) { this.subscribers.addAll(Arrays.stream(subscribers).toList()); }
     public void registerSubscribers(Collection<View> subscribers) { this.subscribers.addAll(subscribers); }

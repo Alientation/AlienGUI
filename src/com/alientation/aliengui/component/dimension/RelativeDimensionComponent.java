@@ -71,6 +71,9 @@ public class RelativeDimensionComponent extends DimensionComponent {
         notifySubscribers();
     }
 
+    ///HOLY THIS IS SO MUCH CODE REPETITION TODO CLEAN THIS STUFF UP!!!!
+    //HAVE ANOTHER CLASS SIMPLY TO STORE THE HASHSET AND HANDLE ADDING AND REMOVING, THIS CLASS CAN SIMPLY JUST BE AN ADAPTER TO THAT
+    //PROBABLY GONNA NEED TO SUPPLY AN INTERFACE FOR THE ACTUAL ADD AND REMOVE STUFF
     public void setAddedDimension(Collection<DimensionComponent> addedDimensions) {
         for (DimensionComponent dimensionComponent : this.addedDimensions) dimensionComponent.unregisterDimensionSubscribers(this);
         this.addedDimensions = new ArrayList<>(addedDimensions);

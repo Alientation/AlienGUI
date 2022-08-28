@@ -46,6 +46,9 @@ public abstract class DimensionComponent extends Component {
         notifySubscribers();
     }
 
+    //HOLY THIS IS SO MUCH CODE REPETITION TODO CLEAN THIS STUFF UP!!!!
+    //HAVE ANOTHER CLASS SIMPLY TO STORE THE HASHSET AND HANDLE ADDING AND REMOVING, THIS CLASS CAN SIMPLY JUST BE AN ADAPTER TO THAT
+    //PROBABLY GONNA NEED TO SUPPLY AN INTERFACE FOR THE ACTUAL ADD AND REMOVE STUFF
     public void setMinDimensions(Collection<DimensionComponent> minDimensions) {
         for (DimensionComponent dimensionComponent : this.minDimensions) dimensionComponent.unregisterDimensionSubscribers(this);
         this.minDimensions = new HashSet<>(minDimensions);
