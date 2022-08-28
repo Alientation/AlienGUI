@@ -100,6 +100,7 @@ public class WindowView extends View {
         }
 
         public void validate() {
+            super.validate();
             if (window == null) throw new IllegalStateException("Window must be valid");
         }
 

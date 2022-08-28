@@ -36,7 +36,7 @@ public class View {
     protected ViewController controller;
 
     //Dimensions of this view
-    protected DimensionComponent x, y, width, height, borderRadiusX, borderRadiusY, borderThickness, marginX, marginY;
+    protected DimensionComponent x, y, width, height, borderRadiusWidth, borderRadiusHeight, borderThickness, marginX, marginY;
 
     //The view this view is enclosed in
     protected View parentView;
@@ -80,8 +80,8 @@ public class View {
         height = builder.height;
         marginX = builder.marginX;
         marginY = builder.marginY;
-        borderRadiusX = builder.borderRadiusX;
-        borderRadiusY = builder.borderRadiusY;
+        borderRadiusWidth = builder.borderRadiusWidth;
+        borderRadiusHeight = builder.borderRadiusHeight;
         borderThickness = builder.borderThickness;
 
         visible = builder.visible;
@@ -151,8 +151,8 @@ public class View {
         y.registerSubscriber(this);
         width.registerSubscriber(this);
         height.registerSubscriber(this);
-        borderRadiusX.registerSubscriber(this);
-        borderRadiusY.registerSubscriber(this);
+        borderRadiusWidth.registerSubscriber(this);
+        borderRadiusHeight.registerSubscriber(this);
         borderThickness.registerSubscriber(this);
         marginX.registerSubscriber(this);
         marginY.registerSubscriber(this);
@@ -239,6 +239,10 @@ public class View {
         this.x.notifySubscribers();
     }
 
+    public void setAbsX(DimensionComponent absX) {
+
+    }
+
     /**
      * Sets dimensions and updates dependencies
      *
@@ -250,6 +254,10 @@ public class View {
         this.y = y;
         this.y.registerSubscriber(this);
         this.y.notifySubscribers();
+    }
+
+    public void setAbsY(DimensionComponent absY) {
+
     }
 
     /**
@@ -281,27 +289,27 @@ public class View {
     /**
      * Sets dimensions and updates dependencies
      *
-     * @param borderRadiusX The new Border Radius X dimension (curved borders)
+     * @param borderRadiusWidth The new Border Radius X dimension (curved borders)
      */
-    public void setBorderRadiusX(DimensionComponent borderRadiusX) {
-        if (this.borderRadiusX == borderRadiusX) return;
-        this.borderRadiusX.unregisterSubscriber(this);
-        this.borderRadiusX = borderRadiusX;
-        this.borderRadiusX.registerSubscriber(this);
-        this.borderRadiusX.notifySubscribers();
+    public void setBorderRadiusWidth(DimensionComponent borderRadiusWidth) {
+        if (this.borderRadiusWidth == borderRadiusWidth) return;
+        this.borderRadiusWidth.unregisterSubscriber(this);
+        this.borderRadiusWidth = borderRadiusWidth;
+        this.borderRadiusWidth.registerSubscriber(this);
+        this.borderRadiusWidth.notifySubscribers();
     }
 
     /**
      * Sets dimensions and updates dependencies
      *
-     * @param borderRadiusY The new Border Radius Y dimension (curved borders)
+     * @param borderRadiusHeight The new Border Radius Y dimension (curved borders)
      */
-    public void setBorderRadiusY(DimensionComponent borderRadiusY) {
-        if (this.borderRadiusY == borderRadiusY) return;
-        this.borderRadiusY.unregisterSubscriber(this);
-        this.borderRadiusY = borderRadiusY;
-        this.borderRadiusY.registerSubscriber(this);
-        this.borderRadiusY.notifySubscribers();
+    public void setBorderRadiusHeight(DimensionComponent borderRadiusHeight) {
+        if (this.borderRadiusHeight == borderRadiusHeight) return;
+        this.borderRadiusHeight.unregisterSubscriber(this);
+        this.borderRadiusHeight = borderRadiusHeight;
+        this.borderRadiusHeight.registerSubscriber(this);
+        this.borderRadiusHeight.notifySubscribers();
     }
 
     /**
@@ -463,7 +471,7 @@ public class View {
         return new RoundRectangle2D.Float(x(),y(),width(),height(),borderRadiusX(),borderRadiusY());
     }
 
-    public Shape getMiddlegroundShape() {
+    public Shape getMiddleGroundShape() {
         return new RoundRectangle2D.Float(x(),y(),width(),height(),borderRadiusX(),borderRadiusY());
     }
 
@@ -498,10 +506,10 @@ public class View {
     public DimensionComponent getHeight() { return height; }
     public int height() { return height.val(); }
     public int safeHeight() { return height() - marginY() << 1; }
-    public DimensionComponent getBorderRadiusX() { return borderRadiusX; }
-    public int borderRadiusX() { return borderRadiusX.val(); }
-    public DimensionComponent getBorderRadiusY() { return borderRadiusY; }
-    public int borderRadiusY() { return borderRadiusY.val(); }
+    public DimensionComponent getBorderRadiusWidth() { return borderRadiusWidth; }
+    public int borderRadiusX() { return borderRadiusWidth.val(); }
+    public DimensionComponent getBorderRadiusHeight() { return borderRadiusHeight; }
+    public int borderRadiusY() { return borderRadiusHeight.val(); }
     public DimensionComponent getBorderThickness() { return borderThickness; }
     public int borderThickness() { return borderThickness.val(); }
     public DimensionComponent getMarginX() { return marginX; }
@@ -537,8 +545,8 @@ public class View {
         protected DimensionComponent y = StaticDimensionComponent.MIN;
         protected DimensionComponent width = StaticDimensionComponent.BASE;
         protected DimensionComponent height = StaticDimensionComponent.BASE;
-        protected DimensionComponent borderRadiusX = StaticDimensionComponent.MIN;
-        protected DimensionComponent borderRadiusY = StaticDimensionComponent.MIN;
+        protected DimensionComponent borderRadiusWidth = StaticDimensionComponent.MIN;
+        protected DimensionComponent borderRadiusHeight = StaticDimensionComponent.MIN;
         protected DimensionComponent borderThickness = StaticDimensionComponent.MIN;
         protected DimensionComponent marginX = StaticDimensionComponent.MIN;
         protected DimensionComponent marginY = StaticDimensionComponent.MIN;
@@ -570,12 +578,12 @@ public class View {
             this.height = height;
             return (T) this;
         }
-        public T borderRadiusX(DimensionComponent borderRadiusX) {
-            this.borderRadiusX = borderRadiusX;
+        public T borderRadiusWidth(DimensionComponent borderRadiusWidth) {
+            this.borderRadiusWidth = borderRadiusWidth;
             return (T) this;
         }
-        public T borderRadiusY(DimensionComponent borderRadiusY) {
-            this.borderRadiusY = borderRadiusY;
+        public T borderRadiusHeight(DimensionComponent borderRadiusHeight) {
+            this.borderRadiusHeight = borderRadiusHeight;
             return (T) this;
         }
         public T borderThickness(DimensionComponent borderThickness) {

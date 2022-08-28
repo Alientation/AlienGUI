@@ -21,7 +21,7 @@ public class CollectionView extends View {
         }
 
         public void validate() {
-
+            super.validate();
         }
 
         public View build() {

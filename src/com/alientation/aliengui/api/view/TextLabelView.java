@@ -46,7 +46,7 @@ public class TextLabelView extends View {
         }
 
         public void validate() {
-
+            super.validate();
         }
 
         public View build() {

@@ -5,12 +5,20 @@ import com.alientation.aliengui.api.view.View;
 import com.alientation.aliengui.event.view.ViewDimensionEvent;
 import com.alientation.aliengui.event.view.ViewListener;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
 @SuppressWarnings("unused")
 public class RelativeDimensionComponent extends DimensionComponent {
     protected View relTo;
     protected float relVal;
-    protected boolean multiplied = true;
+    protected boolean multiplied;
     protected DimensionRelation dimensionRelation;
+
+    protected List<DimensionComponent> addedDimensions; //TODO implement these with val() and register dependencies
+    protected List<DimensionComponent> subtractedDimensions;
 
     protected ViewListener viewListener = new ViewListener() {
         @Override
@@ -20,17 +28,16 @@ public class RelativeDimensionComponent extends DimensionComponent {
     };
 
 
-    public RelativeDimensionComponent(View relTo, float relVal, DimensionRelation dimensionRelation) {
-        this.relTo = relTo;
-        this.relVal = relVal;
-        this.dimensionRelation = dimensionRelation;
+    public RelativeDimensionComponent(Builder<?> builder) {
+        super(builder);
+        relTo = builder.relTo;
+        relVal = builder.relVal;
+        multiplied = builder.multiplied;
+        dimensionRelation = builder.dimensionRelation;
+        addedDimensions = builder.addedDimensions;
+        subtractedDimensions = builder.subtractedDimensions;
 
-        this.relTo.getViewListeners().addListenerAtBeginning(viewListener);
-    }
-
-    public RelativeDimensionComponent(View relTo, float relVal, boolean multiplied, DimensionRelation dimensionRelation) {
-        this(relTo,relVal,dimensionRelation);
-        this.multiplied = multiplied;
+        relTo.getViewListeners().addListenerAtBeginning(viewListener);
     }
 
     @Override
@@ -76,17 +83,113 @@ public class RelativeDimensionComponent extends DimensionComponent {
     public DimensionRelation getDimensionRelation() {
         return dimensionRelation;
     }
+
+    @SuppressWarnings("unchecked")
+    static class Builder<T extends Builder<T>> extends DimensionComponent.Builder<T> {
+        protected View relTo;
+        protected float relVal = 1f;
+        protected boolean multiplied = true;
+        protected DimensionRelation dimensionRelation;
+
+        protected List<DimensionComponent> addedDimensions = new ArrayList<>();
+        protected List<DimensionComponent> subtractedDimensions = new ArrayList<>();
+
+        public Builder() {
+
+        }
+
+        public T relTo(View relTo) {
+            this.relTo = relTo;
+            return (T) this;
+        }
+
+        public T relVal(float relVal) {
+            this.relVal = relVal;
+            return (T) this;
+        }
+
+        public T multiplied(boolean multiplied) {
+            this.multiplied = multiplied;
+            return (T) this;
+        }
+
+        public T dimensionRelation(DimensionRelation dimensionRelation) {
+            this.dimensionRelation = dimensionRelation;
+            return (T) this;
+        }
+
+        public T addedDimension(Collection<DimensionComponent> addedDimensions) {
+            this.addedDimensions = new ArrayList<>(addedDimensions);
+            return (T) this;
+        }
+
+        public T addAddedDimensions(Collection<DimensionComponent> addedDimensions) {
+            this.addedDimensions.addAll(addedDimensions);
+            return (T) this;
+        }
+
+        public T addAddedDimensions(DimensionComponent... addedDimensions) {
+            this.addedDimensions.addAll(Arrays.stream(addedDimensions).toList());
+            return (T) this;
+        }
+
+        public T addAddedDimension(DimensionComponent addedDimension) {
+            this.addedDimensions.add(addedDimension);
+            return (T) this;
+        }
+
+        public T subtractedDimensions(Collection<DimensionComponent> addedDimensions) {
+            this.subtractedDimensions = new ArrayList<>(addedDimensions);
+            return (T) this;
+        }
+
+        public T addSubtractedDimensions(Collection<DimensionComponent> subtractedDimensions) {
+            this.subtractedDimensions.addAll(subtractedDimensions);
+            return (T) this;
+        }
+
+        public T addSubtractedDimensions(DimensionComponent... subtractedDimensions) {
+            this.subtractedDimensions.addAll(Arrays.stream(subtractedDimensions).toList());
+            return (T) this;
+        }
+
+        public T addSubtractedDimension(DimensionComponent subtractedDimension) {
+            this.subtractedDimensions.add(subtractedDimension);
+            return (T) this;
+        }
+
+
+        @Override
+        public void validate() {
+            super.validate();
+            if (relTo == null) throw new IllegalStateException("relTo cannot be null");
+            if (dimensionRelation == null) throw new IllegalStateException("dimensionRelation cannot be null");
+        }
+
+        @Override
+        public RelativeDimensionComponent build() {
+            return new RelativeDimensionComponent(this);
+        }
+    }
+
 }
 
 abstract class DimensionRelation {
-    public static final DimensionRelation X = new DimensionRelation() {
+    public static final DimensionRelation LEFT_X = new DimensionRelation() {
         @Override
         public DimensionComponent getDimension(View view) {
             return view.getX();
         }
     };
 
-    public static final DimensionRelation Y = new DimensionRelation() {
+    public static final DimensionRelation RIGHT_X = new DimensionRelation() {
+        @Override
+        public DimensionComponent getDimension(View view) {
+            return view.getX();
+        }
+    };
+
+    public static final DimensionRelation TOP_Y = new DimensionRelation() {
         @Override
         public DimensionComponent getDimension(View view) {
             return view.getY();
@@ -120,18 +223,31 @@ abstract class DimensionRelation {
             return view.getMarginY();
         }
     };
+    public static final DimensionRelation BORDER_RADIUS_WIDTH = new DimensionRelation() {
+        @Override
+        public DimensionComponent getDimension(View view) {
+            return view.getBorderRadiusWidth();
+        }
+    };
+
+    public static final DimensionRelation BORDER_RADIUS_HEIGHT = new DimensionRelation() {
+        @Override
+        public DimensionComponent getDimension(View view) {
+            return view.getBorderRadiusHeight();
+        }
+    };
 
     public static final DimensionRelation BORDER_RADIUS_X = new DimensionRelation() {
         @Override
         public DimensionComponent getDimension(View view) {
-            return view.getBorderRadiusX();
+            return view.getBorderRadiusWidth();
         }
     };
 
     public static final DimensionRelation BORDER_RADIUS_Y = new DimensionRelation() {
         @Override
         public DimensionComponent getDimension(View view) {
-            return view.getBorderRadiusY();
+            return view.getBorderRadiusHeight();
         }
     };
 
