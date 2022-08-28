@@ -2,11 +2,11 @@ package com.alientation.aliengui.component.dimension;
 
 
 import com.alientation.aliengui.api.view.View;
+import com.alientation.aliengui.component.Observer;
 import com.alientation.aliengui.event.view.ViewDimensionEvent;
 import com.alientation.aliengui.event.view.ViewListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -17,8 +17,39 @@ public class RelativeDimensionComponent extends DimensionComponent {
     protected boolean multiplied;
     protected DimensionRelation dimensionRelation;
 
-    protected List<DimensionComponent> addedDimensions; //TODO implement these with val()
-    protected List<DimensionComponent> subtractedDimensions;
+    //TODO implement these with val()
+    protected Observer<RelativeDimensionComponent,DimensionComponent> addedDimensions = new Observer<>(this) {
+        @Override
+        public void notifyObservers() {
+            parent.notifySubscribers();
+        }
+
+        @Override
+        public void unregister(DimensionComponent observed) {
+            observed.unregisterDimensionObservers(parent);
+        }
+
+        @Override
+        public void register(DimensionComponent observed) {
+            observed.registerDimensionObservers(parent);
+        }
+    };
+    protected Observer<RelativeDimensionComponent,DimensionComponent> subtractedDimensions = new Observer<>(this) {
+        @Override
+        public void notifyObservers() {
+            parent.notifySubscribers();
+        }
+
+        @Override
+        public void unregister(DimensionComponent observed) {
+            observed.unregisterDimensionObservers(parent);
+        }
+
+        @Override
+        public void register(DimensionComponent observed) {
+            observed.registerDimensionObservers(parent);
+        }
+    };
 
     protected ViewListener viewListener = new ViewListener() {
         @Override
@@ -34,11 +65,6 @@ public class RelativeDimensionComponent extends DimensionComponent {
         relVal = builder.relVal;
         multiplied = builder.multiplied;
         dimensionRelation = builder.dimensionRelation;
-        addedDimensions = builder.addedDimensions;
-        subtractedDimensions = builder.subtractedDimensions;
-
-        for (DimensionComponent dimensionComponent : addedDimensions) dimensionComponent.registerDimensionObservers(this);
-        for (DimensionComponent dimensionComponent : subtractedDimensions) dimensionComponent.registerDimensionObservers(this);
 
         relTo.getViewListeners().addListenerAtBeginning(viewListener);
     }
@@ -75,61 +101,45 @@ public class RelativeDimensionComponent extends DimensionComponent {
     //HAVE ANOTHER CLASS SIMPLY TO STORE THE HASHSET AND HANDLE ADDING AND REMOVING, THIS CLASS CAN SIMPLY JUST BE AN ADAPTER TO THAT
     //PROBABLY GONNA NEED TO SUPPLY AN INTERFACE FOR THE ACTUAL ADD AND REMOVE STUFF
     public void setAddedDimension(Collection<DimensionComponent> addedDimensions) {
-        for (DimensionComponent dimensionComponent : this.addedDimensions) dimensionComponent.unregisterDimensionObservers(this);
-        this.addedDimensions = new ArrayList<>(addedDimensions);
-        for (DimensionComponent dimensionComponent : this.addedDimensions) dimensionComponent.registerDimensionObservers(this);
-        notifySubscribers();
+        this.addedDimensions.setObserved(addedDimensions);
     }
 
     public void addAddedDimensions(Collection<DimensionComponent> addedDimensions) {
-        this.addedDimensions.addAll(addedDimensions);
-        for (DimensionComponent dimensionComponent : addedDimensions) dimensionComponent.registerDimensionObservers(this);
-        notifySubscribers();
+        this.addedDimensions.registerObserved(addedDimensions);
     }
 
     public void addAddedDimensions(DimensionComponent... addedDimensions) {
-        this.addedDimensions.addAll(Arrays.stream(addedDimensions).toList());
-        for (DimensionComponent dimensionComponent : addedDimensions) dimensionComponent.registerDimensionObservers(this);
-        notifySubscribers();
+        this.addedDimensions.registerObserved(addedDimensions);
     }
 
     public void addAddedDimension(DimensionComponent addedDimension) {
-        this.addedDimensions.add(addedDimension);
-        addedDimension.registerDimensionObservers(this);
-        notifySubscribers();
+        this.addedDimensions.registerObserved(addedDimension);
     }
 
-    public void subtractedDimensions(Collection<DimensionComponent> subtractedDimensions) {
-        for (DimensionComponent dimensionComponent : this.subtractedDimensions) dimensionComponent.unregisterDimensionObservers(this);
-        this.subtractedDimensions = new ArrayList<>(subtractedDimensions);
-        for (DimensionComponent dimensionComponent : this.subtractedDimensions) dimensionComponent.registerDimensionObservers(this);
-        notifySubscribers();
+    public void setSubtractedDimensions(Collection<DimensionComponent> subtractedDimensions) {
+        this.subtractedDimensions.setObserved(subtractedDimensions);
     }
 
     public void addSubtractedDimensions(Collection<DimensionComponent> subtractedDimensions) {
-        this.subtractedDimensions.addAll(subtractedDimensions);
-        for (DimensionComponent dimensionComponent : subtractedDimensions) dimensionComponent.registerDimensionObservers(this);
-        notifySubscribers();
+        this.subtractedDimensions.registerObserved(subtractedDimensions);
     }
 
     public void addSubtractedDimensions(DimensionComponent... subtractedDimensions) {
-        this.subtractedDimensions.addAll(Arrays.stream(subtractedDimensions).toList());
-        for (DimensionComponent dimensionComponent : subtractedDimensions) dimensionComponent.registerDimensionObservers(this);
-        notifySubscribers();
+        this.subtractedDimensions.registerObserved(subtractedDimensions);
     }
 
     public void addSubtractedDimension(DimensionComponent subtractedDimension) {
-        this.subtractedDimensions.add(subtractedDimension);
-        subtractedDimension.registerDimensionObservers(this);
-        notifySubscribers();
+        this.subtractedDimensions.registerObserved(subtractedDimension);
     }
 
     public View getRelTo() { return relTo; }
     public float getRelVal() { return relVal; }
     public boolean isMultiplied() { return multiplied; }
     public DimensionRelation getDimensionRelation() { return dimensionRelation; }
-    public List<DimensionComponent> getAddedDimensions() { return new ArrayList<>(addedDimensions); }
-    public List<DimensionComponent> getSubtractedDimensions() { return new ArrayList<>(subtractedDimensions); }
+    public List<DimensionComponent> getAddedDimensions() { return new ArrayList<>(addedDimensions.getObserved()); }
+    public List<DimensionComponent> getSubtractedDimensions() { return new ArrayList<>(subtractedDimensions.getObserved()); }
+    public Observer<RelativeDimensionComponent,DimensionComponent> getAddedDimensionsObserver() { return addedDimensions; }
+    public Observer<RelativeDimensionComponent,DimensionComponent> getSubtractedDimensionsObserver() { return subtractedDimensions; }
 
     @SuppressWarnings("unchecked")
     static class Builder<T extends Builder<T>> extends DimensionComponent.Builder<T> {
@@ -137,9 +147,6 @@ public class RelativeDimensionComponent extends DimensionComponent {
         protected float relVal = 1f;
         protected boolean multiplied = true;
         protected DimensionRelation dimensionRelation;
-
-        protected List<DimensionComponent> addedDimensions = new ArrayList<>();
-        protected List<DimensionComponent> subtractedDimensions = new ArrayList<>();
 
         public Builder() {
 
@@ -164,48 +171,6 @@ public class RelativeDimensionComponent extends DimensionComponent {
             this.dimensionRelation = dimensionRelation;
             return (T) this;
         }
-
-        public T addedDimension(Collection<DimensionComponent> addedDimensions) {
-            this.addedDimensions = new ArrayList<>(addedDimensions);
-            return (T) this;
-        }
-
-        public T addAddedDimensions(Collection<DimensionComponent> addedDimensions) {
-            this.addedDimensions.addAll(addedDimensions);
-            return (T) this;
-        }
-
-        public T addAddedDimensions(DimensionComponent... addedDimensions) {
-            this.addedDimensions.addAll(Arrays.stream(addedDimensions).toList());
-            return (T) this;
-        }
-
-        public T addAddedDimension(DimensionComponent addedDimension) {
-            this.addedDimensions.add(addedDimension);
-            return (T) this;
-        }
-
-        public T subtractedDimensions(Collection<DimensionComponent> addedDimensions) {
-            this.subtractedDimensions = new ArrayList<>(addedDimensions);
-            return (T) this;
-        }
-
-        public T addSubtractedDimensions(Collection<DimensionComponent> subtractedDimensions) {
-            this.subtractedDimensions.addAll(subtractedDimensions);
-            return (T) this;
-        }
-
-        public T addSubtractedDimensions(DimensionComponent... subtractedDimensions) {
-            this.subtractedDimensions.addAll(Arrays.stream(subtractedDimensions).toList());
-            return (T) this;
-        }
-
-        public T addSubtractedDimension(DimensionComponent subtractedDimension) {
-            this.subtractedDimensions.add(subtractedDimension);
-            return (T) this;
-        }
-
-
         @Override
         public void validate() {
             super.validate();

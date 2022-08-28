@@ -89,7 +89,7 @@ public abstract class DimensionComponent extends Component {
         return val;
     }
 
-    public List<DimensionComponent> getMinDimensions() { return minDimensions.getObserved(); }
+    public List<DimensionComponent> getMinDimensions() { return new ArrayList<>(minDimensions.getObserved()); }
     public List<DimensionComponent> getMaxDimensions() { return new ArrayList<>(maxDimensions.getObserved()); }
 
     public void setVal(int val) {

@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * Pardon my naming, but
  *
- * This essentially is used for objects that have subscribed objects,
+ * This essentially is used for parent objects that have subscribed objects,
  * Therefore, all this does is maintain the subscribed list and notifies subscribed objects
  *
  * @param <D>   Parent object type

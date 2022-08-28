@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * Pardon my naming, but
  *
- * This essentially is used for objects that observe another set of objects for state changes,
+ * This essentially is used for parent objects that observe another set of objects for state changes,
  * Therefore, all this does is link the parent object to the observed set of objects by registering the parent
  * as a subscriber to the set of objects
  *
