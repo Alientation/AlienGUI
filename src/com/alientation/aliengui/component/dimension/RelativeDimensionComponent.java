@@ -20,42 +20,24 @@ public class RelativeDimensionComponent extends DimensionComponent {
     //TODO implement these with val()
     protected Observer<RelativeDimensionComponent,DimensionComponent> addedDimensions = new Observer<>(this) {
         @Override
-        public void notifyObservers() {
-            parent.notifySubscribers();
-        }
-
+        public void notifyObservers() { parent.notifySubscribers(); }
         @Override
-        public void unregister(DimensionComponent observed) {
-            observed.unregisterDimensionObservers(parent);
-        }
-
+        public void unregister(DimensionComponent observed) { observed.unregisterDimensionObservers(parent); }
         @Override
-        public void register(DimensionComponent observed) {
-            observed.registerDimensionObservers(parent);
-        }
+        public void register(DimensionComponent observed) { observed.registerDimensionObservers(parent); }
     };
     protected Observer<RelativeDimensionComponent,DimensionComponent> subtractedDimensions = new Observer<>(this) {
         @Override
-        public void notifyObservers() {
-            parent.notifySubscribers();
-        }
-
+        public void notifyObservers() { parent.notifySubscribers(); }
         @Override
-        public void unregister(DimensionComponent observed) {
-            observed.unregisterDimensionObservers(parent);
-        }
-
+        public void unregister(DimensionComponent observed) { observed.unregisterDimensionObservers(parent); }
         @Override
-        public void register(DimensionComponent observed) {
-            observed.registerDimensionObservers(parent);
-        }
+        public void register(DimensionComponent observed) { observed.registerDimensionObservers(parent); }
     };
 
     protected ViewListener viewListener = new ViewListener() {
         @Override
-        public void viewDimensionChanged(ViewDimensionEvent event) {
-            notifySubscribers();
-        }
+        public void viewDimensionChanged(ViewDimensionEvent event) { notifySubscribers(); }
     };
 
 
@@ -96,41 +78,14 @@ public class RelativeDimensionComponent extends DimensionComponent {
         this.dimensionRelation = dimensionRelation;
         notifySubscribers();
     }
-
-    ///HOLY THIS IS SO MUCH CODE REPETITION TODO CLEAN THIS STUFF UP!!!!
-    //HAVE ANOTHER CLASS SIMPLY TO STORE THE HASHSET AND HANDLE ADDING AND REMOVING, THIS CLASS CAN SIMPLY JUST BE AN ADAPTER TO THAT
-    //PROBABLY GONNA NEED TO SUPPLY AN INTERFACE FOR THE ACTUAL ADD AND REMOVE STUFF
-//    public void setAddedDimension(Collection<DimensionComponent> addedDimensions) {
-//        this.addedDimensions.setObserved(addedDimensions);
-//    }
-//
-//    public void addAddedDimensions(Collection<DimensionComponent> addedDimensions) {
-//        this.addedDimensions.registerObserved(addedDimensions);
-//    }
-//
-//    public void addAddedDimensions(DimensionComponent... addedDimensions) {
-//        this.addedDimensions.registerObserved(addedDimensions);
-//    }
-//
-//    public void addAddedDimension(DimensionComponent addedDimension) {
-//        this.addedDimensions.registerObserved(addedDimension);
-//    }
-//
-//    public void setSubtractedDimensions(Collection<DimensionComponent> subtractedDimensions) {
-//        this.subtractedDimensions.setObserved(subtractedDimensions);
-//    }
-//
-//    public void addSubtractedDimensions(Collection<DimensionComponent> subtractedDimensions) {
-//        this.subtractedDimensions.registerObserved(subtractedDimensions);
-//    }
-//
-//    public void addSubtractedDimensions(DimensionComponent... subtractedDimensions) {
-//        this.subtractedDimensions.registerObserved(subtractedDimensions);
-//    }
-//
-//    public void addSubtractedDimension(DimensionComponent subtractedDimension) {
-//        this.subtractedDimensions.registerObserved(subtractedDimension);
-//    }
+    public void setAddedDimension(Collection<DimensionComponent> addedDimensions) { this.addedDimensions.setObserved(addedDimensions); }
+    public void addAddedDimensions(Collection<DimensionComponent> addedDimensions) { this.addedDimensions.registerObserved(addedDimensions); }
+    public void addAddedDimensions(DimensionComponent... addedDimensions) { this.addedDimensions.registerObserved(addedDimensions); }
+    public void addAddedDimension(DimensionComponent addedDimension) { this.addedDimensions.registerObserved(addedDimension); }
+    public void setSubtractedDimensions(Collection<DimensionComponent> subtractedDimensions) { this.subtractedDimensions.setObserved(subtractedDimensions); }
+    public void addSubtractedDimensions(Collection<DimensionComponent> subtractedDimensions) { this.subtractedDimensions.registerObserved(subtractedDimensions); }
+    public void addSubtractedDimensions(DimensionComponent... subtractedDimensions) { this.subtractedDimensions.registerObserved(subtractedDimensions); }
+    public void addSubtractedDimension(DimensionComponent subtractedDimension) { this.subtractedDimensions.registerObserved(subtractedDimension); }
 
     public View getRelTo() { return relTo; }
     public float getRelVal() { return relVal; }

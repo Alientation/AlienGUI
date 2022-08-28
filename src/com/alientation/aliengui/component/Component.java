@@ -18,14 +18,9 @@ public abstract class Component {
         }
 
         @Override
-        public void unregister(View subscribed) {
-
-        }
-
+        public void unregister(View subscribed) { }
         @Override
-        public void register(View subscribed) {
-
-        }
+        public void register(View subscribed) { }
     };
 
     /**
