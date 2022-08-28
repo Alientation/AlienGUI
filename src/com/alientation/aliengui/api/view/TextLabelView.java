@@ -24,7 +24,7 @@ public class TextLabelView extends View {
         super.render(g);
 
         if (textLabel != null)
-            g.drawImage(textLabel.draw(this),x(),y(),null);
+            g.drawImage(textLabel.draw(this,g),x(),y(),null);
     }
 
     @Override

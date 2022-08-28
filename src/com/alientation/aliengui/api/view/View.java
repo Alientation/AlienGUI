@@ -186,13 +186,15 @@ public class View {
         if (!initialized) return;
 
         //frame outline
-        BufferedImage frameColorImage = frameColor.draw(this,new RoundRectangle2D.Float(x() - borderThickness(),y() - borderThickness(),width() + borderThickness()<<1,height() + borderThickness()<<1,
+        BufferedImage frameColorImage = frameColor.draw(this,g,new RoundRectangle2D.Float(x() - borderThickness(),y() - borderThickness(),width() + borderThickness()<<1,height() + borderThickness()<<1,
                 borderRadiusX() + borderThickness(), borderRadiusY() + borderThickness()));
-        g.drawImage(frameColorImage,x() - borderThickness(), y() - borderThickness(),null);
+        //g.drawImage(frameColorImage,x() - borderThickness(), y() - borderThickness(),null);
+        g.drawImage(frameColorImage, 0, 0, null);
 
         //background
-        BufferedImage backgroundColorImage = backgroundColor.draw(this,new RoundRectangle2D.Float(x(),y(),width(),height(),borderRadiusX(),borderRadiusY()));
-        g.drawImage(backgroundColorImage,x(),y(),null);
+        BufferedImage backgroundColorImage = backgroundColor.draw(this,g,new RoundRectangle2D.Float(x(),y(),width(),height(),borderRadiusX(),borderRadiusY()));
+        //g.drawImage(backgroundColorImage,x(),y(),null);
+        g.drawImage(backgroundColorImage,0,0,null);
 
         //background image
         if (backgroundImage != null) {
@@ -455,6 +457,20 @@ public class View {
 
 
     //GETTERS
+
+    //SHAPES
+    public Shape getForegroundShape() {
+        return new RoundRectangle2D.Float(x(),y(),width(),height(),borderRadiusX(),borderRadiusY());
+    }
+
+    public Shape getMiddlegroundShape() {
+        return new RoundRectangle2D.Float(x(),y(),width(),height(),borderRadiusX(),borderRadiusY());
+    }
+
+    public Shape getBackgroundShape() {
+        return new RoundRectangle2D.Float(x(), y(), width(), height(), borderRadiusX(), borderRadiusY());
+    }
+
 
     //LISTENERS
     public EventListenerContainer<KeyListener> getKeyListeners() { return keyListeners; }

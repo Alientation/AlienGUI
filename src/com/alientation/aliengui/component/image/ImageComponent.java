@@ -61,8 +61,8 @@ public class ImageComponent {
      */
     public BufferedImage draw(View view) {
         BufferedImage newImage = new BufferedImage(image.getWidth(),image.getHeight(),BufferedImage.TYPE_INT_ARGB);
-        for (int x = 0; x < image.getWidth(); x++)
-            for (int y = 0; y < image.getHeight(); y++) {
+        for (int y = 0; y < image.getHeight(); y++) //increment x before y to efficiently access memory
+            for (int x = 0; x < image.getWidth(); x++) {
                 int newAlpha = ColorUtil.opacityToAlpha(ColorUtil.alphaToOpacity(getAlpha()) * opacity);
                 newImage.setRGB(x, y, image.getRGB(x, y) & ((newAlpha << 24) | 0x00ffffff));
             }

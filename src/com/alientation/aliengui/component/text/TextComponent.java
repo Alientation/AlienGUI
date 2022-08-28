@@ -4,6 +4,7 @@ import com.alientation.aliengui.api.view.View;
 import com.alientation.aliengui.component.Component;
 import com.alientation.aliengui.event.view.ViewEvent;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
@@ -64,10 +65,13 @@ public class TextComponent extends Component {
      * Constructs a BufferedImage view of the text
      *
      * @param view  View to display the text in
+     * @param g     The Graphics context
      * @return      BufferedImage view of the text
      */
-    public BufferedImage draw(View view) {
+    public BufferedImage draw(View view, Graphics g) {
         BufferedImage image = new BufferedImage(view.width(),view.height(),BufferedImage.TYPE_INT_ARGB);
+
+
 
 
         return image;
@@ -77,11 +81,18 @@ public class TextComponent extends Component {
     private List<AttributedString> wrappedString(int maxHeight, int maxWidth) {
         List<AttributedString> wrappedString = new ArrayList<>();
 
+
+
+
         return wrappedString;
     }
 
     private List<AttributedString> resizedString(int maxHeight, int maxWidth) {
         List<AttributedString> resizedString = new ArrayList<>();
+
+
+
+
 
         return resizedString;
     }

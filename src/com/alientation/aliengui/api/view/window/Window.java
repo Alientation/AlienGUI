@@ -187,24 +187,18 @@ public class Window extends Canvas implements Runnable {
      * Updates current Graphics context, requests a render update in window renderer
      */
     public void render() {
-        //prerender
-        bs = this.getBufferStrategy();
-        if (bs == null) {
-            this.createBufferStrategy(3);
-            return;
-        }
+        do {
+            //render
+            g = bs.getDrawGraphics();
+            if (!windowView.getWindowRenderer().render(g)) {
+                g.dispose();
+                return; //no need to show anything, nothing was updated
+            }
 
-        //render
-        g = bs.getDrawGraphics();
-        if (!windowView.getWindowRenderer().render(g)) {
+            //post render
             g.dispose();
-            return; //no need to show anything, nothing was updated
-        }
-
-        //post render
-        g.dispose();
-        bs.show();
-
+            bs.show();
+        } while (bs.contentsLost()); //prevent lost buffer frames
     }
 
     /**
