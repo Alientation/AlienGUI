@@ -234,11 +234,9 @@ public class View {
      * @param x The new X dimension
      */
     public void setX(DimensionComponent x) {
-        if (this.x == x) return;
         this.x.unregisterSubscriber(this);
         this.x = x;
         this.x.registerSubscriber(this);
-        this.x.notifySubscribers();
     }
 
     public void setAbsX(DimensionComponent absX) {
@@ -251,11 +249,9 @@ public class View {
      * @param y The new y dimension
      */
     public void setY(DimensionComponent y) {
-        if (this.y == y) return;
         this.y.unregisterSubscriber(this);
         this.y = y;
         this.y.registerSubscriber(this);
-        this.y.notifySubscribers();
     }
 
     public void setAbsY(DimensionComponent absY) {
@@ -268,11 +264,9 @@ public class View {
      * @param width The new Width dimension
      */
     public void setWidth(DimensionComponent width) {
-        if (this.width == width) return;
         this.width.unregisterSubscriber(this);
         this.width = width;
         this.width.registerSubscriber(this);
-        this.width.notifySubscribers();
     }
 
     /**
@@ -281,11 +275,9 @@ public class View {
      * @param height The new Height dimension
      */
     public void setHeight(DimensionComponent height) {
-        if (this.height == height) return;
         this.height.unregisterSubscriber(this);
         this.height = height;
         this.height.registerSubscriber(this);
-        this.height.notifySubscribers();
     }
 
     /**
@@ -294,11 +286,9 @@ public class View {
      * @param borderRadiusWidth The new Border Radius X dimension (curved borders)
      */
     public void setBorderRadiusWidth(DimensionComponent borderRadiusWidth) {
-        if (this.borderRadiusWidth == borderRadiusWidth) return;
         this.borderRadiusWidth.unregisterSubscriber(this);
         this.borderRadiusWidth = borderRadiusWidth;
         this.borderRadiusWidth.registerSubscriber(this);
-        this.borderRadiusWidth.notifySubscribers();
     }
 
     /**
@@ -307,11 +297,9 @@ public class View {
      * @param borderRadiusHeight The new Border Radius Y dimension (curved borders)
      */
     public void setBorderRadiusHeight(DimensionComponent borderRadiusHeight) {
-        if (this.borderRadiusHeight == borderRadiusHeight) return;
         this.borderRadiusHeight.unregisterSubscriber(this);
         this.borderRadiusHeight = borderRadiusHeight;
         this.borderRadiusHeight.registerSubscriber(this);
-        this.borderRadiusHeight.notifySubscribers();
     }
 
     /**
@@ -320,11 +308,9 @@ public class View {
      * @param borderThickness The new Border Thickness dimension
      */
     public void setBorderThickness(DimensionComponent borderThickness) {
-        if (this.borderThickness == borderThickness) return;
         this.borderThickness.unregisterSubscriber(this);
         this.borderThickness = borderThickness;
         this.borderThickness.registerSubscriber(this);
-        this.borderThickness.notifySubscribers();
     }
 
     /**
@@ -333,11 +319,9 @@ public class View {
      * @param marginX The new Margin X dimension
      */
     public void setMarginX(DimensionComponent marginX) {
-        if (this.marginX == marginX) return;
         this.marginX.unregisterSubscriber(this);
         this.marginX = marginX;
         this.marginX.registerSubscriber(this);
-        this.marginX.notifySubscribers();
     }
 
     /**
@@ -346,11 +330,9 @@ public class View {
      * @param marginY The new Margin Y dimension
      */
     public void setMarginY(DimensionComponent marginY) {
-        if (this.marginY == marginY) return;
         this.marginY.unregisterSubscriber(this);
         this.marginY = marginY;
         this.marginY.registerSubscriber(this);
-        this.marginY.notifySubscribers();
     }
 
     /**
