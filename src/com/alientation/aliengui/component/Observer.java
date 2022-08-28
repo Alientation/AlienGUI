@@ -27,6 +27,12 @@ public abstract class Observer<D,T> {
         setObserved(observed);
     }
 
+    public void replaceObserved(T toBeReplaced, T replacedWith) {
+        if (toBeReplaced == replacedWith) return;
+        unregisterObserved(toBeReplaced);
+        registerObserved(replacedWith);
+    }
+
     public void clearObserved() {
         for (T obs : this.observed)
             unregisterObserved(obs);

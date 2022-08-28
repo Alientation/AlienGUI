@@ -28,6 +28,12 @@ public abstract class Subscriber<D,T> {
         registerSubscribed(subscribed);
     }
 
+    public void replaceSubscribed(T toBeReplaced, T replacedWith) {
+        if (toBeReplaced == replacedWith) return;
+        unregisterSubscribed(toBeReplaced);
+        registerSubscribed(replacedWith);
+    }
+
     public void clearSubscribed() {
         for (T sub : this.subscribed)
             unregisterSubscribed(sub);
