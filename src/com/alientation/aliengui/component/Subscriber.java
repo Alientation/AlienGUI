@@ -8,6 +8,10 @@ import java.util.*;
  * This essentially is used for parent objects that have subscribed objects,
  * Therefore, all this does is maintain the subscribed list and notifies subscribed objects
  *
+ * WARNING potentially dangerous infinite recursion with notify if it is implemented in both the Subscriber and Observer
+ * and calls each other to register/unregister
+ * TODO prevent this
+ *
  * @param <D>   Parent object type
  * @param <T>   Observed objects type
  */

@@ -9,6 +9,8 @@ import java.util.*;
  * Therefore, all this does is link the parent object to the observed set of objects by registering the parent
  * as a subscriber to the set of objects
  *
+ * TODO potential infinite recursion, see Subscriber.java notes
+ *
  * @param <D>   Parent object type
  * @param <T>   Observed objects type
  */

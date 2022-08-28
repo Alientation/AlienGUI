@@ -12,56 +12,29 @@ public abstract class DimensionComponent extends Component {
     protected int val;
     protected Observer<DimensionComponent,DimensionComponent> minDimensions = new Observer<>(this) {
         @Override
-        public void notifyObservers() {
-            parent.notifySubscribers();
-        }
-
+        public void notifyObservers() { parent.notifySubscribers(); }
         @Override
-        public void unregister(DimensionComponent observed) {
-            observed.unregisterDimensionObserver(parent);
-        }
-
+        public void unregister(DimensionComponent observed) { observed.getDimensionObserver().unregisterSubscribed(parent); }
         @Override
-        public void register(DimensionComponent observed) {
-            observed.registerDimensionObservers(parent);
-        }
+        public void register(DimensionComponent observed) { observed.getDimensionObserver().registerSubscribed(parent); }
     };
 
     protected Observer<DimensionComponent,DimensionComponent> maxDimensions = new Observer<>(this) {
         @Override
-        public void notifyObservers() {
-            parent.notifySubscribers();
-        }
-
+        public void notifyObservers() { parent.notifySubscribers(); }
         @Override
-        public void unregister(DimensionComponent observed) {
-            observed.unregisterDimensionObserver(parent);
-        }
-
+        public void unregister(DimensionComponent observed) { observed.getDimensionObserver().unregisterSubscribed(parent); }
         @Override
-        public void register(DimensionComponent observed) {
-            observed.registerDimensionObservers(parent);
-        }
+        public void register(DimensionComponent observed) { observed.getDimensionObserver().registerSubscribed(parent); }
     };
 
     protected Subscriber<DimensionComponent,DimensionComponent> dimensionsSubscriber = new Subscriber<>(this) {
-
-
         @Override
-        public void notifySubscribers() {
-            for (DimensionComponent dimensionComponent : dimensionsSubscriber.getSubscribed())
-                dimensionComponent.notifySubscribers();
-        }
-
+        public void notifySubscribers() { dimensionsSubscriber.getSubscribed().forEach(DimensionComponent::notifySubscribers); }
         @Override
-        public void unregister(DimensionComponent subscribed) {
-
-        }
-
+        public void unregister(DimensionComponent subscribed) { }
         @Override
-        public void register(DimensionComponent subscribed) {
-
-        }
+        public void register(DimensionComponent subscribed) { }
     };
 
     public DimensionComponent(Builder<?> builder) {
@@ -101,20 +74,20 @@ public abstract class DimensionComponent extends Component {
     public Observer<DimensionComponent,DimensionComponent> getMaxDimensionsObserver() { return maxDimensions; }
     public Subscriber<DimensionComponent,DimensionComponent> getDimensionObserver() { return dimensionsSubscriber; }
 
-    public void setMinDimensions(Collection<DimensionComponent> minDimensions) { this.minDimensions.setObserved(minDimensions); }
-    public void addMinDimensions(Collection<DimensionComponent> minDimensions) { this.minDimensions.registerObserved(minDimensions); }
-    public void addMinDimensions(DimensionComponent... minDimensions) { this.minDimensions.registerObserved(minDimensions); }
-    public void addMinDimension(DimensionComponent minDimension) { this.minDimensions.registerObserved(minDimension); }
-    public void removeMinDimensions(Collection<DimensionComponent> minDimensions) { this.minDimensions.unregisterObserved(minDimensions); }
-    public void removeMinDimensions(DimensionComponent... minDimensions) { this.minDimensions.unregisterObserved(minDimensions); }
-    public void removeMinDimension(DimensionComponent minDimension) { this.minDimensions.unregister(minDimension); }
-    public void setMaxDimensions(Collection<DimensionComponent> maxDimensions) { this.maxDimensions.setObserved(maxDimensions); }
-    public void addMaxDimensions(Collection<DimensionComponent> maxDimensions) { this.maxDimensions.registerObserved(maxDimensions); }
-    public void addMaxDimensions(DimensionComponent... maxDimensions) { this.maxDimensions.registerObserved(maxDimensions); }
-    public void addMaxDimension(DimensionComponent maxDimension) { this.maxDimensions.registerObserved(maxDimension); }
-    public void removeMaxDimensions(Collection<DimensionComponent> maxDimensions) { this.maxDimensions.unregisterObserved(maxDimensions); }
-    public void removeMaxDimensions(DimensionComponent... maxDimensions) { this.maxDimensions.unregisterObserved(maxDimensions); }
-    public void removeMaxDimension(DimensionComponent maxDimension) { this.maxDimensions.unregisterObserved(maxDimension); }
+//    public void setMinDimensions(Collection<DimensionComponent> minDimensions) { this.minDimensions.setObserved(minDimensions); }
+//    public void addMinDimensions(Collection<DimensionComponent> minDimensions) { this.minDimensions.registerObserved(minDimensions); }
+//    public void addMinDimensions(DimensionComponent... minDimensions) { this.minDimensions.registerObserved(minDimensions); }
+//    public void addMinDimension(DimensionComponent minDimension) { this.minDimensions.registerObserved(minDimension); }
+//    public void removeMinDimensions(Collection<DimensionComponent> minDimensions) { this.minDimensions.unregisterObserved(minDimensions); }
+//    public void removeMinDimensions(DimensionComponent... minDimensions) { this.minDimensions.unregisterObserved(minDimensions); }
+//    public void removeMinDimension(DimensionComponent minDimension) { this.minDimensions.unregister(minDimension); }
+//    public void setMaxDimensions(Collection<DimensionComponent> maxDimensions) { this.maxDimensions.setObserved(maxDimensions); }
+//    public void addMaxDimensions(Collection<DimensionComponent> maxDimensions) { this.maxDimensions.registerObserved(maxDimensions); }
+//    public void addMaxDimensions(DimensionComponent... maxDimensions) { this.maxDimensions.registerObserved(maxDimensions); }
+//    public void addMaxDimension(DimensionComponent maxDimension) { this.maxDimensions.registerObserved(maxDimension); }
+//    public void removeMaxDimensions(Collection<DimensionComponent> maxDimensions) { this.maxDimensions.unregisterObserved(maxDimensions); }
+//    public void removeMaxDimensions(DimensionComponent... maxDimensions) { this.maxDimensions.unregisterObserved(maxDimensions); }
+//    public void removeMaxDimension(DimensionComponent maxDimension) { this.maxDimensions.unregisterObserved(maxDimension); }
 
     public void registerDimensionObserver(DimensionComponent dimensionObserver) { this.dimensionsSubscriber.registerSubscribed(dimensionObserver); }
     public void registerDimensionObservers(DimensionComponent... dimensionObservers) { this.dimensionsSubscriber.registerSubscribed(dimensionObservers); }

@@ -100,37 +100,37 @@ public class RelativeDimensionComponent extends DimensionComponent {
     ///HOLY THIS IS SO MUCH CODE REPETITION TODO CLEAN THIS STUFF UP!!!!
     //HAVE ANOTHER CLASS SIMPLY TO STORE THE HASHSET AND HANDLE ADDING AND REMOVING, THIS CLASS CAN SIMPLY JUST BE AN ADAPTER TO THAT
     //PROBABLY GONNA NEED TO SUPPLY AN INTERFACE FOR THE ACTUAL ADD AND REMOVE STUFF
-    public void setAddedDimension(Collection<DimensionComponent> addedDimensions) {
-        this.addedDimensions.setObserved(addedDimensions);
-    }
-
-    public void addAddedDimensions(Collection<DimensionComponent> addedDimensions) {
-        this.addedDimensions.registerObserved(addedDimensions);
-    }
-
-    public void addAddedDimensions(DimensionComponent... addedDimensions) {
-        this.addedDimensions.registerObserved(addedDimensions);
-    }
-
-    public void addAddedDimension(DimensionComponent addedDimension) {
-        this.addedDimensions.registerObserved(addedDimension);
-    }
-
-    public void setSubtractedDimensions(Collection<DimensionComponent> subtractedDimensions) {
-        this.subtractedDimensions.setObserved(subtractedDimensions);
-    }
-
-    public void addSubtractedDimensions(Collection<DimensionComponent> subtractedDimensions) {
-        this.subtractedDimensions.registerObserved(subtractedDimensions);
-    }
-
-    public void addSubtractedDimensions(DimensionComponent... subtractedDimensions) {
-        this.subtractedDimensions.registerObserved(subtractedDimensions);
-    }
-
-    public void addSubtractedDimension(DimensionComponent subtractedDimension) {
-        this.subtractedDimensions.registerObserved(subtractedDimension);
-    }
+//    public void setAddedDimension(Collection<DimensionComponent> addedDimensions) {
+//        this.addedDimensions.setObserved(addedDimensions);
+//    }
+//
+//    public void addAddedDimensions(Collection<DimensionComponent> addedDimensions) {
+//        this.addedDimensions.registerObserved(addedDimensions);
+//    }
+//
+//    public void addAddedDimensions(DimensionComponent... addedDimensions) {
+//        this.addedDimensions.registerObserved(addedDimensions);
+//    }
+//
+//    public void addAddedDimension(DimensionComponent addedDimension) {
+//        this.addedDimensions.registerObserved(addedDimension);
+//    }
+//
+//    public void setSubtractedDimensions(Collection<DimensionComponent> subtractedDimensions) {
+//        this.subtractedDimensions.setObserved(subtractedDimensions);
+//    }
+//
+//    public void addSubtractedDimensions(Collection<DimensionComponent> subtractedDimensions) {
+//        this.subtractedDimensions.registerObserved(subtractedDimensions);
+//    }
+//
+//    public void addSubtractedDimensions(DimensionComponent... subtractedDimensions) {
+//        this.subtractedDimensions.registerObserved(subtractedDimensions);
+//    }
+//
+//    public void addSubtractedDimension(DimensionComponent subtractedDimension) {
+//        this.subtractedDimensions.registerObserved(subtractedDimension);
+//    }
 
     public View getRelTo() { return relTo; }
     public float getRelVal() { return relVal; }

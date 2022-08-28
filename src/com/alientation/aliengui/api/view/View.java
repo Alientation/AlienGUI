@@ -45,7 +45,7 @@ public class View {
     protected WindowView windowView;
 
     //Views that are enclosed in this view
-    protected Set<View> childViews;
+    protected Set<View> childViews; //TODO apply Subscriber pattern to this
 
     //Whether this view is ready to be used after all properties are initialized
     protected boolean initialized;
@@ -225,6 +225,8 @@ public class View {
         //update new controller -> add reference to this view
         this.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
     }
+
+    //TODO clean up this code too (Subscriber/Observer pattern?)
 
     /**
      * Sets dimensions and updates dependencies
