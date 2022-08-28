@@ -1,20 +1,17 @@
 package com.alientation.aliengui.component.image;
 
 import com.alientation.aliengui.api.view.View;
-import com.alientation.aliengui.event.view.ViewEvent;
+import com.alientation.aliengui.component.Component;
 import com.alientation.aliengui.util.ColorUtil;
 import com.alientation.aliengui.util.NumberUtil;
 
 import java.awt.image.BufferedImage;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * TODO implement this with the main project and allow shaders (ie getColor(int x, int y))
  */
 @SuppressWarnings("unused")
-public class ImageComponent {
+public class ImageComponent extends Component {
 
     /**
      *
@@ -25,11 +22,6 @@ public class ImageComponent {
      *
      */
     protected float opacity;
-
-    /**
-     *
-     */
-    protected Set<View> subscribers = new HashSet<>();
 
     /**
      * Constructs an ImageComponent
@@ -74,25 +66,15 @@ public class ImageComponent {
 
     public void setImage(BufferedImage image) {
         this.image = image;
-        stateChanged();
+        notifySubscribers();
     }
     public void setOpacity(float opacity) {
         this.opacity = NumberUtil.clamp(opacity,0f,1f);
-        stateChanged();
+        notifySubscribers();
     }
     public void setAlpha(int alpha) {
         this.opacity = ColorUtil.alphaToOpacity(NumberUtil.clamp(alpha,0,255));
-        stateChanged();
-    }
-    public void registerSubscriber(View subscriber) { this.subscribers.add(subscriber); }
-    public void unregisterSubscriber(View subscriber) { this.subscribers.remove(subscriber); }
-
-    /**
-     * Dispatches event to registered dependencies
-     */
-    public void stateChanged() {
-        for (View view : subscribers)
-            view.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(view)));
+        notifySubscribers();
     }
 
 
@@ -101,5 +83,4 @@ public class ImageComponent {
     public BufferedImage getImage() { return image; } //shouldn't use this
     public float getOpacity() { return opacity; }
     public int getAlpha() { return (int) (255 * opacity); }
-    public List<View> getSubscribers() { return subscribers.stream().toList(); }
 }
