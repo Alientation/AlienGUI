@@ -14,6 +14,8 @@ public abstract class Component {
     /**
      * Notifies all subscribers of state change
      */
+    //TODO optimization, instead of instantly notifying listeners of state changes, mark this and wait until the next tick event
+    //This way, instead of have tons of tiny events, the events are grouped in batches between tick events
     public abstract void notifySubscribers();
 
     public void registerSubscriber(View subscriber) { this.subscribers.add(subscriber); }

@@ -17,7 +17,7 @@ public class RelativeDimensionComponent extends DimensionComponent {
     protected boolean multiplied;
     protected DimensionRelation dimensionRelation;
 
-    protected List<DimensionComponent> addedDimensions; //TODO implement these with val() and register dependencies
+    protected List<DimensionComponent> addedDimensions; //TODO implement these with val()
     protected List<DimensionComponent> subtractedDimensions;
 
     protected ViewListener viewListener = new ViewListener() {
@@ -36,6 +36,9 @@ public class RelativeDimensionComponent extends DimensionComponent {
         dimensionRelation = builder.dimensionRelation;
         addedDimensions = builder.addedDimensions;
         subtractedDimensions = builder.subtractedDimensions;
+
+        for (DimensionComponent dimensionComponent : addedDimensions) dimensionComponent.registerDimensionSubscribers(this);
+        for (DimensionComponent dimensionComponent : subtractedDimensions) dimensionComponent.registerDimensionSubscribers(this);
 
         relTo.getViewListeners().addListenerAtBeginning(viewListener);
     }
@@ -68,21 +71,62 @@ public class RelativeDimensionComponent extends DimensionComponent {
         notifySubscribers();
     }
 
-    public View getRelTo() {
-        return relTo;
+    public void setAddedDimension(Collection<DimensionComponent> addedDimensions) {
+        for (DimensionComponent dimensionComponent : this.addedDimensions) dimensionComponent.unregisterDimensionSubscribers(this);
+        this.addedDimensions = new ArrayList<>(addedDimensions);
+        for (DimensionComponent dimensionComponent : this.addedDimensions) dimensionComponent.registerDimensionSubscribers(this);
+        notifySubscribers();
     }
 
-    public float getRelVal() {
-        return relVal;
+    public void addAddedDimensions(Collection<DimensionComponent> addedDimensions) {
+        this.addedDimensions.addAll(addedDimensions);
+        for (DimensionComponent dimensionComponent : addedDimensions) dimensionComponent.registerDimensionSubscribers(this);
+        notifySubscribers();
     }
 
-    public boolean isMultiplied() {
-        return multiplied;
+    public void addAddedDimensions(DimensionComponent... addedDimensions) {
+        this.addedDimensions.addAll(Arrays.stream(addedDimensions).toList());
+        for (DimensionComponent dimensionComponent : addedDimensions) dimensionComponent.registerDimensionSubscribers(this);
+        notifySubscribers();
     }
 
-    public DimensionRelation getDimensionRelation() {
-        return dimensionRelation;
+    public void addAddedDimension(DimensionComponent addedDimension) {
+        this.addedDimensions.add(addedDimension);
+        addedDimension.registerDimensionSubscribers(this);
+        notifySubscribers();
     }
+
+    public void subtractedDimensions(Collection<DimensionComponent> subtractedDimensions) {
+        for (DimensionComponent dimensionComponent : this.subtractedDimensions) dimensionComponent.unregisterDimensionSubscribers(this);
+        this.subtractedDimensions = new ArrayList<>(subtractedDimensions);
+        for (DimensionComponent dimensionComponent : this.subtractedDimensions) dimensionComponent.registerDimensionSubscribers(this);
+        notifySubscribers();
+    }
+
+    public void addSubtractedDimensions(Collection<DimensionComponent> subtractedDimensions) {
+        this.subtractedDimensions.addAll(subtractedDimensions);
+        for (DimensionComponent dimensionComponent : subtractedDimensions) dimensionComponent.registerDimensionSubscribers(this);
+        notifySubscribers();
+    }
+
+    public void addSubtractedDimensions(DimensionComponent... subtractedDimensions) {
+        this.subtractedDimensions.addAll(Arrays.stream(subtractedDimensions).toList());
+        for (DimensionComponent dimensionComponent : subtractedDimensions) dimensionComponent.registerDimensionSubscribers(this);
+        notifySubscribers();
+    }
+
+    public void addSubtractedDimension(DimensionComponent subtractedDimension) {
+        this.subtractedDimensions.add(subtractedDimension);
+        subtractedDimension.registerDimensionSubscribers(this);
+        notifySubscribers();
+    }
+
+    public View getRelTo() { return relTo; }
+    public float getRelVal() { return relVal; }
+    public boolean isMultiplied() { return multiplied; }
+    public DimensionRelation getDimensionRelation() { return dimensionRelation; }
+    public List<DimensionComponent> getAddedDimensions() { return new ArrayList<>(addedDimensions); }
+    public List<DimensionComponent> getSubtractedDimensions() { return new ArrayList<>(subtractedDimensions); }
 
     @SuppressWarnings("unchecked")
     static class Builder<T extends Builder<T>> extends DimensionComponent.Builder<T> {
@@ -174,6 +218,7 @@ public class RelativeDimensionComponent extends DimensionComponent {
 
 }
 
+@SuppressWarnings("unused")
 abstract class DimensionRelation {
     public static final DimensionRelation LEFT_X = new DimensionRelation() {
         @Override

@@ -4,10 +4,7 @@ import com.alientation.aliengui.api.view.View;
 import com.alientation.aliengui.component.Component;
 import com.alientation.aliengui.event.view.ViewEvent;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @SuppressWarnings("unused")
 public abstract class DimensionComponent extends Component {
@@ -16,7 +13,7 @@ public abstract class DimensionComponent extends Component {
     protected List<DimensionComponent> min = new ArrayList<>();
     protected List<DimensionComponent> max = new ArrayList<>();
 
-    protected List<DimensionComponent> dimensionSubscribers = new ArrayList<>();
+    protected Set<DimensionComponent> dimensionSubscribers = new HashSet<>();
     public DimensionComponent(Builder<?> builder) {
 
     }
@@ -34,13 +31,15 @@ public abstract class DimensionComponent extends Component {
         return val;
     }
 
-    public List<DimensionComponent> getMinVal() {
-        return min;
+    public List<DimensionComponent> getMinValues() {
+        return new ArrayList<>(min);
     }
 
-    public List<DimensionComponent> getMaxVal() {
-        return max;
+    public List<DimensionComponent> getMaxValues() {
+        return new ArrayList<>(max);
     }
+
+    //TODO updaters for min and max, register and unregister dependencies
 
     public void setVal(int val) {
         this.val = val;
@@ -106,6 +105,8 @@ public abstract class DimensionComponent extends Component {
             this.min = new ArrayList<>(min);
             return (T) this;
         }
+
+        //TODO finish builder stuff
 
 
         public void validate() {

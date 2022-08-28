@@ -97,6 +97,9 @@ public class TextComponent extends Component {
         return resizedString;
     }
 
+
+    //SETTERS
+
     public void setStringLine(String line, int index) {
         setAttributedStringLine(new AttributedString(line), index);
     }
