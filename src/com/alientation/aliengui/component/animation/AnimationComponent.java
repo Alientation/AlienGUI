@@ -2,7 +2,6 @@ package com.alientation.aliengui.component.animation;
 
 import com.alientation.aliengui.api.view.View;
 import com.alientation.aliengui.component.Component;
-import com.alientation.aliengui.event.view.ViewEvent;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -39,6 +38,6 @@ public class AnimationComponent extends Component {
      */
     @Override
     public void notifySubscribers() {
-        for (View view : subscribers) view.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(view)));
+        super.notifySubscribers();
     }
 }

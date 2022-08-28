@@ -37,8 +37,8 @@ public class RelativeDimensionComponent extends DimensionComponent {
         addedDimensions = builder.addedDimensions;
         subtractedDimensions = builder.subtractedDimensions;
 
-        for (DimensionComponent dimensionComponent : addedDimensions) dimensionComponent.registerDimensionSubscribers(this);
-        for (DimensionComponent dimensionComponent : subtractedDimensions) dimensionComponent.registerDimensionSubscribers(this);
+        for (DimensionComponent dimensionComponent : addedDimensions) dimensionComponent.registerDimensionObservers(this);
+        for (DimensionComponent dimensionComponent : subtractedDimensions) dimensionComponent.registerDimensionObservers(this);
 
         relTo.getViewListeners().addListenerAtBeginning(viewListener);
     }
@@ -75,52 +75,52 @@ public class RelativeDimensionComponent extends DimensionComponent {
     //HAVE ANOTHER CLASS SIMPLY TO STORE THE HASHSET AND HANDLE ADDING AND REMOVING, THIS CLASS CAN SIMPLY JUST BE AN ADAPTER TO THAT
     //PROBABLY GONNA NEED TO SUPPLY AN INTERFACE FOR THE ACTUAL ADD AND REMOVE STUFF
     public void setAddedDimension(Collection<DimensionComponent> addedDimensions) {
-        for (DimensionComponent dimensionComponent : this.addedDimensions) dimensionComponent.unregisterDimensionSubscribers(this);
+        for (DimensionComponent dimensionComponent : this.addedDimensions) dimensionComponent.unregisterDimensionObservers(this);
         this.addedDimensions = new ArrayList<>(addedDimensions);
-        for (DimensionComponent dimensionComponent : this.addedDimensions) dimensionComponent.registerDimensionSubscribers(this);
+        for (DimensionComponent dimensionComponent : this.addedDimensions) dimensionComponent.registerDimensionObservers(this);
         notifySubscribers();
     }
 
     public void addAddedDimensions(Collection<DimensionComponent> addedDimensions) {
         this.addedDimensions.addAll(addedDimensions);
-        for (DimensionComponent dimensionComponent : addedDimensions) dimensionComponent.registerDimensionSubscribers(this);
+        for (DimensionComponent dimensionComponent : addedDimensions) dimensionComponent.registerDimensionObservers(this);
         notifySubscribers();
     }
 
     public void addAddedDimensions(DimensionComponent... addedDimensions) {
         this.addedDimensions.addAll(Arrays.stream(addedDimensions).toList());
-        for (DimensionComponent dimensionComponent : addedDimensions) dimensionComponent.registerDimensionSubscribers(this);
+        for (DimensionComponent dimensionComponent : addedDimensions) dimensionComponent.registerDimensionObservers(this);
         notifySubscribers();
     }
 
     public void addAddedDimension(DimensionComponent addedDimension) {
         this.addedDimensions.add(addedDimension);
-        addedDimension.registerDimensionSubscribers(this);
+        addedDimension.registerDimensionObservers(this);
         notifySubscribers();
     }
 
     public void subtractedDimensions(Collection<DimensionComponent> subtractedDimensions) {
-        for (DimensionComponent dimensionComponent : this.subtractedDimensions) dimensionComponent.unregisterDimensionSubscribers(this);
+        for (DimensionComponent dimensionComponent : this.subtractedDimensions) dimensionComponent.unregisterDimensionObservers(this);
         this.subtractedDimensions = new ArrayList<>(subtractedDimensions);
-        for (DimensionComponent dimensionComponent : this.subtractedDimensions) dimensionComponent.registerDimensionSubscribers(this);
+        for (DimensionComponent dimensionComponent : this.subtractedDimensions) dimensionComponent.registerDimensionObservers(this);
         notifySubscribers();
     }
 
     public void addSubtractedDimensions(Collection<DimensionComponent> subtractedDimensions) {
         this.subtractedDimensions.addAll(subtractedDimensions);
-        for (DimensionComponent dimensionComponent : subtractedDimensions) dimensionComponent.registerDimensionSubscribers(this);
+        for (DimensionComponent dimensionComponent : subtractedDimensions) dimensionComponent.registerDimensionObservers(this);
         notifySubscribers();
     }
 
     public void addSubtractedDimensions(DimensionComponent... subtractedDimensions) {
         this.subtractedDimensions.addAll(Arrays.stream(subtractedDimensions).toList());
-        for (DimensionComponent dimensionComponent : subtractedDimensions) dimensionComponent.registerDimensionSubscribers(this);
+        for (DimensionComponent dimensionComponent : subtractedDimensions) dimensionComponent.registerDimensionObservers(this);
         notifySubscribers();
     }
 
     public void addSubtractedDimension(DimensionComponent subtractedDimension) {
         this.subtractedDimensions.add(subtractedDimension);
-        subtractedDimension.registerDimensionSubscribers(this);
+        subtractedDimension.registerDimensionObservers(this);
         notifySubscribers();
     }
 

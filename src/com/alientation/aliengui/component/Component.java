@@ -1,6 +1,7 @@
 package com.alientation.aliengui.component;
 
 import com.alientation.aliengui.api.view.View;
+import com.alientation.aliengui.event.view.ViewEvent;
 
 import java.util.*;
 
@@ -9,25 +10,39 @@ public abstract class Component {
     /**
      * Views that depend on this color component
      */
-    protected Set<View> subscribers = new HashSet<>();
+    protected Subscriber<Component,View> subscribers = new Subscriber<>(this) {
+        @Override
+        public void notifySubscribers() {
+            for (View view : subscribers.getSubscribed())
+                view.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(view)));
+        }
+
+        @Override
+        public void unregister(View subscribed) {
+
+        }
+
+        @Override
+        public void register(View subscribed) {
+
+        }
+    };
 
     /**
      * Notifies all subscribers of state change
      */
     //TODO optimization, instead of instantly notifying listeners of state changes, mark this and wait until the next tick event
     //This way, instead of have tons of tiny events, the events are grouped in batches between tick events
-    public abstract void notifySubscribers();
+    public void notifySubscribers() {
+        subscribers.notifySubscribers();
+    }
 
+    public void registerSubscriber(View subscriber) { this.subscribers.registerSubscribed(subscriber); }
+    public void registerSubscribers(View... subscribers) { this.subscribers.registerSubscribed(Arrays.stream(subscribers).toList()); }
+    public void registerSubscribers(Collection<View> subscribers) { this.subscribers.registerSubscribed(subscribers); }
+    public void unregisterSubscriber(View subscriber) { this.subscribers.unregisterSubscribed(subscriber); }
+    public void unregisterSubscribers(View... subscribers) { this.subscribers.unregisterSubscribed(subscribers); }
+    public void unregisterSubscriber(Collection<View> subscribers) { this.subscribers.unregisterSubscribed(subscribers); }
 
-    //HOLY THIS IS SO MUCH CODE REPETITION TODO CLEAN THIS STUFF UP!!!!
-    //HAVE ANOTHER CLASS SIMPLY TO STORE THE HASHSET AND HANDLE ADDING AND REMOVING, THIS CLASS CAN SIMPLY JUST BE AN ADAPTER TO THAT
-    //PROBABLY GONNA NEED TO SUPPLY AN INTERFACE FOR THE ACTUAL ADD AND REMOVE STUFF
-    public void registerSubscriber(View subscriber) { this.subscribers.add(subscriber); }
-    public void registerSubscribers(View... subscribers) { this.subscribers.addAll(Arrays.stream(subscribers).toList()); }
-    public void registerSubscribers(Collection<View> subscribers) { this.subscribers.addAll(subscribers); }
-    public void unregisterSubscriber(View subscriber) { this.subscribers.remove(subscriber); }
-    public void unregisterSubscribers(View... subscribers) { Arrays.asList(subscribers).forEach(this.subscribers::remove); }
-    public void unregisterSubscriber(Collection<View> subscribers) { this.subscribers.removeAll(subscribers); }
-
-    public List<View> getSubscribers() { return subscribers.stream().toList(); }
+    public Subscriber<Component, View> getSubscribers() { return subscribers; }
 }
