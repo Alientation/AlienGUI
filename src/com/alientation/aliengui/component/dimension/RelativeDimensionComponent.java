@@ -12,11 +12,19 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 public class RelativeDimensionComponent extends DimensionComponent {
+    //who this RelativeDimensionComponent is relative to
     protected View relTo;
+
+    //the relativity value to the relTo view
     protected float relVal;
+
+    //whether to multiply or add the relVal and the relTo dimension of the view
     protected boolean multiplied;
+
+    //accesses the proper dimension of the relTo view
     protected DimensionRelation dimensionRelation;
 
+    //Dimensions that are added to the value of this base dimension value
     protected Observer<RelativeDimensionComponent,DimensionComponent> addedDimensions = new Observer<>(this) {
         @Override
         public void notifyObservers() { parent.notifySubscribers(); }
@@ -25,6 +33,8 @@ public class RelativeDimensionComponent extends DimensionComponent {
         @Override
         public void register(DimensionComponent observed) { observed.registerDimensionObservers(parent); }
     };
+
+    //Dimensions that are subtracted from the value of this base dimension value
     protected Observer<RelativeDimensionComponent,DimensionComponent> subtractedDimensions = new Observer<>(this) {
         @Override
         public void notifyObservers() { parent.notifySubscribers(); }
@@ -34,12 +44,17 @@ public class RelativeDimensionComponent extends DimensionComponent {
         public void register(DimensionComponent observed) { observed.registerDimensionObservers(parent); }
     };
 
+    //The listener that is supplied to the relTo view
     protected ViewListener viewListener = new ViewListener() {
         @Override
         public void viewDimensionChanged(ViewDimensionEvent event) { notifySubscribers(); }
     };
 
-
+    /**
+     * Builds this RelativeDimensionComponent
+     *
+     * @param builder   Builder
+     */
     public RelativeDimensionComponent(Builder<?> builder) {
         super(builder);
         relTo = builder.relTo;
@@ -71,6 +86,9 @@ public class RelativeDimensionComponent extends DimensionComponent {
         super.notifySubscribers();
     }
 
+
+    //SETTERS
+
     public void setRelTo(View relTo) {
         this.relTo.getViewListeners().removeListener(viewListener);
         this.relTo = relTo;
@@ -100,6 +118,9 @@ public class RelativeDimensionComponent extends DimensionComponent {
     public void addSubtractedDimensions(Collection<DimensionComponent> subtractedDimensions) { this.subtractedDimensions.registerObserved(subtractedDimensions); }
     public void addSubtractedDimensions(DimensionComponent... subtractedDimensions) { this.subtractedDimensions.registerObserved(subtractedDimensions); }
     public void addSubtractedDimension(DimensionComponent subtractedDimension) { this.subtractedDimensions.registerObserved(subtractedDimension); }
+
+
+    //GETTERS
 
     public View getRelTo() { return relTo; }
     public float getRelVal() { return relVal; }
@@ -155,6 +176,9 @@ public class RelativeDimensionComponent extends DimensionComponent {
 
 }
 
+/**
+ * Dimension accessor of a supplied view, simply for conveniency
+ */
 @SuppressWarnings("unused")
 abstract class DimensionRelation {
     public static final DimensionRelation LEFT_X = new DimensionRelation() {
