@@ -45,7 +45,7 @@ public class View {
     protected WindowView windowView;
 
     //Views that are enclosed in this view
-    protected Set<View> childViews; //TODO apply Subscriber pattern to this
+    protected Set<View> childViews;
 
     //Whether this view is ready to be used after all properties are initialized
     protected boolean initialized;
@@ -188,12 +188,10 @@ public class View {
         //frame outline
         BufferedImage frameColorImage = frameColor.draw(this,g,new RoundRectangle2D.Float(x() - borderThickness(),y() - borderThickness(),width() + borderThickness()<<1,height() + borderThickness()<<1,
                 borderRadiusX() + borderThickness(), borderRadiusY() + borderThickness()));
-        //g.drawImage(frameColorImage,x() - borderThickness(), y() - borderThickness(),null);
         g.drawImage(frameColorImage, 0, 0, null);
 
         //background
         BufferedImage backgroundColorImage = backgroundColor.draw(this,g,new RoundRectangle2D.Float(x(),y(),width(),height(),borderRadiusX(),borderRadiusY()));
-        //g.drawImage(backgroundColorImage,x(),y(),null);
         g.drawImage(backgroundColorImage,0,0,null);
 
         //background image
@@ -225,8 +223,6 @@ public class View {
         //update new controller -> add reference to this view
         this.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
     }
-
-    //TODO clean up this code too (Subscriber/Observer pattern?)
 
     /**
      * Sets dimensions and updates dependencies
@@ -341,7 +337,7 @@ public class View {
      *
      * @param parentView    The new parent view of this view
      */
-    public void setParentView(View parentView) { //TODO update references
+    public void setParentView(View parentView) {
         if (this.parentView == parentView) return;
         ViewHierarchyEvent event = new ViewHierarchyEvent(this, this.parentView, parentView);
         this.parentView.getChildViews().remove(this);
@@ -504,7 +500,8 @@ public class View {
     //PROPERTIES
     public RoundRectangle2D getArea() { return new RoundRectangle2D.Float(x(), y(), width(), height(), borderRadiusX(), borderRadiusY()); }
     public RoundRectangle2D getSafeArea() { return new RoundRectangle2D.Float(x(), y(), width(), height(), borderRadiusX(), borderRadiusY()); }
-    public RoundRectangle2D getAbsoluteArea() { return new RoundRectangle2D.Float(absX(), absY(), width(), height(), borderRadiusX(), borderRadiusY()); } //TODO use the Area class to perform accurate collision box detectors (for clicks)
+    public RoundRectangle2D getAbsoluteArea() { return new RoundRectangle2D.Float(absX(), absY(), width(), height(), borderRadiusX(), borderRadiusY()); }
+    //TODO use the Area class to perform accurate collision box detectors (for clicks)
     public RoundRectangle2D getAbsoluteSafeArea() { return new RoundRectangle2D.Float(x(), y(), width(), height(), borderRadiusX(), borderRadiusY()); }
 
     //VIEW HIERARCHY
