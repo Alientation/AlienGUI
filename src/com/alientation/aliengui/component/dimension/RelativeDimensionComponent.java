@@ -17,7 +17,6 @@ public class RelativeDimensionComponent extends DimensionComponent {
     protected boolean multiplied;
     protected DimensionRelation dimensionRelation;
 
-    //TODO implement these with val()
     protected Observer<RelativeDimensionComponent,DimensionComponent> addedDimensions = new Observer<>(this) {
         @Override
         public void notifyObservers() { parent.notifySubscribers(); }
@@ -51,9 +50,24 @@ public class RelativeDimensionComponent extends DimensionComponent {
         relTo.getViewListeners().addListenerAtBeginning(viewListener);
     }
 
+    /**
+     * Updates the value of this dimension because it has observed a change in state in one of its dependencies
+     */
     @Override
     public void notifySubscribers() {
-        val = Math.round(multiplied ? dimensionRelation.getDimension(relTo).val * relVal : dimensionRelation.getDimension(relTo).val + relVal);
+        float addedValue = 0f; //adds all the dimension values in the addedDimensions list
+        for (DimensionComponent dimensionComponent : addedDimensions.getObserved())
+            addedValue += dimensionComponent.val();
+
+        float subtractedValue = 0f;//adds all the dimension values in the subtractedDimensions list
+        for (DimensionComponent dimensionComponent : subtractedDimensions.getObserved())
+            subtractedValue += dimensionComponent.val();
+
+        //Calculates the value of this dimension
+        val = Math.round((multiplied ? dimensionRelation.getDimension(relTo).val * relVal : dimensionRelation.getDimension(relTo).val + relVal)
+                + addedValue - subtractedValue);
+
+        //super call - notifies any observing dimensions/views that this object has changed state
         super.notifySubscribers();
     }
 
