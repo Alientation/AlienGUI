@@ -10,7 +10,6 @@ import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import java.io.Serial;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Window that is displayed on the screen which all views are contained within.
@@ -33,9 +32,11 @@ public class Window extends Canvas implements Runnable {
     //Rendering properties
     protected double nsPerTick, nsPerFrame;
     protected int targetTPS, tps, targetFPS, fps;
-    protected double sBetweenFrames, sBetweenTicks; //for animation time delta purposes TODO finish implementation
-    protected List<Double> previousSBetweenFrames = new LinkedList<>();
-    protected List<Double> previousSBetweenTicks = new LinkedList<>();
+    protected long msLastFrame = System.currentTimeMillis();
+    protected long msLastTick = System.currentTimeMillis();
+    protected double msBetweenFrames, msBetweenTicks; //for animation time delta purposes
+    protected LinkedList<Long> msPreviousBetweenFrames = new LinkedList<>();
+    protected LinkedList<Long> msPreviousBetweenTicks = new LinkedList<>();
 
     //Backend thread that handles ticking and rendering
     protected Thread windowThread;
@@ -216,25 +217,46 @@ public class Window extends Canvas implements Runnable {
     public void run() {
         this.requestFocus();
         long lastTime = System.nanoTime();
-        long now;
         long timer = System.currentTimeMillis();
+        long now;
+
         double deltaTick = 0;
         double deltaFrame = 0;
+
         int numTicks = 0;
         int numFrames = 0;
         while(this.running) {
             now = System.nanoTime();
+
             deltaTick += (now - lastTime) / nsPerTick;
             deltaFrame += (now - lastTime) / nsPerFrame;
+
             lastTime = now;
+
             while (deltaTick >= 1) {
                 tick();
+
+                if (msPreviousBetweenTicks.size() == 10)
+                    msBetweenTicks = (msBetweenTicks * 10 - msPreviousBetweenTicks.removeFirst() + System.currentTimeMillis() - msLastTick) / 10;
+                else
+                    msBetweenTicks = System.currentTimeMillis() - msLastTick;
+                msPreviousBetweenTicks.addLast(System.currentTimeMillis());
+                msLastTick = System.currentTimeMillis();
+
                 numTicks++;
                 deltaTick--;
             }
 
             while (deltaFrame >= 1) {
                 render();
+
+                if (msPreviousBetweenFrames.size() == 10)
+                    msBetweenFrames = (msBetweenFrames * 10 - msPreviousBetweenFrames.removeFirst() + System.currentTimeMillis() - msLastFrame) / 10;
+                else
+                    msBetweenFrames = System.currentTimeMillis() - msLastFrame;
+                msPreviousBetweenFrames.addLast(System.currentTimeMillis());
+                msLastFrame = System.currentTimeMillis();
+
                 numFrames++;
                 deltaFrame--;
             }
@@ -249,7 +271,7 @@ public class Window extends Canvas implements Runnable {
             }
 
             //so that the cpu doesn't waste resources
-            sync(Math.min(System.nanoTime() + (1f - deltaTick) * nsPerTick,System.nanoTime() + (1f - deltaFrame) * nsPerFrame));
+            sync(System.nanoTime() + Math.min((1f - deltaTick) * nsPerTick,(1f - deltaFrame) * nsPerFrame));
         }
         stop();
     }
@@ -332,6 +354,10 @@ public class Window extends Canvas implements Runnable {
     public WindowView getWindowView() { return windowView; }
     public double getNsPerTick() { return nsPerTick; }
     public double getNsPerFrame() { return nsPerFrame; }
+    public long getMsLastFrame() { return msLastFrame; }
+    public long getMsLastTick() { return msLastTick; }
+    public double getMsBetweenFrames() { return msBetweenFrames; } //TODO this needs testing whether this is actually the average
+    public double getMsBetweenTicks() { return msBetweenTicks; }
     public int getTargetTPS() { return targetTPS; }
     public int getTps() { return tps; }
     public int getTargetFPS() { return targetFPS; }
