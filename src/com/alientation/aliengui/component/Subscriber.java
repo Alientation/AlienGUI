@@ -9,8 +9,7 @@ import java.util.*;
  * Therefore, all this does is maintain the subscribed list and notifies subscribed objects
  *
  * WARNING potentially dangerous infinite recursion with notify if it is implemented in both the Subscriber and Observer
- * and calls each other to register/unregister
- * TODO prevent this
+ * and calls each other to register/unregister - THINK THIS IS FIXED
  *
  * @param <D>   Parent object type
  * @param <T>   Observed objects type
@@ -55,6 +54,7 @@ public abstract class Subscriber<D,T> {
     }
 
     public void registerSubscribed(T subscribed) {
+        if (this.subscribed.contains(subscribed)) return;
         this.subscribed.add(subscribed);
         register(subscribed);
         notifySubscribers();
@@ -73,6 +73,7 @@ public abstract class Subscriber<D,T> {
     }
 
     public void unregisterSubscribed(T subscribed) {
+        if (!this.subscribed.contains(subscribed)) return;
         this.subscribed.remove(subscribed);
         unregister(subscribed);
         notifySubscribers();

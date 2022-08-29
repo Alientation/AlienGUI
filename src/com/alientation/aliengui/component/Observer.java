@@ -9,8 +9,6 @@ import java.util.*;
  * Therefore, all this does is link the parent object to the observed set of objects by registering the parent
  * as a subscriber to the set of objects
  *
- * TODO potential infinite recursion, see Subscriber.java notes
- *
  * @param <D>   Parent object type
  * @param <T>   Observed objects type
  */
@@ -54,6 +52,7 @@ public abstract class Observer<D,T> {
     }
 
     public void registerObserved(T observed) {
+        if (this.observed.contains(observed)) return;
         this.observed.add(observed);
         register(observed);
         notifyObservers();
@@ -70,6 +69,7 @@ public abstract class Observer<D,T> {
     }
 
     public void unregisterObserved(T observed) {
+        if (!this.observed.contains(observed)) return;
         this.observed.remove(observed);
         unregister(observed);
         notifyObservers();
@@ -85,13 +85,8 @@ public abstract class Observer<D,T> {
             unregisterObserved(obs);
     }
 
-    public D getParent() {
-        return parent;
-    }
-
-    public List<T> getObserved() {
-        return new ArrayList<>(observed);
-    }
+    public D getParent() { return parent; }
+    public List<T> getObserved() { return new ArrayList<>(observed); }
 
     public abstract void notifyObservers();
     public abstract void unregister(T observed);
