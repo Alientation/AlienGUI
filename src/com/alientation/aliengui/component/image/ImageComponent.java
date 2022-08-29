@@ -13,14 +13,10 @@ import java.awt.image.BufferedImage;
 @SuppressWarnings("unused")
 public class ImageComponent extends Component {
 
-    /**
-     *
-     */
+    //Image contained by this ImageComponent
     protected BufferedImage image;
 
-    /**
-     *
-     */
+    //Opacity applied to the image
     protected float opacity;
 
     /**
