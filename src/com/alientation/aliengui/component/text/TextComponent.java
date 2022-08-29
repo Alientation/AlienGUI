@@ -4,6 +4,9 @@ import com.alientation.aliengui.api.view.View;
 import com.alientation.aliengui.component.Component;
 
 import java.awt.*;
+import java.awt.font.FontRenderContext;
+import java.awt.font.LineBreakMeasurer;
+import java.awt.font.TextLayout;
 import java.awt.image.BufferedImage;
 import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
@@ -31,6 +34,9 @@ public class TextComponent extends Component {
     //Alignment of this text component
     protected TextAlignment textAlignment;
 
+    //How the text should be measured
+    protected FontRenderContext fontRenderContext = new FontRenderContext(null, false, false);
+
 
     //Text rendering state
     protected TextUpdateState textUpdateState = TextUpdateState.DYNAMIC_WRAPPING_WORDS;
@@ -40,6 +46,12 @@ public class TextComponent extends Component {
      *
      * @param text  Text lines
      */
+    public TextComponent(TextUpdateState textUpdateState, FontRenderContext fontRenderContext, AttributedString... text) {
+        this(text);
+        this.fontRenderContext = fontRenderContext;
+        this.textUpdateState = textUpdateState;
+    }
+
     public TextComponent(TextUpdateState textUpdateState, AttributedString... text) {
         this(text);
         this.textUpdateState = textUpdateState;
@@ -77,23 +89,55 @@ public class TextComponent extends Component {
     }
 
     //TODO determine whether to have line specific maxWidths and maxHeights -> could be useful for embedded components like images
-    private List<AttributedString> wrappedString(int maxHeight, int maxWidth) {
+    private List<AttributedString> wrappedLines(int... maxWidths) {
         List<AttributedString> wrappedString = new ArrayList<>();
 
-
-
+        for (int realLine = 0; realLine < linedText.size(); realLine++)
+            wrappedString.addAll(wrappedLine(linedText.get(realLine),maxWidths[Math.min(realLine,maxWidths.length-1)]));
 
         return wrappedString;
     }
 
-    private List<AttributedString> resizedString(int maxHeight, int maxWidth) {
+    private List<AttributedString> wrappedLine(AttributedString attributedString, int maxWidth) {
+        //final result
+        List<AttributedString> wrappedString = new ArrayList<>();
+
+        //used for the line breaker
+        AttributedCharacterIterator attributedCharacterIterator = attributedString.getIterator();
+        int start = attributedCharacterIterator.getBeginIndex();
+        int end = attributedCharacterIterator.getEndIndex();
+
+        //breaking the text into widths less than the maxWidth
+        LineBreakMeasurer lineBreakMeasurer = new LineBreakMeasurer(attributedCharacterIterator, fontRenderContext);
+
+        //iterator for collecting the chars of each line
+        AttributedCharacterIterator characterCollector = attributedString.getIterator();
+
+        while (lineBreakMeasurer.getPosition() < end) { //while current attributed char is still within the attributed string
+            TextLayout textLayout = lineBreakMeasurer.nextLayout(maxWidth);
+
+            wrappedString.add(new AttributedString(characterCollector, characterCollector.getIndex(), lineBreakMeasurer.getPosition()));
+        }
+
+        return wrappedString;
+    }
+
+    private List<AttributedString> resizedLines(int maxHeights, int maxWidths) {
         List<AttributedString> resizedString = new ArrayList<>();
 
-
+        //go through and resize the whole text's font so that it displays within the given bounds
 
 
 
         return resizedString;
+    }
+
+    private List<AttributedString> resizedLines(Collection<Integer> maxHeights, Collection<Integer> maxWidths) {
+        return null;
+    }
+
+    private List<AttributedString> resizedLines(int[] maxHeights, int[] maxWidths) {
+        return null;
     }
 
 
