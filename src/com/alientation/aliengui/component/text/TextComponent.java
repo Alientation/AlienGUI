@@ -88,7 +88,7 @@ public class TextComponent extends Component {
         return image;
     }
 
-    //TODO determine whether to have line specific maxWidths and maxHeights -> could be useful for embedded components like images
+    //https://stackoverflow.com/questions/258486/calculate-the-display-width-of-a-string-in-java
     private List<AttributedString> wrappedLines(int... maxWidths) {
         List<AttributedString> wrappedString = new ArrayList<>();
 
@@ -209,6 +209,24 @@ public class TextComponent extends Component {
         notifySubscribers();
     }
 
+    public void setTextAlignment(TextAlignment textAlignment) {
+        this.textAlignment = textAlignment;
+        notifySubscribers();
+    }
+
+    public void setFontRenderContext(FontRenderContext fontRenderContext) {
+        this.fontRenderContext = fontRenderContext;
+        notifySubscribers();
+    }
+
+    public void setTextUpdateState(TextUpdateState textUpdateState) {
+        this.textUpdateState = textUpdateState;
+        notifySubscribers();
+    }
+
+
+    //GETTERS
+
     public List<AttributedString> getAttributedStringLinedText() { return new ArrayList<>(linedText); }
     public List<String> getStringLinedText() {
         List<String> stringLinedText = new ArrayList<>();
@@ -230,6 +248,11 @@ public class TextComponent extends Component {
 
         return sb.toString();
     }
+
+    public TextAlignment getTextAlignment() { return textAlignment; }
+    public FontRenderContext getFontRenderContext() { return fontRenderContext; }
+    public TextUpdateState getTextUpdateState() { return textUpdateState; }
+
 
     @Override
     public void notifySubscribers() {
