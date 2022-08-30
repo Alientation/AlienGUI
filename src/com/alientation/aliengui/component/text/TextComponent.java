@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.font.LineBreakMeasurer;
 import java.awt.font.TextLayout;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
@@ -82,10 +83,12 @@ public class TextComponent extends Component {
     public BufferedImage draw(View view, Graphics g) {
         BufferedImage image = new BufferedImage(view.width(),view.height(),BufferedImage.TYPE_INT_ARGB);
 
-        List<AttributedString> textToDisplay = new ArrayList<>();
+        List<AttributedString> textToDisplay = linedText;
+        FontRenderContext fontRenderContext = this.fontRenderContext;
         switch (textUpdateState) {
             case DYNAMIC_WRAPPING_WORDS, DYNAMIC_WRAPPING_CHARACTERS -> textToDisplay = wrappedLines(view.safeWidth());
-            case DYNAMIC_RESIZING -> textToDisplay = resizedLines(view.safeHeight(),view.safeWidth());
+            case DYNAMIC_RESIZING -> fontRenderContext = resizedLines(view.safeHeight(),view.safeWidth());
+            //TODO dynamic resizing for x, y, and both (more options)
         }
 
         //TODO implement custom y and x starting locations
@@ -102,9 +105,6 @@ public class TextComponent extends Component {
 
     //https://stackoverflow.com/questions/258486/calculate-the-display-width-of-a-string-in-java
     private List<AttributedString> wrappedLines(int... maxWidths) {
-        //update affineTransform of the fontRenderContext
-        fontRenderContext = new FontRenderContext(null, false, false);
-
         List<AttributedString> wrappedString = new ArrayList<>();
 
         for (int realLine = 0; realLine < linedText.size(); realLine++)
@@ -137,8 +137,7 @@ public class TextComponent extends Component {
         return wrappedString;
     }
 
-    private List<AttributedString> resizedLines(int maxHeight, int maxWidth) {
-        List<AttributedString> resizedString = new ArrayList<>();
+    private FontRenderContext resizedLines(int maxHeight, int maxWidth) {
 
         //find the current minimum width and height of the current text's render
         int currentWidth = 0;
@@ -153,13 +152,23 @@ public class TextComponent extends Component {
             currentWidth = Math.max(currentWidth,(int) textLayout.getAdvance());
         }
 
-        //find the scale factor to resize the text's font to fit in the given bounds
-
+        /* find the scale factor to resize the text's font to fit in the given bounds
+         *
+         * currentWidth * factor <= maxWidth
+         * currentHeight * factor <= maxHeight
+         *
+         * factor <= maxWidth / currentWidth
+         * factor <= maxHeight / currentHeight
+         *
+         * factor Math.min(maxWidth/currentWidth,maxHeight/currentHeight)
+         */
+        float scaleFactor = Math.min(maxWidth/currentWidth,maxHeight/currentHeight);
 
         //update render technique (affine transform)
+        AffineTransform scale = AffineTransform.getScaleInstance(scaleFactor,scaleFactor);
 
-
-        return resizedString;
+        return new FontRenderContext(scale, this.fontRenderContext.getAntiAliasingHint(),
+                this.fontRenderContext.getFractionalMetricsHint());
     }
 
     private List<AttributedString> resizedLines(Collection<Integer> maxHeights, Collection<Integer> maxWidths) {
