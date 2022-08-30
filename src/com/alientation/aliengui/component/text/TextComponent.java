@@ -171,11 +171,15 @@ public class TextComponent extends Component {
                 this.fontRenderContext.getFractionalMetricsHint());
     }
 
+    //TODO implement
     private List<AttributedString> resizedLines(Collection<Integer> maxHeights, Collection<Integer> maxWidths) {
+
         return null;
     }
 
+    //TODO implement
     private List<AttributedString> resizedLines(int[] maxHeights, int[] maxWidths) {
+
         return null;
     }
 
