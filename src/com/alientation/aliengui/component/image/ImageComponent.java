@@ -5,6 +5,7 @@ import com.alientation.aliengui.component.Component;
 import com.alientation.aliengui.util.ColorUtil;
 import com.alientation.aliengui.util.NumberUtil;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 /**
@@ -45,16 +46,18 @@ public class ImageComponent extends Component {
      * Override for custom draw (for shaders)
      *
      * @param view  The view that requested this draw
-     * @return The image to be drawn
+     * @param g         The Graphics context
+     * @param shape     The shape to be drawn
      */
-    public BufferedImage draw(View view) {
+    public void draw(View view, Graphics g, Shape shape) {
         BufferedImage newImage = new BufferedImage(image.getWidth(),image.getHeight(),BufferedImage.TYPE_INT_ARGB);
-        for (int y = 0; y < image.getHeight(); y++) //increment x before y to efficiently access memory
+        for (int y = 0; y < image.getHeight(); y++) {//increment x before y to efficiently access memory
             for (int x = 0; x < image.getWidth(); x++) {
                 int newAlpha = ColorUtil.opacityToAlpha(ColorUtil.alphaToOpacity(getAlpha()) * opacity);
                 newImage.setRGB(x, y, image.getRGB(x, y) & ((newAlpha << 24) | 0x00ffffff));
             }
-        return newImage;
+        }
+        g.drawImage(image,view.x(),view.y(),null);
     }
 
 

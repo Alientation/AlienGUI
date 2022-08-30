@@ -72,7 +72,6 @@ public class Window extends Canvas implements Runnable {
 
         //TODO potentially slow and unresponsive at times depending on when the thread is active or not
         //could use concurrent threads (start up a new thread to listen to user input and instantly handle them)
-        //
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {

@@ -22,10 +22,10 @@ public class AnimationComponent extends Component {
 
 
 
-    public BufferedImage draw(View view, Graphics g, float deltaFrame) {
-        BufferedImage image = new BufferedImage(view.width(),view.height(),BufferedImage.TYPE_INT_ARGB);
+    public void draw(View view, Graphics g, float deltaFrame) {
 
-        return image;
+
+
     }
 
     public void tick(float deltaTick) {

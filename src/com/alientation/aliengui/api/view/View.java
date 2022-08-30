@@ -182,23 +182,20 @@ public class View {
      *
      * @param g Graphics object to be drawn on
      */
-    public void render(Graphics g) { //TODO might wanna let the component draw itself onto the graphics context
+    public void render(Graphics g) { //TODO instead of creating a new geometry shape, store one that is updated every dimension change event
         if (!initialized) return;
 
         //frame outline
-        BufferedImage frameColorImage = frameColor.draw(this,g,new RoundRectangle2D.Float(x() - borderThickness(),y() - borderThickness(),width() + borderThickness()<<1,height() + borderThickness()<<1,
+        frameColor.draw(this,g,new RoundRectangle2D.Float(x() - borderThickness(),y() - borderThickness(),
+                width() + borderThickness()<<1,height() + borderThickness()<<1,
                 borderRadiusX() + borderThickness(), borderRadiusY() + borderThickness()));
-        g.drawImage(frameColorImage, 0, 0, null);
 
         //background
-        BufferedImage backgroundColorImage = backgroundColor.draw(this,g,new RoundRectangle2D.Float(x(),y(),width(),height(),borderRadiusX(),borderRadiusY()));
-        g.drawImage(backgroundColorImage,0,0,null);
+        backgroundColor.draw(this,g,new RoundRectangle2D.Float(x(),y(),width(),height(),borderRadiusX(),borderRadiusY()));
 
         //background image
-        if (backgroundImage != null) {
-            BufferedImage backgroundImage = this.backgroundImage.draw(this);
-            g.drawImage(backgroundImage, absX(), absY(), width(), height(), null);
-        }
+        if (backgroundImage != null)
+            backgroundImage.draw(this,g,new RoundRectangle2D.Float(x(),y(),width(),height(),borderRadiusX(),borderRadiusY()));
     }
 
     /**

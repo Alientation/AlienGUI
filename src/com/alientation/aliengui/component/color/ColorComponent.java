@@ -56,12 +56,11 @@ public class ColorComponent extends Component {
      *
      * Override for custom draw (for shaders)
      *
-     * @param v         The view requesting this draw call
+     * @param view         The view requesting this draw call
      * @param g         The Graphics context
      * @param shape     The shape to be drawn
-     * @return The image to be drawn
      */
-    public BufferedImage draw(View v, Graphics g, Shape shape) {
+    public void draw(View view, Graphics g, Shape shape) {
         Rectangle bounds = shape.getBounds();
         BufferedImage image = new BufferedImage(bounds.width,bounds.height,BufferedImage.TYPE_INT_ARGB);
 
@@ -70,7 +69,7 @@ public class ColorComponent extends Component {
                 if (shape.contains(x,y))
                     image.setRGB(x, y, color.getRGB() & ((getAlpha() << 24) | 0x00ffffff));
 
-        return image;
+        g.drawImage(image,view.x(),view.y(),null);
     }
 
     //SETTERS
