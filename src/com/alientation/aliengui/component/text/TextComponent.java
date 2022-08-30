@@ -82,8 +82,20 @@ public class TextComponent extends Component {
     public BufferedImage draw(View view, Graphics g) {
         BufferedImage image = new BufferedImage(view.width(),view.height(),BufferedImage.TYPE_INT_ARGB);
 
+        List<AttributedString> textToDisplay = new ArrayList<>();
+        switch (textUpdateState) {
+            case DYNAMIC_WRAPPING_WORDS, DYNAMIC_WRAPPING_CHARACTERS -> textToDisplay = wrappedLines(view.safeWidth());
+            case DYNAMIC_RESIZING -> textToDisplay = resizedLines(view.safeHeight(),view.safeWidth());
+        }
 
-
+        //TODO implement custom y and x starting locations
+        int yPosition = view.absSafeY();
+        for (AttributedString attributedString : textToDisplay) {
+            TextLayout textLayout = new TextLayout(attributedString.getIterator(),fontRenderContext);
+            yPosition += (int) textLayout.getAscent();
+            g.drawString(attributedString.getIterator(),view.absSafeX(),yPosition);
+            yPosition += textLayout.getDescent() + textLayout.getLeading();
+        }
 
         return image;
     }
@@ -126,6 +138,10 @@ public class TextComponent extends Component {
         List<AttributedString> resizedString = new ArrayList<>();
 
         //go through and resize the whole text's font so that it displays within the given bounds
+
+
+
+
 
 
 
