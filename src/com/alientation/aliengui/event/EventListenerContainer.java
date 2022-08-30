@@ -3,8 +3,18 @@ package com.alientation.aliengui.event;
 
 import java.util.*;
 
+/**
+ * Container class for EventListeners to handle dispatching events to listeners in order of priority
+ * Reserves limits on priority values to ensure internal systems can operate
+ *
+ * @param <T>   EventListener contained within this
+ */
+@SuppressWarnings("unused")
 public class EventListenerContainer<T extends EventListener> {
     public static final int PRIORITY_FIRST = 0;
+
+    //TODO internal system listeners who register priority last will not always be the last listener
+    //this is because of the way dispatching iterates through the contained event listeners
     public static final int PRIORITY_LAST = 1000;
     private final TreeMap<Integer, ArrayList<T>> eventListenerMap = new TreeMap<>(Comparator.reverseOrder());
 

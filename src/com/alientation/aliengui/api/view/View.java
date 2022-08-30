@@ -18,7 +18,6 @@ import com.alientation.aliengui.event.view.ViewListener;
 
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
-import java.awt.image.BufferedImage;
 import java.util.Set;
 
 /**

@@ -102,6 +102,9 @@ public class TextComponent extends Component {
 
     //https://stackoverflow.com/questions/258486/calculate-the-display-width-of-a-string-in-java
     private List<AttributedString> wrappedLines(int... maxWidths) {
+        //update affineTransform of the fontRenderContext
+        fontRenderContext = new FontRenderContext(null, false, false);
+
         List<AttributedString> wrappedString = new ArrayList<>();
 
         for (int realLine = 0; realLine < linedText.size(); realLine++)
@@ -134,15 +137,26 @@ public class TextComponent extends Component {
         return wrappedString;
     }
 
-    private List<AttributedString> resizedLines(int maxHeights, int maxWidths) {
+    private List<AttributedString> resizedLines(int maxHeight, int maxWidth) {
         List<AttributedString> resizedString = new ArrayList<>();
 
-        //go through and resize the whole text's font so that it displays within the given bounds
+        //find the current minimum width and height of the current text's render
+        int currentWidth = 0;
+        int currentHeight = 0;
+
+        for (AttributedString attributedString : linedText) {
+            TextLayout textLayout = new TextLayout(attributedString.getIterator(),fontRenderContext);
+
+            currentHeight += textLayout.getAscent();
+            currentHeight += textLayout.getDescent() + textLayout.getLeading();
+
+            currentWidth = Math.max(currentWidth,(int) textLayout.getAdvance());
+        }
+
+        //find the scale factor to resize the text's font to fit in the given bounds
 
 
-
-
-
+        //update render technique (affine transform)
 
 
         return resizedString;
