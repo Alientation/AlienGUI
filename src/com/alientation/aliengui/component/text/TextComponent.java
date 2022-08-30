@@ -167,8 +167,10 @@ public class TextComponent extends Component {
         //update render technique (affine transform)
         AffineTransform scale = AffineTransform.getScaleInstance(scaleFactor,scaleFactor);
 
-        return new FontRenderContext(scale, this.fontRenderContext.getAntiAliasingHint(),
-                this.fontRenderContext.getFractionalMetricsHint());
+        if (fontRenderContext.getTransform() != null) scale.concatenate(fontRenderContext.getTransform());
+
+        return new FontRenderContext(scale, fontRenderContext.getAntiAliasingHint(),
+                fontRenderContext.getFractionalMetricsHint());
     }
 
     //TODO implement
