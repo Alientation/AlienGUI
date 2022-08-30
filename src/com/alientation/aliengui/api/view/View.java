@@ -197,7 +197,7 @@ public class View {
         //background image
         if (backgroundImage != null) {
             BufferedImage backgroundImage = this.backgroundImage.draw(this);
-            g.drawImage(backgroundImage, x(), y(), width(), height(), null);
+            g.drawImage(backgroundImage, absX(), absY(), width(), height(), null);
         }
     }
 
