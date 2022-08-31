@@ -2,6 +2,7 @@ package com.alientation.aliengui.api.view;
 
 import com.alientation.aliengui.component.text.TextAlignment;
 import com.alientation.aliengui.component.text.TextComponent;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;
@@ -89,7 +90,7 @@ public class TextLabelView extends View {
 
         }
 
-        public T textLabel(TextComponent textLabel) {
+        public T textLabel(@NotNull TextComponent textLabel) {
             this.textLabel = textLabel;
             return (T) this;
         }
