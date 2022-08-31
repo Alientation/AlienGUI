@@ -2,6 +2,7 @@ package com.alientation.aliengui.component.text;
 
 import com.alientation.aliengui.api.view.View;
 import com.alientation.aliengui.component.Component;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;
@@ -52,7 +53,7 @@ public class TextComponent extends Component {
      * @param fontRenderContext     FontRenderContext of how to render the text's font
      * @param text                  Text to be displayed by this text component object
      */
-    public TextComponent(TextUpdateState textUpdateState, FontRenderContext fontRenderContext, AttributedString... text) {
+    public TextComponent(@NotNull TextUpdateState textUpdateState, @NotNull FontRenderContext fontRenderContext, @NotNull AttributedString... text) {
         this(text);
         this.fontRenderContext = fontRenderContext;
         this.textUpdateState = textUpdateState;
@@ -64,7 +65,7 @@ public class TextComponent extends Component {
      * @param textUpdateState   TextUpdateState of how to resize text
      * @param text              Text to be displayed by this text component object
      */
-    public TextComponent(TextUpdateState textUpdateState, AttributedString... text) {
+    public TextComponent(@NotNull TextUpdateState textUpdateState, @NotNull AttributedString... text) {
         this(text);
         this.textUpdateState = textUpdateState;
     }
@@ -75,7 +76,7 @@ public class TextComponent extends Component {
      *
      * @param text  Text to be displayed by this text component object
      */
-    public TextComponent(AttributedString... text) {
+    public TextComponent(@NotNull AttributedString... text) {
         linedText = new ArrayList<>(Arrays.stream(text).toList());
     }
 
@@ -85,7 +86,7 @@ public class TextComponent extends Component {
      * @param textUpdateState   TextUpdateState of how to resize text
      * @param text              Text to be displayed by this text component object
      */
-    public TextComponent(TextUpdateState textUpdateState, String... text) {
+    public TextComponent(@NotNull TextUpdateState textUpdateState, @NotNull String... text) {
         this(text);
         this.textUpdateState = textUpdateState;
     }
@@ -96,7 +97,7 @@ public class TextComponent extends Component {
      *
      * @param text  Text to be displayed by this text component object
      */
-    public TextComponent(String... text) {
+    public TextComponent(@NotNull String... text) {
         linedText = new ArrayList<>();
         for (String s : text)
             linedText.add(new AttributedString(s));
@@ -153,7 +154,7 @@ public class TextComponent extends Component {
      * @param maxWidth          Max width of this line
      * @return                  The new linedText for this text
      */
-    private List<AttributedString> wrappedLine(AttributedString attributedString, int maxWidth) {
+    private List<AttributedString> wrappedLine(@NotNull AttributedString attributedString, int maxWidth) {
         //final result
         List<AttributedString> wrappedString = new ArrayList<>();
 
@@ -247,14 +248,7 @@ public class TextComponent extends Component {
      * @param maxLineHeightsCollection  Height constraint per line
      * @return                          Scaled FontRenderContext
      */
-    private FontRenderContext resizedLines(Collection<Integer> maxLineWidthsCollection, Collection<Integer> maxLineHeightsCollection) {
-        //TODO determine whether to keep these state checkers for easier debugging for the user
-        //sanity checks to help user debug
-        if (maxLineHeightsCollection == null || maxLineHeightsCollection.size() == 0)
-            throw new IllegalStateException("TextComponent::resizedLines maxLineHeightsCollection collection must be initialized with values");
-        if (maxLineWidthsCollection == null || maxLineWidthsCollection.size() == 0)
-            throw new IllegalStateException("TextComponent::resizedLines maxLineWidthsCollection collection must be initialized with values");
-
+    private FontRenderContext resizedLines(@NotNull Collection<Integer> maxLineWidthsCollection, @NotNull Collection<Integer> maxLineHeightsCollection) {
         //convert to arraylist
         ArrayList<Integer> maxLineHeights = new ArrayList<>(maxLineHeightsCollection);
         ArrayList<Integer> maxLineWidths = new ArrayList<>(maxLineWidthsCollection);
@@ -315,39 +309,39 @@ public class TextComponent extends Component {
 
     //SETTERS
 
-    public void setStringLine(String line, int index) {
+    public void setStringLine(@NotNull String line, int index) {
         setAttributedStringLine(new AttributedString(line), index);
     }
 
-    public void setAttributedStringLine(AttributedString line, int index) {
+    public void setAttributedStringLine(@NotNull AttributedString line, int index) {
         while (linedText.size() < index)
             linedText.add(new AttributedString(""));
         linedText.add(index,line);
         notifySubscribers();
     }
 
-    public void addStringLine(String line) {
+    public void addStringLine(@NotNull String line) {
         setStringLine(line,linedText.size());
     }
 
-    public void addAttributedStringLine(AttributedString line) {
+    public void addAttributedStringLine(@NotNull AttributedString line) {
         setAttributedStringLine(line, linedText.size());
 
     }
 
-    public void addStringLines(String... lines) {
+    public void addStringLines(@NotNull String... lines) {
         for (String line : lines) addStringLine(line);
     }
 
-    public void addStringLines(Collection<String> lines) {
+    public void addStringLines(@NotNull Collection<String> lines) {
         for (String line : lines) addStringLines(line);
     }
 
-    public void addAttributedStringLines(AttributedString... lines) {
+    public void addAttributedStringLines(@NotNull AttributedString... lines) {
         for (AttributedString line : lines) addAttributedStringLine(line);
     }
 
-    public void addAttributedStringLines(Collection<AttributedString> lines) {
+    public void addAttributedStringLines(@NotNull Collection<AttributedString> lines) {
         for (AttributedString line : lines) addAttributedStringLine(line);
     }
 
@@ -360,7 +354,7 @@ public class TextComponent extends Component {
         for (int index : indexes)
             removeLine(index + shift--);
     }
-    public void removeLines(Collection<Integer> indexes) {
+    public void removeLines(@NotNull Collection<Integer> indexes) {
         int shift = 0;
         for (int index : indexes)
             removeLines(index + shift--);
@@ -379,42 +373,42 @@ public class TextComponent extends Component {
         linedText.subList(start,end).clear();
     }
 
-    public void setLinedText(String... linedText) {
+    public void setLinedText(@NotNull String... linedText) {
         this.linedText.clear();
         for (String s : linedText)
             this.linedText.add(new AttributedString(s));
         notifySubscribers();
     }
 
-    public void setLinedText(Collection<String> linedText) {
+    public void setLinedText(@NotNull Collection<String> linedText) {
         this.linedText.clear();
         for (String s : linedText)
             this.linedText.add(new AttributedString(s));
         notifySubscribers();
     }
 
-    public void setAttributedLinedText(Collection<AttributedString> linedText) {
+    public void setAttributedLinedText(@NotNull Collection<AttributedString> linedText) {
         this.linedText = new ArrayList<>(linedText);
         notifySubscribers();
     }
 
-    public void setAttributedLinedText(AttributedString... linedText) {
+    public void setAttributedLinedText(@NotNull AttributedString... linedText) {
         this.linedText.clear();
         this.linedText.addAll(Arrays.asList(linedText));
         notifySubscribers();
     }
 
-    public void setTextAlignment(TextAlignment textAlignment) {
+    public void setTextAlignment(@NotNull TextAlignment textAlignment) {
         this.textAlignment = textAlignment;
         notifySubscribers();
     }
 
-    public void setFontRenderContext(FontRenderContext fontRenderContext) {
+    public void setFontRenderContext(@NotNull FontRenderContext fontRenderContext) {
         this.fontRenderContext = fontRenderContext;
         notifySubscribers();
     }
 
-    public void setTextUpdateState(TextUpdateState textUpdateState) {
+    public void setTextUpdateState(@NotNull TextUpdateState textUpdateState) {
         this.textUpdateState = textUpdateState;
         notifySubscribers();
     }

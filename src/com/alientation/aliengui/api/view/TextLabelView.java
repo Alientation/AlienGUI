@@ -30,9 +30,7 @@ public class TextLabelView extends View {
     @Override
     public void render(Graphics g) {
         super.render(g);
-
-        if (textLabel != null)
-            textLabel.draw(this,g);
+        textLabel.draw(this,g);
     }
 
     @Override
