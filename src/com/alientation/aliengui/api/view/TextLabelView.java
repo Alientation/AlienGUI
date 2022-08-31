@@ -99,9 +99,9 @@ public class TextLabelView extends View {
             super.validate();
         }
 
-        public View build() {
+        public TextLabelView build() {
             validate();
-            return new View(this);
+            return new TextLabelView(this);
         }
     }
 }
@@ -118,9 +118,9 @@ public class TextLabelView extends View {
 
         }
 
-        public View build() {
+        public TextLabelView build() {
             validate();
-            return new View(this);
+            return new TextLabelView(this);
         }
     }
  */
