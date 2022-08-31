@@ -1,8 +1,14 @@
 package com.alientation.aliengui.api.view;
 
+import com.alientation.aliengui.component.text.TextAlignment;
 import com.alientation.aliengui.component.text.TextComponent;
 
 import java.awt.*;
+import java.awt.font.FontRenderContext;
+import java.text.AttributedString;
+import java.util.Collection;
+import java.util.List;
+
 
 @SuppressWarnings("unused")
 public class TextLabelView extends View {
@@ -16,6 +22,8 @@ public class TextLabelView extends View {
      */
     public TextLabelView(Builder<?> builder) {
         super(builder);
+        textLabel = builder.textLabel;
+        textLabel.registerSubscriber(this);
     }
 
 
@@ -24,7 +32,7 @@ public class TextLabelView extends View {
         super.render(g);
 
         if (textLabel != null)
-            g.drawImage(textLabel.draw(this,g),x(),y(),null);
+            textLabel.draw(this,g);
     }
 
     @Override
@@ -33,9 +41,52 @@ public class TextLabelView extends View {
     }
 
 
+    //SETTERS
+
+    public void setTextComponent(TextComponent textLabel) {
+        this.textLabel.unregisterSubscriber(this);
+        this.textLabel = textLabel;
+        this.textLabel.registerSubscriber(this);
+    }
+
+    public void setStringLine(String line, int index) { textLabel.setStringLine(line,index); }
+    public void setAttributedStringLine(AttributedString line, int index) { textLabel.setAttributedStringLine(line, index); }
+    public void addStringLine(String line) { textLabel.addStringLine(line); }
+    public void addAttributedStringLine(AttributedString line) { textLabel.addAttributedStringLine(line); }
+    public void addStringLines(String... lines) { textLabel.addStringLines(lines); }
+    public void addStringLines(Collection<String> lines) { textLabel.addStringLines(lines); }
+    public void addAttributedStringLines(AttributedString... lines) { textLabel.addAttributedStringLines(lines); }
+    public void addAttributedStringLines(Collection<AttributedString> lines) { textLabel.addAttributedStringLines(lines); }
+    public void removeLine(int index) { textLabel.removeLine(index); }
+    public void removeLines(int... indexes) { textLabel.removeLines(indexes); }
+    public void removeLines(Collection<Integer> indexes) { textLabel.removeLines(indexes); }
+    public void clearLines() { textLabel.clearLines(); }
+    public void clearLines(int start) { textLabel.clearLines(start); }
+    public void clearLines(int start, int end) { textLabel.clearLines(start, end); }
+    public void setText(Collection<String> text) { textLabel.setLinedText(text); }
+    public void setText(String... text) { textLabel.setLinedText(text); }
+    public void setAttributedText(Collection<AttributedString> attributedText) { textLabel.setAttributedLinedText(attributedText); }
+    public void setAttributedText(AttributedString... attributedText) { textLabel.setAttributedLinedText(attributedText); }
+    public void setTextAlignment(TextAlignment textAlignment) { textLabel.setTextAlignment(textAlignment); }
+    public void setTextFontRenderContext(FontRenderContext fontRenderContext) { textLabel.setFontRenderContext(fontRenderContext); }
+    public void setTextUpdateState(TextComponent.TextUpdateState textUpdateState) { textLabel.setTextUpdateState(textUpdateState); }
+
+
+    //GETTERS
+    public TextComponent getTextComponent() { return textLabel; }
+    public FontRenderContext getTextFontRenderContext() { return textLabel.getFontRenderContext(); }
+    public TextComponent.TextUpdateState getTextUpdateState() { return textLabel.getTextUpdateState(); }
+    public List<String> getText() { return textLabel.getStringLinedText(); }
+    public String getTextLine(int index) { return textLabel.getStringLine(index); }
+    public int getLinesCount() { return textLabel.getNumberLines(); }
+    public TextAlignment getTextAlignment() { return textLabel.getTextAlignment(); }
+
+
+
+
     @SuppressWarnings("unchecked")
     public static class Builder<T extends Builder<T>> extends View.Builder<T> {
-        protected TextComponent textLabel;
+        protected TextComponent textLabel = new TextComponent("");
         public Builder() {
 
         }
