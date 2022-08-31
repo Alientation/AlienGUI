@@ -2,6 +2,7 @@ package com.alientation.aliengui.api.view;
 
 import com.alientation.aliengui.component.text.TextAlignment;
 import com.alientation.aliengui.component.text.TextComponent;
+import com.alientation.aliengui.event.view.ViewEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -46,6 +47,7 @@ public class TextLabelView extends View {
         this.textLabel.unregisterSubscriber(this);
         this.textLabel = textLabel;
         this.textLabel.registerSubscriber(this);
+        this.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
     }
 
     public void setStringLine(String line, int index) { textLabel.setStringLine(line,index); }
