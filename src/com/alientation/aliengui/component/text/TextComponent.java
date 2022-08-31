@@ -8,7 +8,6 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.LineBreakMeasurer;
 import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
 import java.text.AttributedCharacterIterator;
 import java.text.AttributedString;
 import java.text.CharacterIterator;
@@ -23,7 +22,7 @@ public class TextComponent extends Component {
     /**
      * The update method of this text component
      */
-    enum TextUpdateState {
+    public enum TextUpdateState {
         DYNAMIC_WRAPPING_WORDS, //Whether to dynamically wrap text
         DYNAMIC_WRAPPING_CHARACTERS, //Whether dynamic wrapping will wrap characters around
         DYNAMIC_RESIZING, //Whether to dynamically resize text if dynamic wrapping is disabled
@@ -108,11 +107,8 @@ public class TextComponent extends Component {
      *
      * @param view  View to display the text in
      * @param g     The Graphics context
-     * @return      BufferedImage view of the text
      */
-    public BufferedImage draw(View view, Graphics g) {
-        BufferedImage image = new BufferedImage(view.width(),view.height(),BufferedImage.TYPE_INT_ARGB);
-
+    public void draw(View view, Graphics g) {
         List<AttributedString> textToDisplay = linedText;
         FontRenderContext fontRenderContext = this.fontRenderContext;
         switch (textUpdateState) {
@@ -129,8 +125,6 @@ public class TextComponent extends Component {
             g.drawString(attributedString.getIterator(),view.absSafeX(),yPosition);
             yPosition += textLayout.getDescent() + textLayout.getLeading();
         }
-
-        return image;
     }
 
     //https://stackoverflow.com/questions/258486/calculate-the-display-width-of-a-string-in-java
@@ -363,10 +357,13 @@ public class TextComponent extends Component {
     }
     public void removeLines(int... indexes) {
         int shift = 0;
-        for (int index : indexes) {
-            removeLine(index + shift);
-            shift--;
-        }
+        for (int index : indexes)
+            removeLine(index + shift--);
+    }
+    public void removeLines(Collection<Integer> indexes) {
+        int shift = 0;
+        for (int index : indexes)
+            removeLines(index + shift--);
     }
 
     public void clearLines() {
@@ -382,8 +379,28 @@ public class TextComponent extends Component {
         linedText.subList(start,end).clear();
     }
 
-    public void setLinedText(Collection<AttributedString> linedText) {
+    public void setLinedText(String... linedText) {
+        this.linedText.clear();
+        for (String s : linedText)
+            this.linedText.add(new AttributedString(s));
+        notifySubscribers();
+    }
+
+    public void setLinedText(Collection<String> linedText) {
+        this.linedText.clear();
+        for (String s : linedText)
+            this.linedText.add(new AttributedString(s));
+        notifySubscribers();
+    }
+
+    public void setAttributedLinedText(Collection<AttributedString> linedText) {
         this.linedText = new ArrayList<>(linedText);
+        notifySubscribers();
+    }
+
+    public void setAttributedLinedText(AttributedString... linedText) {
+        this.linedText.clear();
+        this.linedText.addAll(Arrays.asList(linedText));
         notifySubscribers();
     }
 
