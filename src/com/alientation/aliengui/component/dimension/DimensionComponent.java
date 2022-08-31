@@ -11,6 +11,7 @@ import java.util.*;
  */
 @SuppressWarnings("unused")
 public abstract class DimensionComponent extends Component {
+    //TODO add center dimensioning (and other related types)
     //This dimension's value
     protected int val;
 
