@@ -3,14 +3,18 @@ package com.alientation.aliengui.api.view.input;
 import com.alientation.aliengui.api.view.TextLabelView;
 import com.alientation.aliengui.api.view.View;
 import com.alientation.aliengui.component.animation.AnimationComponent;
+import com.alientation.aliengui.event.EventListenerContainer;
 import com.alientation.aliengui.event.mouse.MouseEvent;
 import com.alientation.aliengui.event.mouse.MouseListener;
 import com.alientation.aliengui.event.view.ViewEvent;
+import com.alientation.aliengui.event.view.button.ButtonListener;
 
 import java.awt.*;
 
 @SuppressWarnings("unused")
 public class ButtonView extends View {
+    protected EventListenerContainer<ButtonListener> buttonListeners = new EventListenerContainer<>();
+
     //make this contain TextLabelViews instead of being a TextLabelView
     protected TextLabelView unpressedView;
     protected TextLabelView pressedView;
@@ -20,6 +24,8 @@ public class ButtonView extends View {
     protected AnimationComponent animationComponent;
     protected boolean isPressed;
     protected boolean isHovered;
+
+
 
     /**
      * Constructs a new view using the Builder pattern
@@ -173,7 +179,7 @@ public class ButtonView extends View {
 
 
     //GETTERS
-
+    public EventListenerContainer<ButtonListener> getButtonListeners() { return buttonListeners; }
     public AnimationComponent getAnimationComponent() { return animationComponent; }
     public boolean isPressed() { return isPressed; }
     public boolean isHovered() { return isHovered; }

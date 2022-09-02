@@ -2,7 +2,9 @@ package com.alientation.aliengui.api.view;
 
 import com.alientation.aliengui.component.text.TextAlignment;
 import com.alientation.aliengui.component.text.TextComponent;
+import com.alientation.aliengui.event.EventListenerContainer;
 import com.alientation.aliengui.event.view.ViewEvent;
+import com.alientation.aliengui.event.view.textlabel.TextLabelListener;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -14,6 +16,7 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 public class TextLabelView extends View {
+    protected EventListenerContainer<TextLabelListener> textLabelListeners = new EventListenerContainer<>();
 
     protected TextComponent textLabel;
 
@@ -74,6 +77,7 @@ public class TextLabelView extends View {
 
 
     //GETTERS
+    public EventListenerContainer<TextLabelListener> getTextLabelListeners() { return textLabelListeners; }
     public TextComponent getTextComponent() { return textLabel; }
     public FontRenderContext getTextFontRenderContext() { return textLabel.getFontRenderContext(); }
     public TextComponent.TextUpdateState getTextUpdateState() { return textLabel.getTextUpdateState(); }
