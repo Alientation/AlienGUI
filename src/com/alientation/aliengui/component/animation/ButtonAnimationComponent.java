@@ -22,7 +22,7 @@ public class ButtonAnimationComponent extends AnimationComponent {
     protected float frameTimeSinceStateChange = 0f;
     protected float tickTimeSinceStateChange = 0f;
 
-    protected ButtonListener buttonListener = new ButtonListener() { //button event listeners
+    protected ButtonListener buttonListener = new ButtonListener() { //button event listeners todo
 
 
     };
