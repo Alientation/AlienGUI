@@ -1,5 +1,6 @@
 package com.alientation.aliengui.api.view.input;
 
+import com.alientation.aliengui.api.view.TextLabelView;
 import com.alientation.aliengui.api.view.View;
 import com.alientation.aliengui.component.animation.AnimationComponent;
 import com.alientation.aliengui.event.mouse.MouseEvent;
@@ -11,6 +12,11 @@ import java.awt.*;
 @SuppressWarnings("unused")
 public class ButtonView extends View {
     //make this contain TextLabelViews instead of being a TextLabelView
+    protected TextLabelView unpressedView;
+    protected TextLabelView pressedView;
+    protected TextLabelView hoveredView;
+    protected TextLabelView hoveredPopup; //displayed when hovered over for a certain amount of time, constraint to the mouse, deactivate when unhovered
+    protected TextLabelView inactiveView;
     protected AnimationComponent animationComponent;
     protected boolean isActive;
     protected boolean isPressed;
@@ -74,7 +80,7 @@ public class ButtonView extends View {
             }
         });
 
-        this.animationComponent.registerSubscriber(this);
+        if (this.animationComponent != null) this.animationComponent.registerSubscriber(this);
     }
 
     @Override

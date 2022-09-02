@@ -183,7 +183,7 @@ public class View {
      * @param g Graphics object to be drawn on
      */
     public void render(Graphics g) { //TODO instead of creating a new geometry shape, store one that is updated every dimension change event
-        if (!initialized) return;
+        if (!initialized || !visible) return;
 
         //frame outline
         frameColor.draw(this,g,new RoundRectangle2D.Float(x() - borderThickness(),y() - borderThickness(),
