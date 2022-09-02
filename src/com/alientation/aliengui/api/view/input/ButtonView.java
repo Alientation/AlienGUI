@@ -1,7 +1,6 @@
 package com.alientation.aliengui.api.view.input;
 
 import com.alientation.aliengui.api.view.TextLabelView;
-import com.alientation.aliengui.api.view.View;
 import com.alientation.aliengui.component.animation.AnimationComponent;
 import com.alientation.aliengui.event.EventListenerContainer;
 import com.alientation.aliengui.event.mouse.MouseEvent;
@@ -12,15 +11,9 @@ import com.alientation.aliengui.event.view.button.ButtonListener;
 import java.awt.*;
 
 @SuppressWarnings("unused")
-public class ButtonView extends View {
+public class ButtonView extends TextLabelView {
     protected EventListenerContainer<ButtonListener> buttonListeners = new EventListenerContainer<>();
-
-    //TODO determine whether to have this many view states or simply 'animate' components use an extended ButtonAnimationComponent
-    protected TextLabelView unpressedView;
-    protected TextLabelView pressedView;
-    protected TextLabelView hoveredView;
     protected TextLabelView hoveredPopup; //displayed when hovered over for a certain amount of time, constraint to the mouse, deactivate when unhovered
-    protected TextLabelView inactiveView;
     protected AnimationComponent animationComponent;
     protected boolean isPressed;
     protected boolean isHovered;
@@ -34,11 +27,7 @@ public class ButtonView extends View {
      */
     public ButtonView(Builder<?> builder) {
         super(builder);
-        this.unpressedView = builder.unpressedView;
-        this.pressedView = builder.pressedView;
-        this.hoveredView = builder.hoveredView;
         this.hoveredPopup = builder.hoveredPopup;
-        this.inactiveView = builder.inactiveView;
         this.animationComponent = builder.animationComponent;
 
         //listens to events that pertain to this view
@@ -86,11 +75,7 @@ public class ButtonView extends View {
         });
 
         if (animationComponent != null) animationComponent.registerSubscriber(this);
-        unpressedView.init(this);
-        pressedView.init(this);
-        hoveredView.init(this);
         hoveredPopup.init(this);
-        inactiveView.init(this);
     }
 
     @Override
@@ -195,13 +180,9 @@ public class ButtonView extends View {
     public boolean isHovered() { return isHovered; }
 
     @SuppressWarnings("unchecked")
-    public static class Builder<T extends Builder<T>> extends View.Builder<T> {
+    public static class Builder<T extends Builder<T>> extends TextLabelView.Builder<T> {
         protected AnimationComponent animationComponent;
-        protected TextLabelView unpressedView; //TODO implement default states
-        protected TextLabelView pressedView;
-        protected TextLabelView hoveredView;
         protected TextLabelView hoveredPopup;
-        protected TextLabelView inactiveView;
 
         public Builder() {
 
@@ -211,27 +192,10 @@ public class ButtonView extends View {
             this.animationComponent = animationComponent;
             return (T) this;
         }
-        public T unpressedView(TextLabelView unpressedView) {
-            this.unpressedView = unpressedView;
-            return (T) this;
-        }
-        public T pressedView(TextLabelView pressedView) {
-            this.pressedView = pressedView;
-            return (T) this;
-        }
-        public T hoveredView(TextLabelView hoveredView) {
-            this.hoveredView = hoveredView;
-            return (T) this;
-        }
         public T hoveredPopup(TextLabelView hoveredPopup) {
             this.hoveredPopup = hoveredPopup;
             return (T) this;
         }
-        public T inactiveView(TextLabelView inactiveView) {
-            this.inactiveView = inactiveView;
-            return (T) this;
-        }
-
 
         public void validate() {
 
