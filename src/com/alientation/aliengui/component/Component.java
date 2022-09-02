@@ -46,5 +46,6 @@ public abstract class Component {
     public void unregisterSubscriber(Collection<View> subscribers) { this.subscribers.unregisterSubscribed(subscribers); }
 
     public Subscriber<Component, View> getSubscribers() { return subscribers; }
+    public int getSubscriberCount() { return subscribers.getSubscribedCount(); }
     public int getMaxSubscribers() { return subscribers.getMaxSubscribers(); }
 }

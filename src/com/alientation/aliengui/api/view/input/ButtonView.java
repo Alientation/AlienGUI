@@ -20,7 +20,7 @@ public class ButtonView extends TextLabelView {
     protected boolean isHovered;
     protected boolean disableAnimation;
 
-
+    //TODO implement default animation
 
     /**
      * Constructs a new view using the Builder pattern

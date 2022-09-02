@@ -98,6 +98,8 @@ public abstract class Observer<D,T> {
             unregisterObserved(obs);
     }
 
+    public int getObservedCount() { return observed.size(); }
+
     public D getParent() { return parent; }
     public List<T> getObserved() { return new ArrayList<>(observed); }
     public int getMaxObservers() { return maxObservers; }

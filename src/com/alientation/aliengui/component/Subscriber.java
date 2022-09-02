@@ -104,6 +104,8 @@ public abstract class Subscriber<D,T> {
         notifySubscribers();
     }
 
+    public int getSubscribedCount() { return subscribed.size(); }
+
     public D getParent() { return parent; }
     public List<T> getSubscribed() { return new ArrayList<>(subscribed); }
     public int getMaxSubscribers() { return maxSubscribers; }

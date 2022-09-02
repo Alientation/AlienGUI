@@ -1,6 +1,7 @@
 package com.alientation.aliengui.component.animation;
 
 import com.alientation.aliengui.api.view.View;
+import com.alientation.aliengui.api.view.input.ButtonView;
 import com.alientation.aliengui.component.Component;
 
 import java.awt.*;
@@ -15,7 +16,7 @@ import java.awt.*;
  * an animated frame of the view
  */
 @SuppressWarnings("unused")
-public class AnimationComponent extends Component {
+public abstract class AnimationComponent extends Component {
 
 
     public AnimationComponent() {
