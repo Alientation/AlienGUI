@@ -25,30 +25,30 @@ public class ButtonView extends View {
         super(builder);
         this.animationComponent = builder.animationComponent;
 
+        //listens to events that pertain to this view
         this.mouseListeners.addListener(new MouseListener() {
             @Override
-            public void mouseClicked(MouseEvent mouseEvent) {
-                super.mouseClicked(mouseEvent);
-            }
-
-            @Override
             public void mouseEntered(MouseEvent mouseEvent) {
-                super.mouseEntered(mouseEvent);
+                if (!isActive) return;
+                hovered();
             }
 
             @Override
             public void mouseExited(MouseEvent mouseEvent) {
-                super.mouseExited(mouseEvent);
+                if (!isActive) return;
+                unhovered();
             }
 
             @Override
             public void mousePressed(MouseEvent mouseEvent) {
-                super.mousePressed(mouseEvent);
+                if (!isActive) return;
+                pressed();
             }
 
             @Override
             public void mouseReleased(MouseEvent mouseEvent) {
-                super.mouseReleased(mouseEvent);
+                if (!isActive) return;
+                released();
             }
         });
 
@@ -57,22 +57,14 @@ public class ButtonView extends View {
         //the view dependent mouse listener won't receive it
         windowView.getMouseListeners().addListener(new MouseListener() {
             @Override
-            public void mouseClicked(MouseEvent mouseEvent) {
-                super.mouseClicked(mouseEvent);
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent mouseEvent) {
-                super.mouseEntered(mouseEvent);
-            }
-
-            @Override
             public void mouseExited(MouseEvent mouseEvent) {
-                super.mouseExited(mouseEvent);
+               if (!isActive) return;
+               unhovered();
             }
 
             @Override
             public void mousePressed(MouseEvent mouseEvent) {
+                if (!isActive) return;
                 super.mousePressed(mouseEvent);
             }
 
@@ -96,6 +88,22 @@ public class ButtonView extends View {
         super.tick();
     }
 
+    public void pressed() {
+        this.isPressed = true;
+    }
+
+    public void released() {
+        this.isPressed = false;
+    }
+
+    public void hovered() {
+        this.isHovered = true;
+    }
+
+    public void unhovered() {
+        this.isHovered = false;
+    }
+
 
     //SETTERS
 
@@ -103,6 +111,63 @@ public class ButtonView extends View {
         this.animationComponent.unregisterSubscriber(this);
         this.animationComponent = animationComponent;
         this.animationComponent.registerSubscriber(this);
+        this.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
+    }
+
+    public void setActive() { //TODO ButtonEvents active
+        this.isActive = true;
+        this.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
+    }
+
+    public void setInactive() { //TODO ButtonEvents inactive
+        this.isActive = false;
+        this.isHovered = false;
+        this.isPressed = false;
+        this.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
+    }
+
+    public void setPressed() { //TODO ButtonEvents pressed
+        if (this.isPressed || !this.isActive) return;
+        this.isPressed = true;
+        this.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
+    }
+    public void sudoSetPressed() { //TODO ButtonEvents sudoPressed
+        if (this.isPressed) return;
+        this.isPressed = true;
+        this.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
+    }
+
+    public void setReleased() { //TODO ButtonEvents released
+        if (!this.isPressed || !this.isActive) return;
+        this.isPressed = false;
+        this.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
+    }
+
+    public void sudoSetReleased() { //TODO ButtonEvents sudoReleased
+        if (!this.isPressed) return;
+        this.isPressed = false;
+        this.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
+    }
+
+    public void setHovered() { //TODO ButtonEvents hover
+        this.isHovered = true;
+        this.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
+    }
+
+    public void sudoSetHovered() { //TODO ButtonEvents sudoHovered
+        if (this.isHovered) return;
+        this.isHovered = true;
+        this.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
+    }
+
+    public void setUnhovered() { //TODO ButtonEvents unhovered
+        this.isHovered = false;
+        this.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
+    }
+
+    public void sudoSetUnhovered() { //TODO ButtonEvents sudoUnhovered
+        if (!this.isHovered) return;
+        this.isHovered = false;
         this.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
     }
 
