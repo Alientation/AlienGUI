@@ -159,7 +159,7 @@ public class ButtonView extends TextLabelView {
         protected boolean disableAnimation = false;
 
         public Builder() {
-
+            textLabel.setLinedText("ButtonView");
         }
 
         public T animationComponent(@NotNull AnimationComponent animationComponent) {

@@ -91,7 +91,7 @@ public class TextLabelView extends View {
 
     @SuppressWarnings("unchecked")
     public static class Builder<T extends Builder<T>> extends View.Builder<T> {
-        protected TextComponent textLabel = new TextComponent("");
+        protected TextComponent textLabel = new TextComponent("TextLabelView");
         public Builder() {
 
         }
