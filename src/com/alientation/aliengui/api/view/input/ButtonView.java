@@ -68,14 +68,9 @@ public class ButtonView extends View {
             }
 
             @Override
-            public void mousePressed(MouseEvent mouseEvent) {
-                if (!isActive) return;
-                super.mousePressed(mouseEvent);
-            }
-
-            @Override
             public void mouseReleased(MouseEvent mouseEvent) {
-                super.mouseReleased(mouseEvent);
+                if (!isActive()) return;
+                released();
             }
         });
 
