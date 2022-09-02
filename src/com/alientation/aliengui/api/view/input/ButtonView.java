@@ -1,7 +1,7 @@
 package com.alientation.aliengui.api.view.input;
 
 import com.alientation.aliengui.api.view.TextLabelView;
-import com.alientation.aliengui.component.animation.AnimationComponent;
+import com.alientation.aliengui.component.animation.ButtonAnimationComponent;
 import com.alientation.aliengui.event.EventListenerContainer;
 import com.alientation.aliengui.event.mouse.MouseEvent;
 import com.alientation.aliengui.event.mouse.MouseListener;
@@ -15,7 +15,7 @@ import java.awt.*;
 public class ButtonView extends TextLabelView {
     protected EventListenerContainer<ButtonListener> buttonListeners = new EventListenerContainer<>();
     protected TextLabelView hoveredPopup; //displayed when hovered over for a certain amount of time, constraint to the mouse, deactivate when unhovered
-    protected AnimationComponent animationComponent;
+    protected ButtonAnimationComponent animationComponent;
     protected boolean isPressed;
     protected boolean isHovered;
     protected boolean disableAnimation;
@@ -95,7 +95,7 @@ public class ButtonView extends TextLabelView {
 
     //SETTERS
 
-    public void setAnimationComponent(@NotNull AnimationComponent animationComponent) {
+    public void setAnimationComponent(@NotNull ButtonAnimationComponent animationComponent) {
         this.animationComponent.unregisterSubscriber(this);
         this.animationComponent = animationComponent;
         this.animationComponent.registerSubscriber(this);
@@ -147,14 +147,14 @@ public class ButtonView extends TextLabelView {
 
     //GETTERS
     public EventListenerContainer<ButtonListener> getButtonListeners() { return buttonListeners; }
-    public AnimationComponent getAnimationComponent() { return animationComponent; }
+    public ButtonAnimationComponent getAnimationComponent() { return animationComponent; }
     public boolean isPressed() { return isPressed; }
     public boolean isHovered() { return isHovered; }
     public boolean isAnimationDisabled() { return disableAnimation; }
 
     @SuppressWarnings("unchecked")
     public static class Builder<T extends Builder<T>> extends TextLabelView.Builder<T> {
-        protected AnimationComponent animationComponent;
+        protected ButtonAnimationComponent animationComponent;
         protected TextLabelView hoveredPopup;
         protected boolean disableAnimation = false;
 
@@ -162,7 +162,7 @@ public class ButtonView extends TextLabelView {
             textLabel.setLinedText("ButtonView");
         }
 
-        public T animationComponent(@NotNull AnimationComponent animationComponent) {
+        public T animationComponent(@NotNull ButtonAnimationComponent animationComponent) {
             this.animationComponent = animationComponent;
             return (T) this;
         }
