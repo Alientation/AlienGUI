@@ -4,7 +4,7 @@ import java.util.*;
 
 /**
  * Pardon my naming, but
- *
+ * <p>
  * This essentially is used for parent objects that observe another set of objects for state changes,
  * Therefore, all this does is link the parent object to the observed set of objects by registering the parent
  * as a subscriber to the set of objects
@@ -16,12 +16,24 @@ import java.util.*;
 public abstract class Observer<D,T> {
     protected D parent;
     protected Set<T> observed = new HashSet<>();
+    protected int maxObservers; //TODO implement checks
 
     public Observer(D parent) {
-        this.parent = parent;
+        this(parent,Integer.MAX_VALUE);
     }
 
-    public Observer(Collection<T> observed) {
+    public Observer(D parent, int maxObservers) {
+        this.parent = parent;
+        this.maxObservers = maxObservers;
+    }
+
+    public Observer(D parent, Collection<T> observed) {
+        this(parent);
+        setObserved(observed);
+    }
+
+    public Observer(D parent, Collection<T> observed, int maxObservers) {
+        this(parent, maxObservers);
         setObserved(observed);
     }
 
@@ -87,6 +99,7 @@ public abstract class Observer<D,T> {
 
     public D getParent() { return parent; }
     public List<T> getObserved() { return new ArrayList<>(observed); }
+    public int getMaxObservers() { return maxObservers; }
 
     public abstract void notifyObservers();
     public abstract void unregister(T observed);

@@ -19,7 +19,7 @@ public class AnimationComponent extends Component {
 
 
     public AnimationComponent() {
-        super();
+        super(1); //default limit for animation components
 
     }
 
@@ -41,7 +41,8 @@ public class AnimationComponent extends Component {
      * <p>
      * Since Component does not guarantee a single subscriber view,
      * it is important to track data corresponding to each view to properly animate
-     * or to ensure Component only has a single subscriber view
+     * or to ensure Component only has a single subscriber view which is already the default
+     * setting
      *
      * @param view          View calling this tick event
      * @param deltaTick     Time passed since last tick event

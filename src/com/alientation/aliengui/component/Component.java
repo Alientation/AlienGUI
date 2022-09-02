@@ -7,7 +7,7 @@ import java.util.*;
 
 @SuppressWarnings("unused")
 public abstract class Component {
-    protected int maxSubscribers = Integer.MAX_VALUE; //throws error if limit reached
+    protected int maxSubscribers = Integer.MAX_VALUE; //throws error if limit reached TODO implement checks
 
     public Component() {
 

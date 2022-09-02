@@ -4,10 +4,10 @@ import java.util.*;
 
 /**
  * Pardon my naming, but
- *
+ * <p>
  * This essentially is used for parent objects that have subscribed objects,
  * Therefore, all this does is maintain the subscribed list and notifies subscribed objects
- *
+ * <p>
  * WARNING potentially dangerous infinite recursion with notify if it is implemented in both the Subscriber and Observer
  * and calls each other to register/unregister - THINK THIS IS FIXED
  *
@@ -18,12 +18,24 @@ import java.util.*;
 public abstract class Subscriber<D,T> {
     protected D parent;
     protected Set<T> subscribed = new HashSet<>();
+    protected int maxSubscribers; //TODO implement checks
 
     public Subscriber(D parent) {
-        this.parent = parent;
+        this(parent,Integer.MAX_VALUE);
     }
 
-    public Subscriber(Collection<T> subscribed) {
+    public Subscriber(D parent, int maxSubscribers) {
+        this.parent = parent;
+        this.maxSubscribers = maxSubscribers;
+    }
+
+    public Subscriber(D parent, Collection<T> subscribed) {
+        this(parent);
+        registerSubscribed(subscribed);
+    }
+
+    public Subscriber(D parent, Collection<T> subscribed, int maxSubscribers) {
+        this(parent, maxSubscribers);
         registerSubscribed(subscribed);
     }
 
@@ -91,13 +103,9 @@ public abstract class Subscriber<D,T> {
         notifySubscribers();
     }
 
-    public D getParent() {
-        return parent;
-    }
-
-    public List<T> getSubscribed() {
-        return new ArrayList<>(subscribed);
-    }
+    public D getParent() { return parent; }
+    public List<T> getSubscribed() { return new ArrayList<>(subscribed); }
+    public int getMaxSubscribers() { return maxSubscribers; }
 
     public abstract void notifySubscribers();
     public abstract void unregister(T subscribed);
