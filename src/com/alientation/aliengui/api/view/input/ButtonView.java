@@ -18,6 +18,7 @@ public class ButtonView extends TextLabelView {
     protected AnimationComponent animationComponent;
     protected boolean isPressed;
     protected boolean isHovered;
+    protected boolean disableAnimation;
 
 
 
@@ -30,6 +31,7 @@ public class ButtonView extends TextLabelView {
         super(builder);
         this.hoveredPopup = builder.hoveredPopup;
         this.animationComponent = builder.animationComponent;
+        this.disableAnimation = builder.disableAnimation;
 
         //listens to events that pertain to this view
         this.mouseListeners.addListener(new MouseListener() {
@@ -136,28 +138,40 @@ public class ButtonView extends TextLabelView {
         this.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
     }
 
+    public void setDisableAnimation(boolean disableAnimation) {
+        if (this.disableAnimation == disableAnimation) return;
+        this.disableAnimation = disableAnimation;
+        this.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
+    }
+
 
     //GETTERS
     public EventListenerContainer<ButtonListener> getButtonListeners() { return buttonListeners; }
     public AnimationComponent getAnimationComponent() { return animationComponent; }
     public boolean isPressed() { return isPressed; }
     public boolean isHovered() { return isHovered; }
+    public boolean isAnimationDisabled() { return disableAnimation; }
 
     @SuppressWarnings("unchecked")
     public static class Builder<T extends Builder<T>> extends TextLabelView.Builder<T> {
         protected AnimationComponent animationComponent;
         protected TextLabelView hoveredPopup;
+        protected boolean disableAnimation = false;
 
         public Builder() {
 
         }
 
-        public T animationComponent(AnimationComponent animationComponent) {
+        public T animationComponent(@NotNull AnimationComponent animationComponent) {
             this.animationComponent = animationComponent;
             return (T) this;
         }
-        public T hoveredPopup(TextLabelView hoveredPopup) {
+        public T hoveredPopup(@NotNull TextLabelView hoveredPopup) {
             this.hoveredPopup = hoveredPopup;
+            return (T) this;
+        }
+        public T disableAnimation(boolean disableAnimation) {
+            this.disableAnimation = disableAnimation;
             return (T) this;
         }
 
