@@ -83,8 +83,8 @@ public class ButtonView extends TextLabelView {
 
     @Override
     public void render(Graphics g) {
-        super.render(g);
-
+        animationComponent.draw(this,g,windowView.getWindow().getMsLastFrame());
+        textLabel.draw(this, g);
     }
 
     @Override
