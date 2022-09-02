@@ -34,6 +34,11 @@ public class ButtonView extends View {
      */
     public ButtonView(Builder<?> builder) {
         super(builder);
+        this.unpressedView = builder.unpressedView;
+        this.pressedView = builder.pressedView;
+        this.hoveredView = builder.hoveredView;
+        this.hoveredPopup = builder.hoveredPopup;
+        this.inactiveView = builder.inactiveView;
         this.animationComponent = builder.animationComponent;
 
         //listens to events that pertain to this view
@@ -80,7 +85,12 @@ public class ButtonView extends View {
             }
         });
 
-        if (this.animationComponent != null) this.animationComponent.registerSubscriber(this);
+        if (animationComponent != null) animationComponent.registerSubscriber(this);
+        unpressedView.init(this);
+        pressedView.init(this);
+        hoveredView.init(this);
+        hoveredPopup.init(this);
+        inactiveView.init(this);
     }
 
     @Override
@@ -187,6 +197,12 @@ public class ButtonView extends View {
     @SuppressWarnings("unchecked")
     public static class Builder<T extends Builder<T>> extends View.Builder<T> {
         protected AnimationComponent animationComponent;
+        protected TextLabelView unpressedView; //TODO implement default states
+        protected TextLabelView pressedView;
+        protected TextLabelView hoveredView;
+        protected TextLabelView hoveredPopup;
+        protected TextLabelView inactiveView;
+
         public Builder() {
 
         }
@@ -195,6 +211,27 @@ public class ButtonView extends View {
             this.animationComponent = animationComponent;
             return (T) this;
         }
+        public T unpressedView(TextLabelView unpressedView) {
+            this.unpressedView = unpressedView;
+            return (T) this;
+        }
+        public T pressedView(TextLabelView pressedView) {
+            this.pressedView = pressedView;
+            return (T) this;
+        }
+        public T hoveredView(TextLabelView hoveredView) {
+            this.hoveredView = hoveredView;
+            return (T) this;
+        }
+        public T hoveredPopup(TextLabelView hoveredPopup) {
+            this.hoveredPopup = hoveredPopup;
+            return (T) this;
+        }
+        public T inactiveView(TextLabelView inactiveView) {
+            this.inactiveView = inactiveView;
+            return (T) this;
+        }
+
 
         public void validate() {
 
