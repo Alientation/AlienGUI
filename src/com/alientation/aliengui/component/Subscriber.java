@@ -18,7 +18,7 @@ import java.util.*;
 public abstract class Subscriber<D,T> {
     protected D parent;
     protected Set<T> subscribed = new HashSet<>();
-    protected int maxSubscribers; //TODO implement checks
+    private final int maxSubscribers;
 
     public Subscriber(D parent) {
         this(parent,Integer.MAX_VALUE);
@@ -66,7 +66,8 @@ public abstract class Subscriber<D,T> {
     }
 
     public void registerSubscribed(T subscribed) {
-        if (this.subscribed.contains(subscribed)) return;
+        if (this.subscribed.contains(subscribed)) throw new IllegalStateException("Subscriber::registerSubscribed Duplicate Subscribed");
+        if (this.subscribed.size() == maxSubscribers) throw new IllegalStateException("Subscriber::registerSubscribed maxSubscribers limit reached");
         this.subscribed.add(subscribed);
         register(subscribed);
         notifySubscribers();

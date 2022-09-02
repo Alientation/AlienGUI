@@ -7,31 +7,27 @@ import java.util.*;
 
 @SuppressWarnings("unused")
 public abstract class Component {
-    protected int maxSubscribers = Integer.MAX_VALUE; //throws error if limit reached TODO implement checks
-
     public Component() {
-
+        this(Integer.MAX_VALUE);
     }
 
     public Component(int maxSubscribers) {
-        this.maxSubscribers = maxSubscribers;
+        subscribers = new Subscriber<>(this, maxSubscribers) {
+            @Override
+            public void notifySubscribers() {
+                for (View view : subscribers.getSubscribed())
+                    view.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(view)));
+            }
+
+            @Override
+            public void unregister(View subscribed) { }
+            @Override
+            public void register(View subscribed) { }
+        };
     }
 
-    /**
-     * Views that depend on this color component
-     */
-    protected Subscriber<Component,View> subscribers = new Subscriber<>(this) {
-        @Override
-        public void notifySubscribers() {
-            for (View view : subscribers.getSubscribed())
-                view.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(view)));
-        }
-
-        @Override
-        public void unregister(View subscribed) { }
-        @Override
-        public void register(View subscribed) { }
-    };
+    //Views that depend on this component
+    protected Subscriber<Component,View> subscribers;
 
     /**
      * Notifies all subscribers of state change
@@ -50,5 +46,5 @@ public abstract class Component {
     public void unregisterSubscriber(Collection<View> subscribers) { this.subscribers.unregisterSubscribed(subscribers); }
 
     public Subscriber<Component, View> getSubscribers() { return subscribers; }
-    public int getMaxSubscribers() { return maxSubscribers; }
+    public int getMaxSubscribers() { return subscribers.getMaxSubscribers(); }
 }

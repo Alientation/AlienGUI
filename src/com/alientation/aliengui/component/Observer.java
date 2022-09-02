@@ -16,7 +16,7 @@ import java.util.*;
 public abstract class Observer<D,T> {
     protected D parent;
     protected Set<T> observed = new HashSet<>();
-    protected int maxObservers; //TODO implement checks
+    private final int maxObservers;
 
     public Observer(D parent) {
         this(parent,Integer.MAX_VALUE);
@@ -64,7 +64,8 @@ public abstract class Observer<D,T> {
     }
 
     public void registerObserved(T observed) {
-        if (this.observed.contains(observed)) return;
+        if (this.observed.contains(observed)) throw new IllegalStateException("Observer::registerObserved Duplicate Observed");
+        if (this.observed.size() == maxObservers) throw new IllegalStateException("Observer::registerObserved maxObservers limit reached");
         this.observed.add(observed);
         register(observed);
         notifyObservers();
