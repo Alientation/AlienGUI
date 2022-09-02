@@ -51,7 +51,10 @@ public class View {
     protected boolean initialized;
 
     //Visibility of this view, whether this view will be rendered or not
-    protected boolean visible;
+    protected boolean isVisible;
+
+    //Whether this view will be ticked
+    protected boolean isActive;
 
     //Whether the visibility of this view will affect the child views
     protected boolean visibilityAppliesToChildren;
@@ -84,7 +87,8 @@ public class View {
         borderRadiusHeight = builder.borderRadiusHeight;
         borderThickness = builder.borderThickness;
 
-        visible = builder.visible;
+        isVisible = builder.isVisible;
+        isActive = builder.isActive;
         visibilityAppliesToChildren = builder.visibilityAppliesToChildren;
 
         zIndex = builder.zIndex;
@@ -183,7 +187,7 @@ public class View {
      * @param g Graphics object to be drawn on
      */
     public void render(Graphics g) { //TODO instead of creating a new geometry shape, store one that is updated every dimension change event
-        if (!initialized || !visible) return;
+        if (!initialized || !isVisible) return;
 
         //frame outline
         frameColor.draw(this,g,new RoundRectangle2D.Float(x() - borderThickness(),y() - borderThickness(),
@@ -202,7 +206,7 @@ public class View {
      * Tick update
      */
     public void tick() {
-        if (!initialized) return;
+        if (!initialized || !isActive) return;
         for (View childView : childViews) childView.tick();
     }
 
@@ -377,7 +381,7 @@ public class View {
      * Hides this view and requests a render update
      */
     public void setHidden() {
-        this.visible = false;
+        this.isVisible = false;
         this.getViewListeners().dispatch(listener -> listener.viewHidden(new ViewEvent(this)));
     }
 
@@ -385,7 +389,7 @@ public class View {
      * Shows this view and requests a render update
      */
     public void setShown() {
-        this.visible = true;
+        this.isVisible = true;
         this.getViewListeners().dispatch(listener -> listener.viewShown(new ViewEvent(this)));
     }
 
@@ -508,7 +512,7 @@ public class View {
 
     //RENDER PROPERTIES
     public boolean isInitialized() { return initialized; }
-    public boolean isVisible() { return visible; }
+    public boolean isVisible() { return isVisible; }
     public int getZIndex() { return zIndex; }
     public boolean doDynamicZIndexUpdate() { return dynamicZIndexUpdate; }
     public boolean doesVisibilityAppliesToChildren() { return visibilityAppliesToChildren; }
@@ -528,7 +532,8 @@ public class View {
         protected DimensionComponent borderThickness = StaticDimensionComponent.MIN;
         protected DimensionComponent marginX = StaticDimensionComponent.MIN;
         protected DimensionComponent marginY = StaticDimensionComponent.MIN;
-        protected boolean visible = true;
+        protected boolean isVisible = true;
+        protected boolean isActive = true;
         protected boolean visibilityAppliesToChildren= false;
         protected int zIndex = 0;
         protected boolean dynamicZIndexUpdate = true;
@@ -576,8 +581,12 @@ public class View {
             this.marginY = marginY;
             return (T) this;
         }
-        public T visible(boolean visible) {
-            this.visible = visible;
+        public T isVisible(boolean isVisible) {
+            this.isVisible = isVisible;
+            return (T) this;
+        }
+        public T isActive(boolean isActive) {
+            this.isActive = isActive;
             return (T) this;
         }
         public T visibilityAppliesToChildren(boolean visibilityAppliesToChildren) {
