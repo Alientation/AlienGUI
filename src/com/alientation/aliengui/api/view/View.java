@@ -393,6 +393,16 @@ public class View {
         this.getViewListeners().dispatch(listener -> listener.viewShown(new ViewEvent(this)));
     }
 
+    public void setActive() {
+        this.isActive = true;
+        this.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
+    }
+
+    public void setInactive() {
+        this.isActive = false;
+        this.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
+    }
+
     /**
      * Sets whether children will adopt parent visibility
      *
@@ -513,6 +523,7 @@ public class View {
     //RENDER PROPERTIES
     public boolean isInitialized() { return initialized; }
     public boolean isVisible() { return isVisible; }
+    public boolean isActive() { return isActive; }
     public int getZIndex() { return zIndex; }
     public boolean doDynamicZIndexUpdate() { return dynamicZIndexUpdate; }
     public boolean doesVisibilityAppliesToChildren() { return visibilityAppliesToChildren; }

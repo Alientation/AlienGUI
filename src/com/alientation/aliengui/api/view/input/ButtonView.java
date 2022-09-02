@@ -18,7 +18,6 @@ public class ButtonView extends View {
     protected TextLabelView hoveredPopup; //displayed when hovered over for a certain amount of time, constraint to the mouse, deactivate when unhovered
     protected TextLabelView inactiveView;
     protected AnimationComponent animationComponent;
-    protected boolean isActive;
     protected boolean isPressed;
     protected boolean isHovered;
 
@@ -120,16 +119,16 @@ public class ButtonView extends View {
         this.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
     }
 
+    @Override
     public void setActive() { //TODO ButtonEvents active
-        this.isActive = true;
-        this.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
+        super.setActive();
     }
 
+    @Override
     public void setInactive() { //TODO ButtonEvents inactive
-        this.isActive = false;
         this.isHovered = false;
         this.isPressed = false;
-        this.getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
+        super.setInactive();
     }
 
     public void setPressed() { //TODO ButtonEvents pressed
@@ -181,7 +180,6 @@ public class ButtonView extends View {
     //GETTERS
 
     public AnimationComponent getAnimationComponent() { return animationComponent; }
-    public boolean isActive() { return isActive; }
     public boolean isPressed() { return isPressed; }
     public boolean isHovered() { return isHovered; }
 
