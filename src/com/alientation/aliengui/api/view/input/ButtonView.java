@@ -15,7 +15,7 @@ import java.awt.*;
 public class ButtonView extends View {
     protected EventListenerContainer<ButtonListener> buttonListeners = new EventListenerContainer<>();
 
-    //make this contain TextLabelViews instead of being a TextLabelView
+    //TODO determine whether to have this many view states or simply 'animate' components use an extended ButtonAnimationComponent
     protected TextLabelView unpressedView;
     protected TextLabelView pressedView;
     protected TextLabelView hoveredView;
