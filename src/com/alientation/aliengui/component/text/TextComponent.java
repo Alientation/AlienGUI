@@ -292,9 +292,9 @@ public class TextComponent extends Component {
         //TODO determine whether to keep these state checkers for easier debugging for the user
         //sanity checks to help user debug
         if (maxLineHeights == null || maxLineHeights.length == 0)
-            throw new IllegalStateException("TextComponent::resizedLines maxLineHeights collection must be initialized with values");
+            throw new IllegalArgumentException("TextComponent::resizedLines maxLineHeights collection must be initialized with values");
         if (maxLineWidths == null || maxLineWidths.length == 0)
-            throw new IllegalStateException("TextComponent::resizedLines maxLineWidths collection must be initialized with values");
+            throw new IllegalArgumentException("TextComponent::resizedLines maxLineWidths collection must be initialized with values");
 
         //Arraylist collection to pass it to the other overloaded method
         ArrayList<Integer> newMaxLineHeights = new ArrayList<>(maxLineHeights.length);

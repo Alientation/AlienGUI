@@ -80,7 +80,7 @@ public class ButtonAnimationComponent extends AnimationComponent {
 
     @Override
     public void registerSubscriber(View subscriber) {
-        if (!(subscriber instanceof ButtonView)) throw new IllegalStateException("ButtonAnimationComponent::registerSubscriber subscriber must be of type ButtonView");
+        if (!(subscriber instanceof ButtonView)) throw new IllegalArgumentException("ButtonAnimationComponent::registerSubscriber subscriber must be of type ButtonView");
         ((ButtonView) subscriber).getButtonListeners().addListener(buttonListener);
         super.registerSubscriber(subscriber);
     }
