@@ -1,6 +1,6 @@
 package com.alientation.aliengui.api.view.input;
 
-import com.alientation.aliengui.api.view.TextLabelView;
+import com.alientation.aliengui.api.view.View;
 import com.alientation.aliengui.component.animation.AnimationComponent;
 import com.alientation.aliengui.event.mouse.MouseEvent;
 import com.alientation.aliengui.event.mouse.MouseListener;
@@ -9,7 +9,7 @@ import com.alientation.aliengui.event.view.ViewEvent;
 import java.awt.*;
 
 @SuppressWarnings("unused")
-public class ButtonView extends TextLabelView {
+public class ButtonView extends View {
     //make this contain TextLabelViews instead of being a TextLabelView
     protected AnimationComponent animationComponent;
     protected boolean isActive;
@@ -82,6 +82,7 @@ public class ButtonView extends TextLabelView {
             }
         });
 
+        this.animationComponent.registerSubscriber(this);
     }
 
     @Override
@@ -114,7 +115,7 @@ public class ButtonView extends TextLabelView {
     public boolean isHovered() { return isHovered; }
 
     @SuppressWarnings("unchecked")
-    public static class Builder<T extends Builder<T>> extends TextLabelView.Builder<T> {
+    public static class Builder<T extends Builder<T>> extends View.Builder<T> {
         protected AnimationComponent animationComponent;
         public Builder() {
 
