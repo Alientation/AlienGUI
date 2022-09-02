@@ -11,16 +11,13 @@ import java.awt.image.BufferedImage;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * TODO implement this in the main project and allow shaders to be applied (ie getColor(int x, int y))
- */
 @SuppressWarnings("unused")
 public class ColorComponent extends Component {
     protected Color color;
 
     /**
      * Opacity value
-     *
+     * <p>
      * 1f for fully opaque
      * 0f for fully transparent
      */
@@ -53,7 +50,7 @@ public class ColorComponent extends Component {
 
     /**
      * Draws the shape in the specified color
-     *
+     * <p>
      * Override for custom draw (for shaders)
      *
      * @param view         The view requesting this draw call
@@ -75,14 +72,17 @@ public class ColorComponent extends Component {
     //SETTERS
 
     public void setColor(Color color) {
+        if (this.color.equals(color)) return;
         this.color = color;
         notifySubscribers();
     }
     public void setOpacity(float opacity) {
+        if (this.opacity == NumberUtil.clamp(opacity,0f,1f)) return;
         this.opacity = NumberUtil.clamp(opacity,0f,1f);
         notifySubscribers();
     }
     public void setAlpha(int alpha) {
+        if (this.opacity == ColorUtil.alphaToOpacity(NumberUtil.clamp(alpha,0,255))) return;
         this.opacity = ColorUtil.alphaToOpacity(NumberUtil.clamp(alpha, 0, 255));
         notifySubscribers();
     }
