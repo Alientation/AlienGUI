@@ -188,6 +188,7 @@ public class Window extends Canvas implements Runnable {
         windowView.windowRenderer.render(g);
     }
 
+
     /**
      * Updates current Graphics context, requests a render update in window renderer
      */
