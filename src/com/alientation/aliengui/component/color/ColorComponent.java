@@ -69,6 +69,10 @@ public class ColorComponent extends Component {
         g.drawImage(image,view.x(),view.y(),null);
     }
 
+    public void draw(View view, Graphics g) { //assume shape is background
+        draw(view, g, view.getBackgroundShape());
+    }
+
     //SETTERS
 
     public void setColor(Color color) {

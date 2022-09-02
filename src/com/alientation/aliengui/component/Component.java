@@ -45,7 +45,10 @@ public abstract class Component {
     public void unregisterSubscribers(View... subscribers) { this.subscribers.unregisterSubscribed(subscribers); }
     public void unregisterSubscriber(Collection<View> subscribers) { this.subscribers.unregisterSubscribed(subscribers); }
 
-    public Subscriber<Component, View> getSubscribers() { return subscribers; }
+
+    //public Subscriber<Component, View> getSubscribers() { return subscribers; }
+    // ButtonAnimationComponent must ensure it can see all changes to subscribers, TODO maybe implement subscriber/observer events?
+
     public int getSubscriberCount() { return subscribers.getSubscribedCount(); }
     public int getMaxSubscribers() { return subscribers.getMaxSubscribers(); }
 }
