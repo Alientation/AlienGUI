@@ -23,6 +23,10 @@ public class AnimationComponent extends Component {
 
     }
 
+    public AnimationComponent(int maxSubscribers) {
+        super(maxSubscribers);
+    }
+
     /**
      *
      *

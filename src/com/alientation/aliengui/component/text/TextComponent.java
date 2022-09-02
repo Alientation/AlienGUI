@@ -53,7 +53,8 @@ public class TextComponent extends Component {
      * @param fontRenderContext     FontRenderContext of how to render the text's font
      * @param text                  Text to be displayed by this text component object
      */
-    public TextComponent(@NotNull TextUpdateState textUpdateState, @NotNull FontRenderContext fontRenderContext, @NotNull AttributedString... text) {
+    public TextComponent(@NotNull TextUpdateState textUpdateState, @NotNull FontRenderContext fontRenderContext,
+                         @NotNull AttributedString... text) {
         this(text);
         this.fontRenderContext = fontRenderContext;
         this.textUpdateState = textUpdateState;
