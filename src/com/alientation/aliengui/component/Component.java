@@ -7,6 +7,16 @@ import java.util.*;
 
 @SuppressWarnings("unused")
 public abstract class Component {
+    protected int maxSubscribers = Integer.MAX_VALUE; //throws error if limit reached
+
+    public Component() {
+
+    }
+
+    public Component(int maxSubscribers) {
+        this.maxSubscribers = maxSubscribers;
+    }
+
     /**
      * Views that depend on this color component
      */
@@ -40,4 +50,5 @@ public abstract class Component {
     public void unregisterSubscriber(Collection<View> subscribers) { this.subscribers.unregisterSubscribed(subscribers); }
 
     public Subscriber<Component, View> getSubscribers() { return subscribers; }
+    public int getMaxSubscribers() { return maxSubscribers; }
 }

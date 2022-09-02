@@ -10,6 +10,7 @@ import java.awt.*;
 
 @SuppressWarnings("unused")
 public class ButtonView extends TextLabelView {
+    //make this contain TextLabelViews instead of being a TextLabelView
     protected AnimationComponent animationComponent;
     protected boolean isActive;
     protected boolean isPressed;
