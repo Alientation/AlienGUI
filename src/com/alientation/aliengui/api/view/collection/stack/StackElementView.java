@@ -1,9 +1,7 @@
 package com.alientation.aliengui.api.view.collection.stack;
 
 import com.alientation.aliengui.api.view.View;
-import com.alientation.aliengui.event.EventDispatch;
 import com.alientation.aliengui.event.view.ViewEvent;
-import com.alientation.aliengui.event.view.ViewListener;
 
 @SuppressWarnings("unused")
 public class StackElementView extends View {
