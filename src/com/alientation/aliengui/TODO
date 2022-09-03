@@ -2,9 +2,9 @@
     X ButtonView Events and Handling
         X Handle in ButtonAnimationComponent
     X Collection Views
-            - CollectionView Events and Handling
+            X CollectionView Events and Handling
             - Horizontal & Vertical Stack Views
-                - StackView Events and Handling
+                X StackView Events and Handling
 
 09.04.2022 (INPUTS I)
     - CheckBox Views
