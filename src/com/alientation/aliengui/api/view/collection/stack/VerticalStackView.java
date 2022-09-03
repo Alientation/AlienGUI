@@ -3,7 +3,7 @@ package com.alientation.aliengui.api.view.collection.stack;
 import com.alientation.aliengui.api.view.collection.CollectionView;
 
 @SuppressWarnings("unused")
-public class VerticalStackView extends CollectionView { //TODO implement
+public class VerticalStackView extends StackView { //TODO implement
 
 
     /**
@@ -15,7 +15,7 @@ public class VerticalStackView extends CollectionView { //TODO implement
         super(builder);
     }
 
-    public static class Builder<T extends Builder<T>> extends CollectionView.Builder<T> {
+    public static class Builder<T extends Builder<T>> extends StackView.Builder<T> {
 
         public Builder() {
 

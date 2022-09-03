@@ -1,20 +1,18 @@
 package com.alientation.aliengui.api.view.collection.stack;
 
+import com.alientation.aliengui.api.view.collection.CollectionView;
 
-@SuppressWarnings("unused")
-public class HorizontalStackView extends StackView { //TODO implement
-
+public class StackView extends CollectionView {
     /**
      * Constructs a new view using the Builder pattern
      *
      * @param builder Builder for this view
      */
-    public HorizontalStackView(Builder<?> builder) {
+    public StackView(Builder<?> builder) {
         super(builder);
     }
 
-
-    public static class Builder<T extends Builder<T>> extends StackView.Builder<T> {
+    public static class Builder<T extends StackView.Builder<T>> extends CollectionView.Builder<T> {
 
         public Builder() {
 
@@ -24,13 +22,14 @@ public class HorizontalStackView extends StackView { //TODO implement
 
         }
 
-        public HorizontalStackView build() {
+        public StackView build() {
             validate();
-            return new HorizontalStackView(this);
+            return new StackView(this);
         }
     }
+
     /* Boilerplate code
-    public static class Builder<T extends Builder<T>> extends HorizontalStackView.Builder<T> {
+    public static class Builder<T extends Builder<T>> extends StackView.Builder<T> {
 
         public Builder() {
 

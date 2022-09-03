@@ -1,6 +1,7 @@
 package com.alientation.aliengui.api.view.collection;
 
 import com.alientation.aliengui.api.view.View;
+import com.alientation.aliengui.api.view.collection.stack.CollectionElementView;
 import com.alientation.aliengui.event.view.ViewEvent;
 
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class CollectionView extends View { //TODO implement
 
-    protected List<View> collection = new ArrayList<>();
+    protected List<CollectionElementView> collection = new ArrayList<>();
 
 
     /**
@@ -23,7 +24,7 @@ public class CollectionView extends View { //TODO implement
      */
     public CollectionView(Builder<?> builder) {
         super(builder);
-        for (View view : builder.collection) add(view);
+        for (CollectionElementView view : builder.collection) add(view);
     }
 
     /**
@@ -31,7 +32,7 @@ public class CollectionView extends View { //TODO implement
      *
      * @param view  View to be added to this collection
      */
-    public void add(View view) { //TODO CollectionViewEvents instead
+    public void add(CollectionElementView view) { //TODO CollectionViewEvents instead
         if (collection.contains(view)) return; //no duplicates
         collection.add(view);
 
@@ -41,12 +42,19 @@ public class CollectionView extends View { //TODO implement
         getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
     }
 
+    public void addElement(View element) {
+        for (CollectionElementView collectionElementView : collection)
+            if (collectionElementView.getCollectionElement() == element)
+                return;
+        add(new CollectionElementView.Builder<>().collectionElement(element).build());
+    }
+
     /**
      * Unregisters a view from this collection
      *
      * @param view  View to be removed from this collection
      */
-    public void remove(View view) { //TODO CollectionViewEvents instead
+    public void remove(CollectionElementView view) { //TODO CollectionViewEvents instead
         if (!collection.contains(view)) return;
         collection.remove(view);
 
@@ -55,23 +63,41 @@ public class CollectionView extends View { //TODO implement
         getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
     }
 
+    public void removeElement(View element) {
+        for (CollectionElementView collectionElementView : collection)
+            if (collectionElementView.getCollectionElement() == element) {
+                remove(collectionElementView);
+                return;
+            }
+    }
+
     public List<View> getCollection() { return new ArrayList<>(collection); } //to prevent unauthorized altering the internal array
 
 
 
     @SuppressWarnings("unchecked")
     public static class Builder<T extends Builder<T>> extends View.Builder<T> {
-        protected List<View> collection = new ArrayList<>();
+        protected List<CollectionElementView> collection = new ArrayList<>();
         public Builder() {
 
         }
 
-        public T collection(List<View> collection) {
+        public T collection(List<CollectionElementView> collection) {
             this.collection.addAll(collection);
             return (T) this;
         }
-        public T collection(View... collection) {
+        public T collection(CollectionElementView... collection) {
             this.collection.addAll(List.of(collection));
+            return (T) this;
+        }
+        public T addElements(List<View> elements) {
+            for (View view : elements)
+                this.collection.add(new CollectionElementView.Builder<>().collectionElement(view).build());
+            return (T) this;
+        }
+        public T addElements(View... elements) {
+            for (View view : elements)
+                collection.add(new CollectionElementView.Builder<>().collectionElement(view).build());
             return (T) this;
         }
 
