@@ -2,18 +2,24 @@ package com.alientation.aliengui.event.view.collection.stack;
 
 import com.alientation.aliengui.api.view.collection.stack.StackView;
 import com.alientation.aliengui.component.dimension.DimensionComponent;
-import com.alientation.aliengui.event.view.ViewDimensionEvent;
 
-public class StackDimensionEvent extends ViewDimensionEvent {
-
-    public StackDimensionEvent(StackView view, DimensionComponent oldDimension, DimensionComponent newDimension) {
-        super(view, oldDimension, newDimension);
+@SuppressWarnings("unused")
+public class StackDimensionEvent extends StackEvent {
+    protected StackView stackView;
+    protected DimensionComponent oldDimension, newDimension;
+    public StackDimensionEvent(StackView stackView, DimensionComponent oldDimension, DimensionComponent newDimension) {
+        super(stackView);
+        this.oldDimension = oldDimension;
+        this.newDimension = newDimension;
     }
 
-    public StackDimensionEvent(StackView view, DimensionComponent changedDimension) {
-        super(view, changedDimension);
+    public StackDimensionEvent(StackView stackView, DimensionComponent changedDimension) {
+        super(stackView);
+        this.newDimension = changedDimension;
     }
 
-    @Override
-    public StackView getView() { return (StackView) view; }
+    public StackView getStackView() { return (StackView) stackView; }
+    public DimensionComponent getOldDimension() { return oldDimension; }
+    public DimensionComponent getNewDimension() { return newDimension; }
+    public DimensionComponent getChangedDimension() { return newDimension; }
 }

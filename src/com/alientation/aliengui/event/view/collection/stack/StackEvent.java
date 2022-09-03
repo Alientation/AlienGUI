@@ -1,16 +1,16 @@
 package com.alientation.aliengui.event.view.collection.stack;
 
 import com.alientation.aliengui.api.view.collection.stack.StackView;
-import com.alientation.aliengui.event.view.collection.CollectionEvent;
+import com.alientation.aliengui.event.Event;
 
-public class StackEvent extends CollectionEvent {
-
+@SuppressWarnings("unused")
+public class StackEvent extends Event {
+    protected StackView stackView;
     public StackEvent(StackView stackView) {
-        super(stackView);
+        this.stackView = stackView;
     }
 
-    @Override
-    public StackView getView() {
-        return (StackView) view;
+    public StackView getStackView() {
+        return stackView;
     }
 }

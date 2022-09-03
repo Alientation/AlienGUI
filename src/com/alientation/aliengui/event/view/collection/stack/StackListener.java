@@ -1,7 +1,12 @@
 package com.alientation.aliengui.event.view.collection.stack;
 
-import com.alientation.aliengui.event.view.collection.CollectionListener;
+import com.alientation.aliengui.event.EventListener;
 
-public class StackListener extends CollectionListener {
+@SuppressWarnings("unused")
+public class StackListener extends EventListener {
+    public void stackDimensionChanged(StackDimensionEvent event) {
+        stackStateChanged(event);
+    }
 
+    public void stackStateChanged(StackEvent event) { }
 }
