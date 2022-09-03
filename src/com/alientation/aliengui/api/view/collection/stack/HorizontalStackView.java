@@ -13,6 +13,11 @@ public class HorizontalStackView extends StackView { //TODO implement
         super(builder);
     }
 
+    @Override
+    public void resize() {
+
+    }
+
 
     public static class Builder<T extends Builder<T>> extends StackView.Builder<T> {
 

@@ -1,6 +1,5 @@
 package com.alientation.aliengui.api.view.collection.stack;
 
-import com.alientation.aliengui.api.view.collection.CollectionView;
 
 @SuppressWarnings("unused")
 public class VerticalStackView extends StackView { //TODO implement
@@ -13,6 +12,11 @@ public class VerticalStackView extends StackView { //TODO implement
      */
     public VerticalStackView(Builder<?> builder) {
         super(builder);
+    }
+
+    @Override
+    public void resize() {
+
     }
 
     public static class Builder<T extends Builder<T>> extends StackView.Builder<T> {

@@ -29,11 +29,10 @@ public abstract class StackView extends CollectionView {
         this.spacing = builder.spacing;
 
         this.spacing.registerSubscriber(this);
+        resize();
     }
 
-    public void resize() {
-
-    }
+    public abstract void resize();
 
 
     //SETTERS
