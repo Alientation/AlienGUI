@@ -6,6 +6,7 @@ import com.alientation.aliengui.event.EventListenerContainer;
 import com.alientation.aliengui.event.mouse.MouseEvent;
 import com.alientation.aliengui.event.mouse.MouseListener;
 import com.alientation.aliengui.event.view.ViewEvent;
+import com.alientation.aliengui.event.view.button.ButtonEvent;
 import com.alientation.aliengui.event.view.button.ButtonListener;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,8 +21,6 @@ public class ButtonView extends TextLabelView {
     protected boolean isHovered;
     protected boolean disableAnimation;
 
-    //TODO implement default animation
-
     /**
      * Constructs a new view using the Builder pattern
      *
@@ -34,7 +33,7 @@ public class ButtonView extends TextLabelView {
         this.disableAnimation = builder.disableAnimation;
 
         //listens to events that pertain to this view
-        this.mouseListeners.addListener(new MouseListener() {
+        getMouseListeners().addListener(new MouseListener() {
             @Override
             public void mouseEntered(MouseEvent mouseEvent) {
                 if (!isActive) return;
@@ -74,6 +73,38 @@ public class ButtonView extends TextLabelView {
             public void mouseReleased(MouseEvent mouseEvent) {
                 if (!isActive()) return;
                 setReleased();
+            }
+        });
+
+        getButtonListeners().addListenerAtBeginning(new ButtonListener() {
+            @Override
+            public void buttonPressed(ButtonEvent event) {
+                windowView.requestRenderUpdate();
+            }
+
+            @Override
+            public void buttonReleased(ButtonEvent event) {
+                windowView.requestRenderUpdate();
+            }
+
+            @Override
+            public void buttonHovered(ButtonEvent event) {
+                windowView.requestRenderUpdate();
+            }
+
+            @Override
+            public void buttonUnhovered(ButtonEvent event) {
+                windowView.requestRenderUpdate();
+            }
+
+            @Override
+            public void buttonActivated(ButtonEvent event) {
+                windowView.requestRenderUpdate();
+            }
+
+            @Override
+            public void buttonDeactivated(ButtonEvent event) {
+                windowView.requestRenderUpdate();
             }
         });
 
@@ -154,7 +185,7 @@ public class ButtonView extends TextLabelView {
 
     @SuppressWarnings("unchecked")
     public static class Builder<T extends Builder<T>> extends TextLabelView.Builder<T> {
-        protected ButtonAnimationComponent animationComponent;
+        protected ButtonAnimationComponent animationComponent = new ButtonAnimationComponent();
         protected TextLabelView hoveredPopup;
         protected boolean disableAnimation = false;
 

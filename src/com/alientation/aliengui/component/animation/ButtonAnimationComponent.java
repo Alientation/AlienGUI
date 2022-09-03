@@ -3,6 +3,7 @@ package com.alientation.aliengui.component.animation;
 import com.alientation.aliengui.api.view.View;
 import com.alientation.aliengui.api.view.input.ButtonView;
 import com.alientation.aliengui.component.color.ColorComponent;
+import com.alientation.aliengui.event.view.button.ButtonEvent;
 import com.alientation.aliengui.event.view.button.ButtonListener;
 
 import java.awt.*;
@@ -13,7 +14,7 @@ public class ButtonAnimationComponent extends AnimationComponent {
     protected ColorComponent buttonPressedBackgroundColor = new ColorComponent(new Color(140, 140, 145));
     protected ColorComponent buttonHoveredBackgroundColor = new ColorComponent(new Color(178, 180, 186));
     protected ColorComponent buttonBackgroundColor = new ColorComponent(new Color(200, 207, 208));
-
+    protected ColorComponent buttonDeactivatedBackgroundColor = new ColorComponent(new Color(122, 134, 140));
 
     protected ColorComponent previousColor = buttonBackgroundColor;
     protected ColorComponent currentColor = buttonBackgroundColor;
@@ -22,9 +23,36 @@ public class ButtonAnimationComponent extends AnimationComponent {
     protected float frameTimeSinceStateChange = 0f;
     protected float tickTimeSinceStateChange = 0f;
 
-    protected ButtonListener buttonListener = new ButtonListener() { //button event listeners todo
+    protected ButtonListener buttonListener = new ButtonListener() {
+        @Override
+        public void buttonPressed(ButtonEvent event) {
+            ButtonAnimationComponent.this.buttonPressed(event.getView());
+        }
 
+        @Override
+        public void buttonReleased(ButtonEvent event) {
+            ButtonAnimationComponent.this.buttonReleased(event.getView());
+        }
 
+        @Override
+        public void buttonHovered(ButtonEvent event) {
+            ButtonAnimationComponent.this.buttonHovered(event.getView());
+        }
+
+        @Override
+        public void buttonUnhovered(ButtonEvent event) {
+            ButtonAnimationComponent.this.buttonUnhovered(event.getView());
+        }
+
+        @Override
+        public void buttonActivated(ButtonEvent event) {
+            ButtonAnimationComponent.this.buttonActivated(event.getView());
+        }
+
+        @Override
+        public void buttonDeactivated(ButtonEvent event) {
+            ButtonAnimationComponent.this.buttonDeactivated(event.getView());
+        }
     };
 
     public ButtonAnimationComponent() {
@@ -52,28 +80,43 @@ public class ButtonAnimationComponent extends AnimationComponent {
         this.tickTimeSinceStateChange = 0f;
     }
 
+    private void cycle(ColorComponent nextColor) {
+        previousColor = currentColor;
+        currentColor = nextColor;
+    }
+
     public void buttonPressed(ButtonView buttonView) {
         resetTime();
-        previousColor = currentColor;
-        currentColor = buttonPressedBackgroundColor;
+        cycle(buttonPressedBackgroundColor);
     }
 
     public void buttonReleased(ButtonView buttonView) {
         resetTime();
-        previousColor = currentColor;
-        currentColor = buttonBackgroundColor;
+        if (buttonView.isHovered()) cycle(buttonHoveredBackgroundColor);
+        else cycle(buttonBackgroundColor);
     }
 
     public void buttonHovered(ButtonView buttonView) {
         resetTime();
-        previousColor = currentColor;
-        currentColor = buttonHoveredBackgroundColor;
+        cycle(buttonHoveredBackgroundColor);
     }
 
     public void buttonUnhovered(ButtonView buttonView) {
         resetTime();
-        previousColor = currentColor;
-        currentColor = buttonBackgroundColor;
+        if (buttonView.isPressed()) cycle(buttonPressedBackgroundColor);
+        else cycle(buttonBackgroundColor);
+    }
+
+    public void buttonDeactivated(ButtonView buttonView) {
+        resetTime();
+        cycle(buttonDeactivatedBackgroundColor);
+    }
+
+    public void buttonActivated(ButtonView buttonView) {
+        resetTime();
+        if (buttonView.isPressed()) cycle(buttonPressedBackgroundColor);
+        else if (buttonView.isHovered()) cycle(buttonHoveredBackgroundColor);
+        else cycle(buttonBackgroundColor);
     }
 
     public ButtonView getButtonView() { return subscribers.getSubscribedCount() > 0 ? (ButtonView) subscribers.getSubscribed().get(0) : null; }

@@ -1,0 +1,21 @@
+09.03.2022 (BUTTONS)
+    - ButtonView Events and Handling
+        - Handle in ButtonAnimationComponent
+
+09.04.2022 (STACKS/COLLECTIONS)
+    - Collection Views
+        - CollectionView Events and Handling
+        - Horizontal & Vertical Stack Views
+            - StackView Events and Handling
+
+09.05.2022 (INPUTS I)
+    - CheckBox Views
+        - CheckBoxView Events and Handling
+    - Switch Views
+        - SwitchView Events and Handling
+    - TextInput Views
+        - TextInputView Events and Handling
+
+09.06.2022 (INPUTS II)
+    - Slider Views
+        - SliderView Events and Handling
