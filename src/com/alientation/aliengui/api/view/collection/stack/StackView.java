@@ -15,11 +15,19 @@ public abstract class StackView extends CollectionView {
     protected EventListenerContainer<StackListener> stackListeners = new EventListenerContainer<>();
     protected DimensionComponent spacing;
 
+    protected StackListener stackListener = new StackListener() {
+        @Override
+        public void stackResized(StackEvent event) {
+            super.stackResized(event);
+            resize();
+        }
+    };
+
     protected ViewListener listener = new ViewListener() {
         @Override
         public void viewStateChanged(ViewEvent event) {
             super.viewStateChanged(event);
-            resize();
+            getStackListeners().dispatch(listener1 -> listener1.stackResized(new StackEvent(StackView.this)));
         }
     };
 
@@ -35,9 +43,7 @@ public abstract class StackView extends CollectionView {
         resize();
     }
 
-    public void resize() {
-        this.getStackListeners().dispatch(listener1 -> listener1.stackResized(new StackEvent(this)));
-    }
+    public abstract void resize();
 
 
     //SETTERS
