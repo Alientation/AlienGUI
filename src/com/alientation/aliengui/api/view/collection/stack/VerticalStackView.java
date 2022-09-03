@@ -1,4 +1,5 @@
 package com.alientation.aliengui.api.view.collection.stack;
 
-public class VerticalStackView {
+@SuppressWarnings("unused")
+public class VerticalStackView { //TODO implement
 }

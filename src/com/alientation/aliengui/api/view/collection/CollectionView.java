@@ -2,7 +2,8 @@ package com.alientation.aliengui.api.view.collection;
 
 import com.alientation.aliengui.api.view.View;
 
-public class CollectionView extends View {
+@SuppressWarnings("unused")
+public class CollectionView extends View { //TODO implement
 
     /**
      * Constructs a new view using the Builder pattern
@@ -29,7 +30,7 @@ public class CollectionView extends View {
             return new View(this);
         }
     }
-    /*
+    /* Boilerplate code
     public static class Builder<T extends Builder<T>> extends CollectionView.Builder<T> {
 
         public Builder() {
