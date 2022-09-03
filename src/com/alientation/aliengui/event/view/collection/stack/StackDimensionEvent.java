@@ -18,7 +18,7 @@ public class StackDimensionEvent extends StackEvent {
         this.newDimension = changedDimension;
     }
 
-    public StackView getStackView() { return (StackView) stackView; }
+    public StackView getStackView() { return stackView; }
     public DimensionComponent getOldDimension() { return oldDimension; }
     public DimensionComponent getNewDimension() { return newDimension; }
     public DimensionComponent getChangedDimension() { return newDimension; }
