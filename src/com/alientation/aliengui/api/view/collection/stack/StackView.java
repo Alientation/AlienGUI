@@ -3,12 +3,17 @@ package com.alientation.aliengui.api.view.collection.stack;
 import com.alientation.aliengui.api.view.collection.CollectionView;
 import com.alientation.aliengui.component.dimension.DimensionComponent;
 import com.alientation.aliengui.component.dimension.StaticDimensionComponent;
+import com.alientation.aliengui.event.EventListenerContainer;
 import com.alientation.aliengui.event.view.ViewDimensionEvent;
 import com.alientation.aliengui.event.view.ViewEvent;
 import com.alientation.aliengui.event.view.ViewListener;
+import com.alientation.aliengui.event.view.collection.stack.StackDimensionEvent;
+import com.alientation.aliengui.event.view.collection.stack.StackEvent;
+import com.alientation.aliengui.event.view.collection.stack.StackListener;
 
 @SuppressWarnings("unused")
 public abstract class StackView extends CollectionView {
+    protected EventListenerContainer<StackListener> stackListeners = new EventListenerContainer<>();
     protected DimensionComponent spacing;
 
     protected ViewListener listener = new ViewListener() {
@@ -28,11 +33,26 @@ public abstract class StackView extends CollectionView {
         super(builder);
         this.spacing = builder.spacing;
 
+        stackListeners.addListenerAtBeginning(new StackListener() {
+            @Override
+            public void stackDimensionChanged(StackDimensionEvent event) {
+                super.stackDimensionChanged(event);
+            }
+
+            @Override
+            public void stackStateChanged(StackEvent event) {
+                super.stackStateChanged(event);
+                getViewListeners().dispatch(listener1 -> listener1.viewStateChanged(new ViewEvent(event.getStackView())));
+            }
+        });
+
         this.spacing.registerSubscriber(this);
         resize();
     }
 
-    public abstract void resize();
+    public void resize() {
+        this.getStackListeners().dispatch(listener1 -> listener1.stackResized(new StackEvent(this)));
+    }
 
 
     //SETTERS
@@ -43,15 +63,16 @@ public abstract class StackView extends CollectionView {
      * @param spacing The new Spacing dimension
      */
     public void setSpacing(DimensionComponent spacing) {
-        ViewDimensionEvent event = new ViewDimensionEvent(this,this.spacing,spacing);
+        StackDimensionEvent event = new StackDimensionEvent(this,this.spacing,spacing);
         this.spacing.unregisterSubscriber(this);
         this.spacing = spacing;
         this.spacing.registerSubscriber(this);
-        this.getViewListeners().dispatch(listener -> listener.viewDimensionChanged(event));
+        this.getStackListeners().dispatch(listener -> listener.stackDimensionChanged(event));
     }
 
 
     //GETTERS
+    public EventListenerContainer<StackListener> getStackListeners() { return stackListeners; }
     public DimensionComponent getSpacing() { return spacing; }
     public int spacing() { return spacing.val(); }
 

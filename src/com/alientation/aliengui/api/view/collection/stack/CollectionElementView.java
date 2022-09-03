@@ -37,6 +37,11 @@ public class CollectionElementView extends View {
         getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
     }
 
+    public void setDynamicCollectionElementJoin(boolean dynamicCollectionElementJoin) {
+        this.dynamicCollectionElementJoin = dynamicCollectionElementJoin;
+        getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
+    }
+
     public View getCollectionElement() { return collectionElement; }
     public boolean doDynamicCollectionElementJoin() { return dynamicCollectionElementJoin; }
 

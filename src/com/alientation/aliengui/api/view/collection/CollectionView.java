@@ -55,7 +55,7 @@ public abstract class CollectionView extends View {
      *
      * @param view  View to be added to this collection
      */
-    public void add(CollectionElementView view) { //TODO CollectionViewEvents instead
+    public void add(CollectionElementView view) {
         if (collection.contains(view)) return; //no duplicates
         collection.add(view);
 
@@ -77,7 +77,7 @@ public abstract class CollectionView extends View {
      *
      * @param view  View to be removed from this collection
      */
-    public void remove(CollectionElementView view) { //TODO CollectionViewEvents instead
+    public void remove(CollectionElementView view) {
         if (!collection.contains(view)) return;
         collection.remove(view);
 
