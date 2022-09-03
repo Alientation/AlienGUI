@@ -3,10 +3,13 @@ package com.alientation.aliengui.api.view.collection;
 import com.alientation.aliengui.api.view.View;
 import com.alientation.aliengui.event.view.ViewEvent;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Manages collections of Views for implementing classes to use
+ *
+ */
 @SuppressWarnings("unused")
 public class CollectionView extends View { //TODO implement
 
@@ -14,26 +17,41 @@ public class CollectionView extends View { //TODO implement
 
 
     /**
-     * Constructs a new view using the Builder pattern
+     * Constructs a new CollectionView using the Builder pattern
      *
-     * @param builder Builder for this view
+     * @param builder Builder for this CollectionView
      */
     public CollectionView(Builder<?> builder) {
         super(builder);
         for (View view : builder.collection) add(view);
     }
 
+    /**
+     * Registers a view to this collection
+     *
+     * @param view  View to be added to this collection
+     */
     public void add(View view) { //TODO CollectionViewEvents instead
+        if (collection.contains(view)) return; //no duplicates
+        collection.add(view);
+
         if (view.isInitialized()) addChildViews(view);
         else view.init(this);
-        collection.add(view);
+
         getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
     }
 
+    /**
+     * Unregisters a view from this collection
+     *
+     * @param view  View to be removed from this collection
+     */
     public void remove(View view) { //TODO CollectionViewEvents instead
         if (!collection.contains(view)) return;
         collection.remove(view);
+
         removeChildViews(view);
+
         getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
     }
 
