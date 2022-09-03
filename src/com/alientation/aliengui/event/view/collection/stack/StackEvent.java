@@ -10,7 +10,5 @@ public class StackEvent extends Event {
         this.stackView = stackView;
     }
 
-    public StackView getStackView() {
-        return stackView;
-    }
+    public StackView getStackView() { return stackView; }
 }

@@ -1,13 +1,16 @@
 package com.alientation.aliengui.api.view.collection.stack;
 
 import com.alientation.aliengui.api.view.View;
-import com.alientation.aliengui.event.view.ViewEvent;
+import com.alientation.aliengui.event.EventListenerContainer;
+import com.alientation.aliengui.event.view.collection.CollectionElementEvent;
+import com.alientation.aliengui.event.view.collection.CollectionElementListener;
 
 /**
  *
  */
 @SuppressWarnings("unused")
 public class CollectionElementView extends View {
+    protected EventListenerContainer<CollectionElementListener> collectionElementListeners = new EventListenerContainer<>();
     protected View collectionElement;
     protected boolean dynamicCollectionElementJoin; //whether when collection elements are set, their dimensions will be changed
 
@@ -23,6 +26,8 @@ public class CollectionElementView extends View {
     }
 
     public void setCollectionElement(View collectionElement) {
+        CollectionElementEvent event = new CollectionElementEvent(this, this.collectionElement, collectionElement);
+
         if (this.collectionElement != null) this.removeChildViews(this.collectionElement);
         this.collectionElement = collectionElement;
 
@@ -33,15 +38,19 @@ public class CollectionElementView extends View {
         if (dynamicCollectionElementJoin) {
 
         }
-        //TODO CollectionElementEvent instead
-        getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
+
+        getCollectionElementListeners().dispatch(listener -> listener.collectionElementStateChanged(event));
     }
 
     public void setDynamicCollectionElementJoin(boolean dynamicCollectionElementJoin) {
         this.dynamicCollectionElementJoin = dynamicCollectionElementJoin;
-        getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(this)));
+        getCollectionElementListeners().dispatch(listener -> listener.collectionElementStateChanged(new CollectionElementEvent(this)));
     }
 
+
+    //GETTERs
+
+    public EventListenerContainer<CollectionElementListener> getCollectionElementListeners() { return collectionElementListeners; }
     public View getCollectionElement() { return collectionElement; }
     public boolean doDynamicCollectionElementJoin() { return dynamicCollectionElementJoin; }
 

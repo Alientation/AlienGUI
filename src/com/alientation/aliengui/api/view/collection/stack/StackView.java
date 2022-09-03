@@ -4,7 +4,6 @@ import com.alientation.aliengui.api.view.collection.CollectionView;
 import com.alientation.aliengui.component.dimension.DimensionComponent;
 import com.alientation.aliengui.component.dimension.StaticDimensionComponent;
 import com.alientation.aliengui.event.EventListenerContainer;
-import com.alientation.aliengui.event.view.ViewDimensionEvent;
 import com.alientation.aliengui.event.view.ViewEvent;
 import com.alientation.aliengui.event.view.ViewListener;
 import com.alientation.aliengui.event.view.collection.stack.StackDimensionEvent;
@@ -32,20 +31,6 @@ public abstract class StackView extends CollectionView {
     public StackView(Builder<?> builder) {
         super(builder);
         this.spacing = builder.spacing;
-
-        stackListeners.addListenerAtBeginning(new StackListener() {
-            @Override
-            public void stackDimensionChanged(StackDimensionEvent event) {
-                super.stackDimensionChanged(event);
-            }
-
-            @Override
-            public void stackStateChanged(StackEvent event) {
-                super.stackStateChanged(event);
-                getViewListeners().dispatch(listener1 -> listener1.viewStateChanged(new ViewEvent(event.getStackView())));
-            }
-        });
-
         this.spacing.registerSubscriber(this);
         resize();
     }

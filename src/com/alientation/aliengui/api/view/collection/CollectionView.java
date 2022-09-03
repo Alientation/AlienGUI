@@ -3,7 +3,6 @@ package com.alientation.aliengui.api.view.collection;
 import com.alientation.aliengui.api.view.View;
 import com.alientation.aliengui.api.view.collection.stack.CollectionElementView;
 import com.alientation.aliengui.event.EventListenerContainer;
-import com.alientation.aliengui.event.view.ViewEvent;
 import com.alientation.aliengui.event.view.collection.CollectionEvent;
 import com.alientation.aliengui.event.view.collection.CollectionListener;
 
@@ -28,25 +27,6 @@ public abstract class CollectionView extends View {
      */
     public CollectionView(Builder<?> builder) {
         super(builder);
-
-        getCollectionListeners().addListenerAtBeginning(new CollectionListener() {
-            @Override
-            public void elementAdded(CollectionEvent event) {
-                super.elementAdded(event);
-            }
-
-            @Override
-            public void elementRemoved(CollectionEvent event) {
-                super.elementRemoved(event);
-            }
-
-            @Override
-            public void collectionStateChanged(CollectionEvent event) {
-                super.collectionStateChanged(event);
-                getViewListeners().dispatch(listener -> listener.viewStateChanged(new ViewEvent(event.getCollectionView())));
-            }
-        });
-
         for (CollectionElementView view : builder.collection) add(view);
     }
 
