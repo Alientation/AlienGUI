@@ -454,6 +454,7 @@ public class View {
             ViewEvent event = new ViewEvent(this);
             listener.viewShown(event);
             listener.viewStateChanged(event);
+            //TODO maybe instead of doing this way, we could instead call the method inside the listener's viewShown(event)
         });
     }
 
