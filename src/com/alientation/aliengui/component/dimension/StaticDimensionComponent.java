@@ -13,7 +13,7 @@ public class StaticDimensionComponent extends DimensionComponent {
     }
 
     @SuppressWarnings("unchecked")
-    static class Builder<T extends Builder<T>> extends DimensionComponent.Builder<T> {
+    public static class Builder<T extends Builder<T>> extends DimensionComponent.Builder<T> {
         protected int val;
         public Builder() {
 

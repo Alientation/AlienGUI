@@ -132,7 +132,7 @@ public class RelativeDimensionComponent extends DimensionComponent {
     public Observer<RelativeDimensionComponent,DimensionComponent> getSubtractedDimensionsObserver() { return subtractedDimensions; }
 
     @SuppressWarnings("unchecked")
-    static class Builder<T extends Builder<T>> extends DimensionComponent.Builder<T> {
+    public static class Builder<T extends Builder<T>> extends DimensionComponent.Builder<T> {
         protected View relTo;
         protected float relVal = 1f;
         protected boolean multiplied = true;
