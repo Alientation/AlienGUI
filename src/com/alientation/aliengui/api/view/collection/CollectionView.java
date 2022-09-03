@@ -2,8 +2,13 @@ package com.alientation.aliengui.api.view.collection;
 
 import com.alientation.aliengui.api.view.View;
 
+import java.util.ArrayList;
+
 @SuppressWarnings("unused")
 public class CollectionView extends View { //TODO implement
+
+    protected ArrayList<View> collection;
+    
 
     /**
      * Constructs a new view using the Builder pattern
