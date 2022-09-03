@@ -1,7 +1,7 @@
 09.03.2022 (BUTTONS and COLLECTIONS)
     X ButtonView Events and Handling
         X Handle in ButtonAnimationComponent
-    - Collection Views
+    X Collection Views
             - CollectionView Events and Handling
             - Horizontal & Vertical Stack Views
                 - StackView Events and Handling
