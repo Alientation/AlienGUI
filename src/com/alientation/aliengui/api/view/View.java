@@ -231,9 +231,14 @@ public class View {
      * @param x The new X dimension
      */
     public void setX(DimensionComponent x) {
+        ViewDimensionEvent event = new ViewDimensionEvent(this,this.x,x);
         this.x.unregisterSubscriber(this);
         this.x = x;
         this.x.registerSubscriber(this);
+        this.getViewListeners().dispatch(listener -> {
+            listener.viewDimensionChanged(event);
+            listener.viewStateChanged(event);
+        });
     }
 
     public void setAbsX(DimensionComponent absX) {
@@ -246,9 +251,14 @@ public class View {
      * @param y The new y dimension
      */
     public void setY(DimensionComponent y) {
+        ViewDimensionEvent event = new ViewDimensionEvent(this,this.y,y);
         this.y.unregisterSubscriber(this);
         this.y = y;
         this.y.registerSubscriber(this);
+        this.getViewListeners().dispatch(listener -> {
+            listener.viewDimensionChanged(event);
+            listener.viewStateChanged(event);
+        });
     }
 
     public void setAbsY(DimensionComponent absY) {
@@ -261,9 +271,14 @@ public class View {
      * @param width The new Width dimension
      */
     public void setWidth(DimensionComponent width) {
+        ViewDimensionEvent event = new ViewDimensionEvent(this,this.width,width);
         this.width.unregisterSubscriber(this);
         this.width = width;
         this.width.registerSubscriber(this);
+        this.getViewListeners().dispatch(listener -> {
+            listener.viewDimensionChanged(event);
+            listener.viewStateChanged(event);
+        });
     }
 
     /**
@@ -272,9 +287,14 @@ public class View {
      * @param height The new Height dimension
      */
     public void setHeight(DimensionComponent height) {
+        ViewDimensionEvent event = new ViewDimensionEvent(this,this.height,height);
         this.height.unregisterSubscriber(this);
         this.height = height;
         this.height.registerSubscriber(this);
+        this.getViewListeners().dispatch(listener -> {
+            listener.viewDimensionChanged(event);
+            listener.viewStateChanged(event);
+        });
     }
 
     /**
@@ -283,9 +303,14 @@ public class View {
      * @param borderRadiusWidth The new Border Radius X dimension (curved borders)
      */
     public void setBorderRadiusWidth(DimensionComponent borderRadiusWidth) {
+        ViewDimensionEvent event = new ViewDimensionEvent(this,this.borderRadiusWidth,borderRadiusWidth);
         this.borderRadiusWidth.unregisterSubscriber(this);
         this.borderRadiusWidth = borderRadiusWidth;
         this.borderRadiusWidth.registerSubscriber(this);
+        this.getViewListeners().dispatch(listener -> {
+            listener.viewDimensionChanged(event);
+            listener.viewStateChanged(event);
+        });
     }
 
     /**
@@ -294,9 +319,14 @@ public class View {
      * @param borderRadiusHeight The new Border Radius Y dimension (curved borders)
      */
     public void setBorderRadiusHeight(DimensionComponent borderRadiusHeight) {
+        ViewDimensionEvent event = new ViewDimensionEvent(this,this.borderRadiusHeight,borderRadiusHeight);
         this.borderRadiusHeight.unregisterSubscriber(this);
         this.borderRadiusHeight = borderRadiusHeight;
         this.borderRadiusHeight.registerSubscriber(this);
+        this.getViewListeners().dispatch(listener -> {
+            listener.viewDimensionChanged(event);
+            listener.viewStateChanged(event);
+        });
     }
 
     /**
@@ -305,9 +335,14 @@ public class View {
      * @param borderThickness The new Border Thickness dimension
      */
     public void setBorderThickness(DimensionComponent borderThickness) {
+        ViewDimensionEvent event = new ViewDimensionEvent(this,this.borderThickness,borderThickness);
         this.borderThickness.unregisterSubscriber(this);
         this.borderThickness = borderThickness;
         this.borderThickness.registerSubscriber(this);
+        this.getViewListeners().dispatch(listener -> {
+            listener.viewDimensionChanged(event);
+            listener.viewStateChanged(event);
+        });
     }
 
     /**
@@ -316,9 +351,14 @@ public class View {
      * @param marginX The new Margin X dimension
      */
     public void setMarginX(DimensionComponent marginX) {
+        ViewDimensionEvent event = new ViewDimensionEvent(this,this.marginX,marginX);
         this.marginX.unregisterSubscriber(this);
         this.marginX = marginX;
         this.marginX.registerSubscriber(this);
+        this.getViewListeners().dispatch(listener -> {
+            listener.viewDimensionChanged(event);
+            listener.viewStateChanged(event);
+        });
     }
 
     /**
@@ -327,9 +367,14 @@ public class View {
      * @param marginY The new Margin Y dimension
      */
     public void setMarginY(DimensionComponent marginY) {
+        ViewDimensionEvent event = new ViewDimensionEvent(this,this.marginY,marginY);
         this.marginY.unregisterSubscriber(this);
         this.marginY = marginY;
         this.marginY.registerSubscriber(this);
+        this.getViewListeners().dispatch(listener -> {
+            listener.viewDimensionChanged(event);
+            listener.viewStateChanged(event);
+        });
     }
 
     /**
@@ -344,7 +389,10 @@ public class View {
         this.parentView.getChildViews().remove(this);
         this.parentView = parentView;
         this.parentView.getChildViews().add(this);
-        this.getViewListeners().dispatch(listener -> listener.parentViewChanged(event));
+        this.getViewListeners().dispatch(listener -> {
+            listener.parentViewChanged(event);
+            listener.viewStateChanged(event);
+        });
     }
 
 
@@ -359,7 +407,11 @@ public class View {
             if (view.parentView != null) view.parentView.removeChildViews(view);
             view.parentView = this;
             childViews.add(view);
-            this.getViewListeners().dispatch(listener -> listener.childViewAdded(new ViewHierarchyEvent(this,view)));
+            this.getViewListeners().dispatch(listener -> {
+                ViewHierarchyEvent event = new ViewHierarchyEvent(this,view);
+                listener.childViewAdded(event);
+                listener.viewStateChanged(event);
+            });
         }
     }
 
@@ -373,7 +425,11 @@ public class View {
         for (View view : views) {
             if (view.parentView == this) view.parentView = null;
             childViews.remove(view);
-            this.getViewListeners().dispatch(listener -> listener.childViewRemoved(new ViewHierarchyEvent(this,view)));
+            this.getViewListeners().dispatch(listener -> {
+                ViewHierarchyEvent event = new ViewHierarchyEvent(this,view);
+                listener.childViewRemoved(event);
+                listener.viewStateChanged(event);
+            });
         }
     }
 
@@ -382,7 +438,11 @@ public class View {
      */
     public void setHidden() {
         this.isVisible = false;
-        this.getViewListeners().dispatch(listener -> listener.viewHidden(new ViewEvent(this)));
+        this.getViewListeners().dispatch(listener -> {
+            ViewEvent event = new ViewEvent(this);
+            listener.viewHidden(event);
+            listener.viewStateChanged(event);
+        });
     }
 
     /**
@@ -390,7 +450,11 @@ public class View {
      */
     public void setShown() {
         this.isVisible = true;
-        this.getViewListeners().dispatch(listener -> listener.viewShown(new ViewEvent(this)));
+        this.getViewListeners().dispatch(listener -> {
+            ViewEvent event = new ViewEvent(this);
+            listener.viewShown(event);
+            listener.viewStateChanged(event);
+        });
     }
 
     public void setActive() {
