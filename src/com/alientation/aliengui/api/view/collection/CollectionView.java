@@ -12,7 +12,7 @@ import java.util.List;
  *
  */
 @SuppressWarnings("unused")
-public class CollectionView extends View { //TODO implement
+public abstract class CollectionView extends View {
 
     protected List<CollectionElementView> collection = new ArrayList<>();
 
@@ -107,7 +107,7 @@ public class CollectionView extends View { //TODO implement
 
         public View build() {
             validate();
-            return new CollectionView(this);
+            return null;
         }
     }
     /* Boilerplate code
