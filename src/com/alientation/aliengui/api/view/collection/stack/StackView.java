@@ -14,6 +14,7 @@ public abstract class StackView extends CollectionView {
     protected ViewListener listener = new ViewListener() {
         @Override
         public void viewStateChanged(ViewEvent event) {
+            super.viewStateChanged(event);
             resize();
         }
     };
@@ -47,10 +48,7 @@ public abstract class StackView extends CollectionView {
         this.spacing.unregisterSubscriber(this);
         this.spacing = spacing;
         this.spacing.registerSubscriber(this);
-        this.getViewListeners().dispatch(listener -> {
-            listener.viewDimensionChanged(event);
-            listener.viewStateChanged(event);
-        });
+        this.getViewListeners().dispatch(listener -> listener.viewDimensionChanged(event));
     }
 
 

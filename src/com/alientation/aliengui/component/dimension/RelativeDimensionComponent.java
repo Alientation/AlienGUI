@@ -47,7 +47,10 @@ public class RelativeDimensionComponent extends DimensionComponent {
     //The listener that is supplied to the relTo view
     protected ViewListener viewListener = new ViewListener() {
         @Override
-        public void viewDimensionChanged(ViewDimensionEvent event) { notifySubscribers(); }
+        public void viewDimensionChanged(ViewDimensionEvent event) {
+            super.viewDimensionChanged(event);
+            notifySubscribers();
+        }
     };
 
     /**

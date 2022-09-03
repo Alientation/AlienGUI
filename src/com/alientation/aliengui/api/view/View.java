@@ -99,53 +99,41 @@ public class View {
         frameColor = builder.frameColor;
 
         getViewListeners().addListenerAtBeginning(new ViewListener() {
-            @Override
-            public void childViewAdded(ViewHierarchyEvent event) {
+            @Override public void childViewAdded(ViewHierarchyEvent event) {
+                super.childViewAdded(event);
                 getWindowView().requestZIndexUpdate();
             }
-
-            @Override
-            public void childViewRemoved(ViewHierarchyEvent event) {
+            @Override public void childViewRemoved(ViewHierarchyEvent event) {
+                super.childViewRemoved(event);
                 getWindowView().requestZIndexUpdate();
             }
-
-            @Override
-            public void parentViewChanged(ViewHierarchyEvent event) {
+            @Override public void parentViewChanged(ViewHierarchyEvent event) {
+                super.parentViewChanged(event);
                 getWindowView().requestRenderUpdate();
             }
-
-            @Override
-            public void viewFocused(ViewEvent event) {
+            @Override public void viewFocused(ViewEvent event) {
                 super.viewFocused(event);
             }
-
-            @Override
-            public void viewUnfocused(ViewEvent event) {
+            @Override public void viewUnfocused(ViewEvent event) {
                 super.viewUnfocused(event);
             }
-
-            @Override
-            public void viewMoved(ViewEvent event) {
+            @Override public void viewMoved(ViewEvent event) {
                 super.viewMoved(event);
             }
-
-            @Override
-            public void viewHidden(ViewEvent event) {
+            @Override public void viewHidden(ViewEvent event) {
+                super.viewHidden(event);
                 getWindowView().requestRenderUpdate();
             }
-
-            @Override
-            public void viewShown(ViewEvent event) {
+            @Override public void viewShown(ViewEvent event) {
+                super.viewShown(event);
                 getWindowView().requestRenderUpdate();
             }
-
-            @Override
-            public void viewDimensionChanged(ViewDimensionEvent event) {
+            @Override public void viewDimensionChanged(ViewDimensionEvent event) {
+                super.viewDimensionChanged(event);
                 getWindowView().requestRenderUpdate();
             }
-
-            @Override
-            public void viewStateChanged(ViewEvent event) {
+            @Override public void viewStateChanged(ViewEvent event) {
+                super.viewStateChanged(event);
                 getWindowView().requestZIndexUpdate();
             }
         });
@@ -235,10 +223,7 @@ public class View {
         this.x.unregisterSubscriber(this);
         this.x = x;
         this.x.registerSubscriber(this);
-        this.getViewListeners().dispatch(listener -> {
-            listener.viewDimensionChanged(event);
-            listener.viewStateChanged(event);
-        });
+        this.getViewListeners().dispatch(listener -> listener.viewDimensionChanged(event));
     }
 
     public void setAbsX(DimensionComponent absX) {
@@ -255,10 +240,7 @@ public class View {
         this.y.unregisterSubscriber(this);
         this.y = y;
         this.y.registerSubscriber(this);
-        this.getViewListeners().dispatch(listener -> {
-            listener.viewDimensionChanged(event);
-            listener.viewStateChanged(event);
-        });
+        this.getViewListeners().dispatch(listener -> listener.viewDimensionChanged(event));
     }
 
     public void setAbsY(DimensionComponent absY) {
@@ -275,10 +257,7 @@ public class View {
         this.width.unregisterSubscriber(this);
         this.width = width;
         this.width.registerSubscriber(this);
-        this.getViewListeners().dispatch(listener -> {
-            listener.viewDimensionChanged(event);
-            listener.viewStateChanged(event);
-        });
+        this.getViewListeners().dispatch(listener -> listener.viewDimensionChanged(event));
     }
 
     /**
@@ -291,10 +270,7 @@ public class View {
         this.height.unregisterSubscriber(this);
         this.height = height;
         this.height.registerSubscriber(this);
-        this.getViewListeners().dispatch(listener -> {
-            listener.viewDimensionChanged(event);
-            listener.viewStateChanged(event);
-        });
+        this.getViewListeners().dispatch(listener -> listener.viewDimensionChanged(event));
     }
 
     /**
@@ -307,10 +283,7 @@ public class View {
         this.borderRadiusWidth.unregisterSubscriber(this);
         this.borderRadiusWidth = borderRadiusWidth;
         this.borderRadiusWidth.registerSubscriber(this);
-        this.getViewListeners().dispatch(listener -> {
-            listener.viewDimensionChanged(event);
-            listener.viewStateChanged(event);
-        });
+        this.getViewListeners().dispatch(listener -> listener.viewDimensionChanged(event));
     }
 
     /**
@@ -323,10 +296,7 @@ public class View {
         this.borderRadiusHeight.unregisterSubscriber(this);
         this.borderRadiusHeight = borderRadiusHeight;
         this.borderRadiusHeight.registerSubscriber(this);
-        this.getViewListeners().dispatch(listener -> {
-            listener.viewDimensionChanged(event);
-            listener.viewStateChanged(event);
-        });
+        this.getViewListeners().dispatch(listener -> listener.viewDimensionChanged(event));
     }
 
     /**
@@ -339,10 +309,7 @@ public class View {
         this.borderThickness.unregisterSubscriber(this);
         this.borderThickness = borderThickness;
         this.borderThickness.registerSubscriber(this);
-        this.getViewListeners().dispatch(listener -> {
-            listener.viewDimensionChanged(event);
-            listener.viewStateChanged(event);
-        });
+        this.getViewListeners().dispatch(listener -> listener.viewDimensionChanged(event));
     }
 
     /**
@@ -355,10 +322,7 @@ public class View {
         this.marginX.unregisterSubscriber(this);
         this.marginX = marginX;
         this.marginX.registerSubscriber(this);
-        this.getViewListeners().dispatch(listener -> {
-            listener.viewDimensionChanged(event);
-            listener.viewStateChanged(event);
-        });
+        this.getViewListeners().dispatch(listener -> listener.viewDimensionChanged(event));
     }
 
     /**
@@ -371,10 +335,7 @@ public class View {
         this.marginY.unregisterSubscriber(this);
         this.marginY = marginY;
         this.marginY.registerSubscriber(this);
-        this.getViewListeners().dispatch(listener -> {
-            listener.viewDimensionChanged(event);
-            listener.viewStateChanged(event);
-        });
+        this.getViewListeners().dispatch(listener -> listener.viewDimensionChanged(event));
     }
 
     /**
@@ -389,10 +350,7 @@ public class View {
         this.parentView.getChildViews().remove(this);
         this.parentView = parentView;
         this.parentView.getChildViews().add(this);
-        this.getViewListeners().dispatch(listener -> {
-            listener.parentViewChanged(event);
-            listener.viewStateChanged(event);
-        });
+        this.getViewListeners().dispatch(listener -> listener.parentViewChanged(event));
     }
 
 
@@ -407,11 +365,7 @@ public class View {
             if (view.parentView != null) view.parentView.removeChildViews(view);
             view.parentView = this;
             childViews.add(view);
-            this.getViewListeners().dispatch(listener -> {
-                ViewHierarchyEvent event = new ViewHierarchyEvent(this,view);
-                listener.childViewAdded(event);
-                listener.viewStateChanged(event);
-            });
+            this.getViewListeners().dispatch(listener -> listener.childViewAdded(new ViewHierarchyEvent(this,view)));
         }
     }
 
@@ -425,11 +379,7 @@ public class View {
         for (View view : views) {
             if (view.parentView == this) view.parentView = null;
             childViews.remove(view);
-            this.getViewListeners().dispatch(listener -> {
-                ViewHierarchyEvent event = new ViewHierarchyEvent(this,view);
-                listener.childViewRemoved(event);
-                listener.viewStateChanged(event);
-            });
+            this.getViewListeners().dispatch(listener -> listener.childViewRemoved(new ViewHierarchyEvent(this,view)));
         }
     }
 
@@ -438,11 +388,7 @@ public class View {
      */
     public void setHidden() {
         this.isVisible = false;
-        this.getViewListeners().dispatch(listener -> {
-            ViewEvent event = new ViewEvent(this);
-            listener.viewHidden(event);
-            listener.viewStateChanged(event);
-        });
+        this.getViewListeners().dispatch(listener -> listener.viewHidden(new ViewEvent(this)));
     }
 
     /**
@@ -450,12 +396,7 @@ public class View {
      */
     public void setShown() {
         this.isVisible = true;
-        this.getViewListeners().dispatch(listener -> {
-            ViewEvent event = new ViewEvent(this);
-            listener.viewShown(event);
-            listener.viewStateChanged(event);
-            //TODO maybe instead of doing this way, we could instead call the method inside the listener's viewShown(event)
-        });
+        this.getViewListeners().dispatch(listener -> listener.viewShown(new ViewEvent(this)));
     }
 
     public void setActive() {
