@@ -27,7 +27,7 @@ public class CollectionView extends View { //TODO implement
 
         public View build() {
             validate();
-            return new View(this);
+            return new CollectionView(this);
         }
     }
     /* Boilerplate code
