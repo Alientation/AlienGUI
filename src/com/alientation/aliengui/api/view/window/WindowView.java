@@ -123,61 +123,73 @@ public class WindowView extends View {
             @Override
             public void childViewAdded(ViewHierarchyEvent event) {
                 super.childViewAdded(event);
+                WindowView.this.childViewAdded(event);
             }
 
             @Override
             public void childViewRemoved(ViewHierarchyEvent event) {
                 super.childViewRemoved(event);
+                WindowView.this.childViewRemoved(event);
             }
 
             @Override
             public void parentViewChanged(ViewHierarchyEvent event) {
                 super.parentViewChanged(event);
+                WindowView.this.parentViewChanged(event);
             }
 
             @Override
             public void viewFocused(ViewEvent event) {
                 super.viewFocused(event);
+                WindowView.this.viewFocused(event);
             }
 
             @Override
             public void viewUnfocused(ViewEvent event) {
                 super.viewUnfocused(event);
+                WindowView.this.viewUnfocused(event);
             }
 
             @Override
             public void viewMoved(ViewEvent event) {
                 super.viewMoved(event);
+                WindowView.this.viewMoved(event);
             }
 
             @Override
             public void viewHidden(ViewEvent event) {
                 super.viewHidden(event);
+                WindowView.this.viewHidden(event);
             }
 
             @Override
             public void viewShown(ViewEvent event) {
                 super.viewShown(event);
+                WindowView.this.viewShown(event);
             }
 
             @Override
             public void viewDimensionChanged(ViewDimensionEvent event) {
                 super.viewDimensionChanged(event);
+                WindowView.this.viewDimensionChanged(event);
             }
 
             @Override
             public void viewActivated(ViewEvent event) {
                 super.viewActivated(event);
+                WindowView.this.viewActivated(event);
             }
 
             @Override
             public void viewDeactivated(ViewEvent event) {
                 super.viewDeactivated(event);
+                WindowView.this.viewDeactivated(event);
             }
 
             @Override
             public void viewStateChanged(ViewEvent event) {
                 super.viewStateChanged(event);
+                WindowView.this.viewStateChanged(event);
             }
         });
     }
