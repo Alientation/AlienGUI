@@ -28,7 +28,7 @@ public class View {
     //Listeners for internal processes and applications to hook into
     protected EventListenerContainer<KeyListener> keyListeners = new EventListenerContainer<>();
     protected EventListenerContainer<ModelListener> modelListeners = new EventListenerContainer<>();
-    //mouse listeners as it relates to this view TODO implement (probably in the WindowView and make it iterate and find the top most view for mouse)
+    //mouse listeners as it relates to this view
     protected EventListenerContainer<MouseListener> mouseListeners = new EventListenerContainer<>();
     protected EventListenerContainer<ViewListener> viewListeners = new EventListenerContainer<>();
 

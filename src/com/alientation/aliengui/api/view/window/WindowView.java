@@ -1,6 +1,9 @@
 package com.alientation.aliengui.api.view.window;
 
 import com.alientation.aliengui.api.view.View;
+import com.alientation.aliengui.event.mouse.MouseEvent;
+import com.alientation.aliengui.event.mouse.MouseListener;
+import com.alientation.aliengui.event.mouse.MouseScrollEvent;
 
 import java.awt.*;
 
@@ -49,6 +52,54 @@ public class WindowView extends View {
         super(builder);
         windowRenderer = new WindowRenderer(this);
         window = builder.window;
+
+        //TODO implement (probably in the WindowView and make it iterate and find the top most view for mouse)
+        mouseListeners.addListenerAtBeginning(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent event) {
+                super.mouseClicked(event);
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent event) {
+                super.mouseEntered(event);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent event) {
+                super.mouseExited(event);
+            }
+
+            @Override
+            public void mousePressed(MouseEvent event) {
+                super.mousePressed(event);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent event) {
+                super.mouseReleased(event);
+            }
+
+            @Override
+            public void mouseDragged(MouseEvent event) {
+                super.mouseDragged(event);
+            }
+
+            @Override
+            public void mouseMoved(MouseEvent event) {
+                super.mouseMoved(event);
+            }
+
+            @Override
+            public void mouseWheelMoved(MouseScrollEvent event) {
+                super.mouseWheelMoved(event);
+            }
+
+            @Override
+            public void mouseAction(MouseEvent event) {
+
+            }
+        });
     }
 
     /**
@@ -66,16 +117,12 @@ public class WindowView extends View {
     /**
      * Updates requireRenderUpdate
      */
-    public void requestRenderUpdate() {
-        requireRenderUpdate = true;
-    }
+    public void requestRenderUpdate() { requireRenderUpdate = true; } //maybe have events for these
 
     /**
      * Updates requireZIndexUpdate
      */
-    public void requestZIndexUpdate() {
-        requireZIndexUpdate = true;
-    }
+    public void requestZIndexUpdate() { requireZIndexUpdate = true; } //maybe have events for these
 
     //GETTERS
 
@@ -92,7 +139,6 @@ public class WindowView extends View {
     public WindowView getWindowView() { return this; }
 
 
-    @SuppressWarnings("unchecked")
     public static class Builder<T extends Builder<T>> extends View.Builder<T> {
         protected Window window;
         public Builder(Window window) {

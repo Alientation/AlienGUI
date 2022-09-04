@@ -35,25 +35,29 @@ public class ButtonView extends TextLabelView {
         //listens to events that pertain to this view
         getMouseListeners().addListener(new MouseListener() {
             @Override
-            public void mouseEntered(MouseEvent mouseEvent) {
+            public void mouseEntered(MouseEvent event) {
+                super.mouseEntered(event);
                 if (!isActive) return;
                 setHovered();
             }
 
             @Override
-            public void mouseExited(MouseEvent mouseEvent) {
+            public void mouseExited(MouseEvent event) {
+                super.mouseExited(event);
                 if (!isActive) return;
                 setUnhovered();
             }
 
             @Override
-            public void mousePressed(MouseEvent mouseEvent) {
+            public void mousePressed(MouseEvent event) {
+                super.mousePressed(event);
                 if (!isActive) return;
                 setPressed();
             }
 
             @Override
-            public void mouseReleased(MouseEvent mouseEvent) {
+            public void mouseReleased(MouseEvent event) {
+                super.mouseReleased(event);
                 if (!isActive) return;
                 setReleased();
             }
@@ -64,13 +68,15 @@ public class ButtonView extends TextLabelView {
         //the view dependent mouse listener won't receive it
         windowView.getMouseListeners().addListener(new MouseListener() {
             @Override
-            public void mouseExited(MouseEvent mouseEvent) {
+            public void mouseExited(MouseEvent event) {
+                super.mouseExited(event);
                if (!isActive) return;
                setUnhovered();
             }
 
             @Override
-            public void mouseReleased(MouseEvent mouseEvent) {
+            public void mouseReleased(MouseEvent event) {
+                super.mouseReleased(event);
                 if (!isActive()) return;
                 setReleased();
             }
