@@ -16,6 +16,13 @@ public class WindowRenderer {
         this.sortedViewsByZIndex = new ArrayList<>();
     }
 
+    public View getViewAtPoint(int absX, int absY) {
+        for (View view : sortedViewsByZIndex)
+            if (view.getAbsoluteArea().contains(absX,absY)) //determine if the absolute area actually works properly
+                return view;
+        return null;
+    }
+
     /**
      * Compiles a Z Index ordering of the components while updating necessary components
      * if their z index is out of place (not greater than the z index of the parent view)

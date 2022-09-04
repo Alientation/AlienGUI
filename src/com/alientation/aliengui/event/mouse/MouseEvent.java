@@ -4,6 +4,7 @@ import com.alientation.aliengui.event.Event;
 
 import java.awt.*;
 
+@SuppressWarnings("unused")
 public class MouseEvent extends Event {
     protected java.awt.event.MouseEvent event;
     public MouseEvent(java.awt.event.MouseEvent event) {

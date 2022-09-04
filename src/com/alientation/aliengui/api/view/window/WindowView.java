@@ -60,49 +60,41 @@ public class WindowView extends View {
                 super.mouseClicked(event);
                 WindowView.this.mouseClicked(event);
             }
-
             @Override
             public void mouseEntered(MouseEvent event) {
                 super.mouseEntered(event);
                 WindowView.this.mouseEntered(event);
             }
-
             @Override
             public void mouseExited(MouseEvent event) {
                 super.mouseExited(event);
                 WindowView.this.mouseExited(event);
             }
-
             @Override
             public void mousePressed(MouseEvent event) {
                 super.mousePressed(event);
                 WindowView.this.mousePressed(event);
             }
-
             @Override
             public void mouseReleased(MouseEvent event) {
                 super.mouseReleased(event);
                 WindowView.this.mouseReleased(event);
             }
-
             @Override
             public void mouseDragged(MouseEvent event) {
                 super.mouseDragged(event);
                 WindowView.this.mouseDragged(event);
             }
-
             @Override
             public void mouseMoved(MouseEvent event) {
                 super.mouseMoved(event);
                 WindowView.this.mouseMoved(event);
             }
-
             @Override
             public void mouseWheelMoved(MouseScrollEvent event) {
                 super.mouseWheelMoved(event);
                 WindowView.this.mouseWheelMoved(event);
             }
-
             @Override
             public void mouseAction(MouseEvent event) {
                 super.mouseAction(event);
@@ -112,7 +104,7 @@ public class WindowView extends View {
     }
 
     public void mouseClicked(MouseEvent event) {
-
+        View viewClicked = windowRenderer.getViewAtPoint(event.getX(),event.getY());
     }
 
     public void mouseEntered(MouseEvent event) {

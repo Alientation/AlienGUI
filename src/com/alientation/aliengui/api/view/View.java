@@ -205,7 +205,7 @@ public class View {
      *
      * @param g Graphics object to be drawn on
      */
-    public void render(Graphics g) { //TODO instead of creating a new geometry shape, store one that is updated every dimension change event
+    public void render(Graphics g) {
         if (!initialized || !isVisible) return;
 
         //frame outline
@@ -502,7 +502,6 @@ public class View {
     public Shape getArea() { return area; }
     public Shape getSafeArea() { return safeArea; }
     public Shape getAbsoluteArea() { return absoluteArea; }
-    //TODO use the Area class to perform accurate collision box detectors (for clicks)
     public Shape getAbsoluteSafeArea() { return absoluteSafeArea; }
 
 
