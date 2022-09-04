@@ -100,7 +100,7 @@ public class WindowView extends View {
                 WindowView.this.mouseAction(event);
             }
         });
-        keyListeners.addListener(new KeyListener() {
+        keyListeners.addListenerAtBeginning(new KeyListener() {
             @Override
             public void keyPressed(KeyEvent event) {
                 super.keyPressed(event);
@@ -119,7 +119,7 @@ public class WindowView extends View {
                 WindowView.this.keyReleased(event);
             }
         });
-        viewListeners.addListener(new ViewListener() {
+        viewListeners.addListenerAtBeginning(new ViewListener() {
             @Override
             public void childViewAdded(ViewHierarchyEvent event) {
                 super.childViewAdded(event);

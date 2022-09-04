@@ -163,14 +163,14 @@ public class Window extends Canvas implements Runnable {
 
         windowView = builder.windowView;
         windowView.getKeyListeners().addListener(new KeyListener() {
-            public void keyPressed(KeyEvent event) {
+            @Override public void keyPressed(com.alientation.aliengui.event.key.KeyEvent event) {
+                super.keyPressed(event);
                 getKeysDown().add(event.getKeyCode());
             }
-
-            public void keyReleased(KeyEvent event) {
+            @Override public void keyReleased(com.alientation.aliengui.event.key.KeyEvent event) {
+                super.keyPressed(event);
                 getKeysDown().remove(event.getKeyCode());
             }
-
         }, EventListenerContainer.PRIORITY_FIRST);
 
 
