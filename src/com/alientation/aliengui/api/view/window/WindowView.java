@@ -1,9 +1,15 @@
 package com.alientation.aliengui.api.view.window;
 
 import com.alientation.aliengui.api.view.View;
+import com.alientation.aliengui.event.key.KeyEvent;
+import com.alientation.aliengui.event.key.KeyListener;
 import com.alientation.aliengui.event.mouse.MouseEvent;
 import com.alientation.aliengui.event.mouse.MouseListener;
 import com.alientation.aliengui.event.mouse.MouseScrollEvent;
+import com.alientation.aliengui.event.view.ViewDimensionEvent;
+import com.alientation.aliengui.event.view.ViewEvent;
+import com.alientation.aliengui.event.view.ViewHierarchyEvent;
+import com.alientation.aliengui.event.view.ViewListener;
 
 import java.awt.*;
 
@@ -94,6 +100,86 @@ public class WindowView extends View {
                 WindowView.this.mouseAction(event);
             }
         });
+        keyListeners.addListener(new KeyListener() {
+            @Override
+            public void keyPressed(KeyEvent event) {
+                super.keyPressed(event);
+                WindowView.this.keyPressed(event);
+            }
+
+            @Override
+            public void keyTyped(KeyEvent event) {
+                super.keyTyped(event);
+                WindowView.this.keyTyped(event);
+            }
+
+            @Override
+            public void keyReleased(KeyEvent event) {
+                super.keyReleased(event);
+                WindowView.this.keyReleased(event);
+            }
+        });
+        viewListeners.addListener(new ViewListener() {
+            @Override
+            public void childViewAdded(ViewHierarchyEvent event) {
+                super.childViewAdded(event);
+            }
+
+            @Override
+            public void childViewRemoved(ViewHierarchyEvent event) {
+                super.childViewRemoved(event);
+            }
+
+            @Override
+            public void parentViewChanged(ViewHierarchyEvent event) {
+                super.parentViewChanged(event);
+            }
+
+            @Override
+            public void viewFocused(ViewEvent event) {
+                super.viewFocused(event);
+            }
+
+            @Override
+            public void viewUnfocused(ViewEvent event) {
+                super.viewUnfocused(event);
+            }
+
+            @Override
+            public void viewMoved(ViewEvent event) {
+                super.viewMoved(event);
+            }
+
+            @Override
+            public void viewHidden(ViewEvent event) {
+                super.viewHidden(event);
+            }
+
+            @Override
+            public void viewShown(ViewEvent event) {
+                super.viewShown(event);
+            }
+
+            @Override
+            public void viewDimensionChanged(ViewDimensionEvent event) {
+                super.viewDimensionChanged(event);
+            }
+
+            @Override
+            public void viewActivated(ViewEvent event) {
+                super.viewActivated(event);
+            }
+
+            @Override
+            public void viewDeactivated(ViewEvent event) {
+                super.viewDeactivated(event);
+            }
+
+            @Override
+            public void viewStateChanged(ViewEvent event) {
+                super.viewStateChanged(event);
+            }
+        });
     }
 
     public void mouseClicked(MouseEvent event) {
@@ -141,6 +227,56 @@ public class WindowView extends View {
         }
     }
 
+    public void keyPressed(KeyEvent event) {
+
+    }
+
+    public void keyReleased(KeyEvent event) {
+
+    }
+
+    public void keyTyped(KeyEvent event) {
+
+    }
+
+    public void childViewAdded(ViewHierarchyEvent event) {
+
+    }
+    public void childViewRemoved(ViewHierarchyEvent event) {
+
+    }
+    public void parentViewChanged(ViewHierarchyEvent event) {
+
+    }
+    public void viewFocused(ViewEvent event) {
+
+    }
+    public void viewUnfocused(ViewEvent event) {
+
+    }
+    public void viewMoved(ViewEvent event) {
+
+    }
+    public void viewHidden(ViewEvent event) {
+
+    }
+    public void viewShown(ViewEvent event) {
+
+    }
+    public void viewDimensionChanged(ViewDimensionEvent event) {
+
+    }
+    public void viewActivated(ViewEvent event) {
+
+    }
+    public void viewDeactivated(ViewEvent event) {
+        viewStateChanged(event);
+    }
+
+
+    public void viewStateChanged(ViewEvent event) {
+
+    }
 
     /**
      *
@@ -158,15 +294,7 @@ public class WindowView extends View {
     }
 
     //SETTERS
-
-    /**
-     * Updates requireRenderUpdate
-     */
     public void requestRenderUpdate() { requireRenderUpdate = true; } //maybe have events for these
-
-    /**
-     * Updates requireZIndexUpdate
-     */
     public void requestZIndexUpdate() { requireZIndexUpdate = true; } //maybe have events for these
 
     //GETTERS
