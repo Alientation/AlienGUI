@@ -31,6 +31,13 @@ public abstract class ViewListener extends EventListener {
     public void viewDimensionChanged(ViewDimensionEvent event) {
         viewStateChanged(event);
     }
+    public void viewActivated(ViewEvent event) {
+        viewStateChanged(event);
+    }
+    public void viewDeactivated(ViewEvent event) {
+        viewStateChanged(event);
+    }
+
 
     public void viewStateChanged(ViewEvent event) {
 

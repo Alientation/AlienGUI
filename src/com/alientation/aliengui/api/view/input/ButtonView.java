@@ -134,15 +134,17 @@ public class ButtonView extends TextLabelView {
     }
 
     @Override
-    public void setActive() { //TODO ButtonEvents active
-        super.setActive();
+    public void setActive() {
+        isActive = true;
+        getButtonListeners().dispatch(listener -> listener.buttonActivated(new ButtonEvent(this)));
     }
 
     @Override
-    public void setInactive() { //TODO ButtonEvents inactive
+    public void setInactive() {
+        isActive = false;
         isHovered = false;
         isPressed = false;
-        super.setInactive();
+        getButtonListeners().dispatch(listener -> listener.buttonDeactivated(new ButtonEvent(this)));
     }
 
     public void setPressed() {
