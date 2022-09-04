@@ -52,8 +52,6 @@ public class WindowView extends View {
         super(builder);
         windowRenderer = new WindowRenderer(this);
         window = builder.window;
-
-        //TODO implement (probably in the WindowView and make it iterate and find the top most view for mouse)
         mouseListeners.addListenerAtBeginning(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent event) {
