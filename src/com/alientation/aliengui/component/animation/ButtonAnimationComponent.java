@@ -59,7 +59,7 @@ public class ButtonAnimationComponent extends AnimationComponent {
 
     }
 
-    public void draw(ButtonView view, Graphics g, float deltaFrame) { //TODO work on animating fade in/out color transition
+    public void draw(ButtonView view, Graphics g, float deltaFrame) {
         frameTimeSinceStateChange += deltaFrame;
 
         if (deltaFrame < msOpacityTransition) {
