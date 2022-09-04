@@ -2,6 +2,7 @@ package com.alientation.aliengui.component.dimension;
 
 
 import com.alientation.aliengui.api.view.View;
+import com.alientation.aliengui.api.view.collection.stack.StackView;
 import com.alientation.aliengui.component.Observer;
 import com.alientation.aliengui.event.view.ViewDimensionEvent;
 import com.alientation.aliengui.event.view.ViewListener;
@@ -190,11 +191,23 @@ abstract class DimensionRelation {
             return view.getX();
         }
     };
+    public static final DimensionRelation LEFT_SAFE_X = new DimensionRelation() { //todo
+        @Override
+        public DimensionComponent getDimension(View view) {
+            return null;
+        }
+    };
 
     public static final DimensionRelation RIGHT_X = new DimensionRelation() {
         @Override
         public DimensionComponent getDimension(View view) {
-            return view.getX();
+            return null;
+        }
+    }; //todo
+    public static final DimensionRelation RIGHT_SAFE_X = new DimensionRelation() { //todo
+        @Override
+        public DimensionComponent getDimension(View view) {
+            return null;
         }
     };
 
@@ -204,6 +217,24 @@ abstract class DimensionRelation {
             return view.getY();
         }
     };
+    public static final DimensionRelation TOP_SAFE_Y = new DimensionRelation() { //todo
+        @Override
+        public DimensionComponent getDimension(View view) {
+            return null;
+        }
+    };
+    public static final DimensionRelation BOTTOM_Y = new DimensionRelation() { //todo
+        @Override
+        public DimensionComponent getDimension(View view) {
+            return null;
+        }
+    };
+    public static final DimensionRelation BOTTOM_SAFE_Y = new DimensionRelation() { //todo
+        @Override
+        public DimensionComponent getDimension(View view) {
+            return null;
+        }
+    };
 
     public static final DimensionRelation WIDTH = new DimensionRelation() {
         @Override
@@ -211,11 +242,23 @@ abstract class DimensionRelation {
             return view.getWidth();
         }
     };
+    public static final DimensionRelation SAFE_WIDTH = new DimensionRelation() { //todo
+        @Override
+        public DimensionComponent getDimension(View view) {
+            return null;
+        }
+    };
 
     public static final DimensionRelation HEIGHT = new DimensionRelation() {
         @Override
         public DimensionComponent getDimension(View view) {
             return view.getHeight();
+        }
+    };
+    public static final DimensionRelation SAFE_HEIGHT = new DimensionRelation() { //todo
+        @Override
+        public DimensionComponent getDimension(View view) {
+            return null;
         }
     };
 
@@ -260,7 +303,12 @@ abstract class DimensionRelation {
         }
     };
 
-    //TODO stack spacing etc
+    public static final DimensionRelation STACK_SPACING = new DimensionRelation() {
+        @Override
+        public DimensionComponent getDimension(View view) {
+            return ((StackView) view).getSpacing();
+        }
+    };
 
     public DimensionRelation() {
 
