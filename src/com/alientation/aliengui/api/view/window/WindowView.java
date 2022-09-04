@@ -12,9 +12,8 @@ import java.awt.*;
  */
 @SuppressWarnings("unused")
 public class WindowView extends View {
-    /**
-     * Base properties
-     */
+
+    //Base properties
     public static final int INIT_WIDTH = 800, INIT_HEIGHT = 1000, INIT_TPS = 120, INIT_FPS = 60;
     public static final String INIT_TITLE = "Untitled";
 
@@ -23,25 +22,21 @@ public class WindowView extends View {
     public static final String IMAGES = RESOURCE + "images\\";
     public static final String FONTS = RESOURCE + "fonts\\";
 
-    /**
-     * The Window Renderer that manages this specific WindowView
-     */
+
+    //The Window Renderer that manages this specific WindowView
     protected WindowRenderer windowRenderer;
 
-    /**
-     * Whether this Window needs a render update, of which, the window renderer will check
-     */
+    //Whether this Window needs a render update, of which, the window renderer will check
     protected boolean requireRenderUpdate = true;
 
-    /**
-     * Whether this Window needs a z index update (ordering of views), of which, the window renderer will check
-     */
+    //Whether this Window needs a z index update (ordering of views), of which, the window renderer will check
     protected boolean requireZIndexUpdate = true;
 
-    /**
-     * The Window this window view wraps
-     */
+    //The Window this window view wraps
     protected Window window;
+
+    //most recent view the mouse was over
+    protected View recentlyEnteredView;
 
     /**
      * Builds a Window View
@@ -103,39 +98,47 @@ public class WindowView extends View {
 
     public void mouseClicked(MouseEvent event) {
         View viewClicked = windowRenderer.getViewAtPoint(event.getX(),event.getY());
+        if (viewClicked != null) viewClicked.getMouseListeners().dispatch(listener -> listener.mouseClicked(event));
+    }
+    public void mouseEntered(MouseEvent event) { //only fired when the mouse enters this Window
 
     }
 
-    public void mouseEntered(MouseEvent event) {
-
-    }
-
-    public void mouseExited(MouseEvent event) {
+    public void mouseExited(MouseEvent event) { //only fired when mouse leaves this window
 
     }
 
     public void mousePressed(MouseEvent event) {
-
+        View viewPressed = windowRenderer.getViewAtPoint(event.getX(),event.getY());
+        if (viewPressed != null) viewPressed.getMouseListeners().dispatch(listener -> listener.mousePressed(event));
     }
 
     public void mouseReleased(MouseEvent event) {
-
+        View viewReleased = windowRenderer.getViewAtPoint(event.getX(),event.getY());
+        if (viewReleased != null) viewReleased.getMouseListeners().dispatch(listener -> listener.mouseReleased(event));
     }
 
     public void mouseDragged(MouseEvent event) {
-
+        View viewDragged = windowRenderer.getViewAtPoint(event.getX(),event.getY());
+        if (viewDragged != null) viewDragged.getMouseListeners().dispatch(listener -> listener.mouseDragged(event));
     }
-
     public void mouseMoved(MouseEvent event) {
-
+        View viewMoved = windowRenderer.getViewAtPoint(event.getX(),event.getY());
+        if (viewMoved != null) viewMoved.getMouseListeners().dispatch(listener -> listener.mouseMoved(event));
     }
 
     public void mouseWheelMoved(MouseScrollEvent event) {
-
+        View viewWheelMoved = windowRenderer.getViewAtPoint(event.getX(),event.getY());
+        if (viewWheelMoved != null) viewWheelMoved.getMouseListeners().dispatch(listener -> listener.mouseWheelMoved(event));
     }
 
     public void mouseAction(MouseEvent event) {
-
+        View viewOver = windowRenderer.getViewAtPoint(event.getX(),event.getY());
+        if (recentlyEnteredView != viewOver) { //mouse has exited a component and hovered over another component
+            if (recentlyEnteredView != null) recentlyEnteredView.getMouseListeners().dispatch(listener -> listener.mouseExited(event));
+            if (viewOver != null) viewOver.getMouseListeners().dispatch(listener -> listener.mouseEntered(event));
+            recentlyEnteredView = viewOver;
+        }
     }
 
 
