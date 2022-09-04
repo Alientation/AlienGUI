@@ -160,8 +160,11 @@ public class Window extends Canvas implements Runnable {
                 windowView.getViewListeners().dispatch(listener -> listener.viewHidden(new ViewEvent(windowView)));
             }
         });
+    }
 
-        windowView = builder.windowView;
+    public void init(WindowView windowView) {
+        if (running) throw new IllegalStateException("Window is already running");
+        this.windowView = windowView;
         windowView.getKeyListeners().addListener(new KeyListener() {
             @Override public void keyPressed(com.alientation.aliengui.event.key.KeyEvent event) {
                 super.keyPressed(event);
@@ -172,8 +175,7 @@ public class Window extends Canvas implements Runnable {
                 getKeysDown().remove(event.getKeyCode());
             }
         }, EventListenerContainer.PRIORITY_FIRST);
-
-
+        start();
     }
 
     /**
@@ -373,8 +375,7 @@ public class Window extends Canvas implements Runnable {
     //BUILDER
 
     @SuppressWarnings("unchecked")
-    static class Builder<T extends Builder<T>> {
-        protected WindowView windowView;
+    public static class Builder<T extends Builder<T>> {
         protected String title;
         protected int preferredWidth, preferredHeight, width, height;
         protected boolean resizable;
@@ -383,11 +384,6 @@ public class Window extends Canvas implements Runnable {
 
         public Builder() {
 
-        }
-
-        public T windowView(WindowView windowView) {
-            this.windowView = windowView;
-            return (T) this;
         }
 
         public T title(String title) {
@@ -431,7 +427,7 @@ public class Window extends Canvas implements Runnable {
         }
 
         public void validate() throws IllegalStateException {
-            if (windowView == null) throw new IllegalStateException("windowView must be initialized.");
+
         }
 
         public Window build() {

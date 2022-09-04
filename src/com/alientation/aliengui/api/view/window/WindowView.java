@@ -18,6 +18,9 @@ import java.awt.*;
  */
 @SuppressWarnings("unused")
 public class WindowView extends View {
+    // TODO: 9/4/2022
+    //When initializing a WindowView, it should automatically create a Window for it without the user having to do so
+    //simultaneously, when initializing a Window, it should automatically create a WindowView for it
 
     //Base properties
     public static final int INIT_WIDTH = 800, INIT_HEIGHT = 1000, INIT_TPS = 120, INIT_FPS = 60;
@@ -52,7 +55,6 @@ public class WindowView extends View {
     public WindowView(Builder<?> builder) {
         super(builder);
         windowRenderer = new WindowRenderer(this);
-        window = builder.window;
         mouseListeners.addListenerAtBeginning(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent event) {
@@ -194,6 +196,12 @@ public class WindowView extends View {
         });
     }
 
+    public void init(Window window) {
+        if (initialized) throw new IllegalStateException("Already initialized");
+        initialized = true;
+        this.window = window;
+    }
+
     public void mouseClicked(MouseEvent event) {
         View viewClicked = windowRenderer.getViewAtPoint(event.getX(),event.getY());
         if (viewClicked != null) viewClicked.getMouseListeners().dispatch(listener -> listener.mouseClicked(event));
@@ -325,19 +333,16 @@ public class WindowView extends View {
 
 
     public static class Builder<T extends Builder<T>> extends View.Builder<T> {
-        protected Window window;
-        public Builder(Window window) {
-            this.window = window;
+        public Builder() {
         }
 
         public void validate() {
             super.validate();
-            if (window == null) throw new IllegalStateException("Window must be valid");
         }
 
-        public View build() {
+        public WindowView build() {
             validate();
-            return new View(this);
+            return new WindowView(this);
         }
     }
 }
