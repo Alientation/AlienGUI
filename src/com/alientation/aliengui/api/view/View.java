@@ -178,16 +178,14 @@ public class View {
         if (!initialized || !isVisible) return;
 
         //frame outline
-        frameColor.draw(this,g,new RoundRectangle2D.Float(x() - borderThickness(),y() - borderThickness(),
-                width() + borderThickness()<<1,height() + borderThickness()<<1,
-                borderRadiusX() + borderThickness(), borderRadiusY() + borderThickness()));
+        frameColor.draw(this,g,getFrameShape());
 
         //background
-        backgroundColor.draw(this,g,new RoundRectangle2D.Float(x(),y(),width(),height(),borderRadiusX(),borderRadiusY()));
+        backgroundColor.draw(this,g,getBackgroundShape());
 
         //background image
         if (backgroundImage != null)
-            backgroundImage.draw(this,g,new RoundRectangle2D.Float(x(),y(),width(),height(),borderRadiusX(),borderRadiusY()));
+            backgroundImage.draw(this,g,getBackgroundShape());
     }
 
     /**
@@ -476,6 +474,12 @@ public class View {
         return new RoundRectangle2D.Float(x(), y(), width(), height(), borderRadiusX(), borderRadiusY());
     }
 
+    public Shape getFrameShape() {
+        return new RoundRectangle2D.Float(x() - borderThickness(),y() - borderThickness(),
+                width() + borderThickness()<<1,height() + borderThickness()<<1,
+                borderRadiusX() + borderThickness(), borderRadiusY() + borderThickness());
+    }
+
 
     //LISTENERS
     public EventListenerContainer<KeyListener> getKeyListeners() { return keyListeners; }
@@ -516,10 +520,10 @@ public class View {
 
     //PROPERTIES
     public RoundRectangle2D getArea() { return new RoundRectangle2D.Float(x(), y(), width(), height(), borderRadiusX(), borderRadiusY()); }
-    public RoundRectangle2D getSafeArea() { return new RoundRectangle2D.Float(x(), y(), width(), height(), borderRadiusX(), borderRadiusY()); }
+    public RoundRectangle2D getSafeArea() { return new RoundRectangle2D.Float(safeX(), safeY(), safeWidth(), safeHeight(), borderRadiusX(), borderRadiusY()); }
     public RoundRectangle2D getAbsoluteArea() { return new RoundRectangle2D.Float(absX(), absY(), width(), height(), borderRadiusX(), borderRadiusY()); }
     //TODO use the Area class to perform accurate collision box detectors (for clicks)
-    public RoundRectangle2D getAbsoluteSafeArea() { return new RoundRectangle2D.Float(x(), y(), width(), height(), borderRadiusX(), borderRadiusY()); }
+    public RoundRectangle2D getAbsoluteSafeArea() { return new RoundRectangle2D.Float(absSafeX(), absSafeY(), safeWidth(), safeHeight(), borderRadiusX(), borderRadiusY()); }
 
     //VIEW HIERARCHY
     public View getParentView() { return parentView; }
