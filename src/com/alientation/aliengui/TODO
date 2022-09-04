@@ -1,22 +1,39 @@
-09.03.2022 (BUTTONS and COLLECTIONS)
+09.03.2022 (INPUTS I and COLLECTIONS I)
     X ButtonView Events and Handling
         X Handle in ButtonAnimationComponent
     X Collection Views
             X CollectionView Events and Handling
-            - Horizontal & Vertical Stack Views
+            X Horizontal & Vertical Stack Views
                 X StackView Events and Handling
 
-09.04.2022 (INPUTS I)
+09.04.2022 (INPUTS II)
     - CheckBox Views
         - CheckBoxView Events and Handling
     - Switch Views
         - SwitchView Events and Handling
 
-09.05.2022 (INPUTS II)
+09.05.2022 (INPUTS III)
     - TextInput Views
         - TextInputView Events and Handling
     - Slider Views
             - SliderView Events and Handling
 
-09.06.2022 ()
-    -
+09.06.2022 (COLLECTIONS II)
+    - List Views
+        - ListView Events and Handling
+    - Menu Views
+        - MenuView Events and Handling
+
+09.07.2022 (COLLECTIONS III and COMPONENTS I)
+    - Table Views
+        - TableView Events and Handling
+    - AnimationComponent supplied animations
+        - Shake
+        - Color Change
+        - Chained Animations (group of animations played/handled)
+
+09.08.2022 (COMPONENTS II)
+    - Color Component supplied colors and draw methods (thinking draw methods use a supplied animation component??)
+
+09.09.2022 (COMPONENTS III)
+    - Dimension Components (implement more relative dimensions and replace old dimensions with these)
