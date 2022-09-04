@@ -16,6 +16,15 @@ public class WindowRenderer {
         this.sortedViewsByZIndex = new ArrayList<>();
     }
 
+    /**
+     * Returns the top most view at a given coordinate
+     * <p>
+     * Attempts to find a valid view, but will return null if no valid view was found
+     *
+     * @param absX  Absolute x position on the Window
+     * @param absY  Absolute y position on the Window
+     * @return      Topmost view at the given point if it exists
+     */
     public View getViewAtPoint(int absX, int absY) {
         for (View view : sortedViewsByZIndex)
             if (view.getAbsoluteArea().contains(absX,absY)) //determine if the absolute area actually works properly
@@ -26,7 +35,6 @@ public class WindowRenderer {
     /**
      * Compiles a Z Index ordering of the components while updating necessary components
      * if their z index is out of place (not greater than the z index of the parent view)
-     *
      */
     public void updateZIndexing() {
         if (!windowView.requireZIndexUpdate) return;
@@ -43,10 +51,8 @@ public class WindowRenderer {
         View cur;
         while (!bfs.isEmpty()) {
             cur = bfs.poll();
-            if (visitedViews.contains(cur)) {
-                System.out.println("View " + cur + " is a subview of multiple views");
-                continue;
-            }
+            if (visitedViews.contains(cur))
+                throw new IllegalStateException("View " + cur + " is a subview of multiple views");
             visitedViews.add(cur);
             sortedViewsByZIndex.add(cur);
             for (View view : cur.getChildViews()) {
@@ -70,10 +76,6 @@ public class WindowRenderer {
         return true;
     }
 
-    public WindowView getWindow() {
-        return windowView;
-    }
-    public List<View> getSortedViewsByZIndex() {
-        return sortedViewsByZIndex;
-    }
+    public WindowView getWindow() { return windowView; }
+    public List<View> getSortedViewsByZIndex() { return sortedViewsByZIndex; }
 }

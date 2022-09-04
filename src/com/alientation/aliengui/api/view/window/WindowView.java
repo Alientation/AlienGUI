@@ -103,6 +103,7 @@ public class WindowView extends View {
 
     public void mouseClicked(MouseEvent event) {
         View viewClicked = windowRenderer.getViewAtPoint(event.getX(),event.getY());
+
     }
 
     public void mouseEntered(MouseEvent event) {
