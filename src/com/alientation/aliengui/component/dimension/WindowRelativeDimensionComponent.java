@@ -83,7 +83,6 @@ public class WindowRelativeDimensionComponent extends DimensionComponent {
     }
 
 
-
     //SETTERS
 
     public void setRelTo(Window relTo) {

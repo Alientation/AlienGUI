@@ -66,16 +66,14 @@ public class WindowView extends View {
                 .relTo(window)
                 .windowDimensionRelation(WindowRelativeDimensionComponent.WindowDimensionRelation.TOP_Y)
                 .build());
-        setWidth(new WindowRelativeDimensionComponent.Builder<>()
+        setWidth(new WindowRelativeDimensionComponent.Builder<>() //todo this doesn't properly update
                 .relTo(window)
                 .windowDimensionRelation(WindowRelativeDimensionComponent.WindowDimensionRelation.WIDTH)
                 .build());
-        setHeight(new WindowRelativeDimensionComponent.Builder<>()
+        setHeight(new WindowRelativeDimensionComponent.Builder<>() //todo this doesn't properly update
                 .relTo(window)
                 .windowDimensionRelation(WindowRelativeDimensionComponent.WindowDimensionRelation.HEIGHT)
                 .build());
-
-        System.out.println("windowView width and height + " + width() + ", " + height());
 
         windowRenderer = new WindowRenderer(this);
         mouseListeners.addListenerAtBeginning(new MouseListener() {

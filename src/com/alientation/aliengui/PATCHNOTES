@@ -23,3 +23,4 @@
             - Fixed method infinite recursion with mouse events firing events to itself
             - Fixed concurrent modification when iterating through a collection using a for each loop
             - Fixed render optimization not working because update requests have not been set to false once processed
+            - Fixed flickering when resizing/moving window

@@ -14,7 +14,7 @@ public class BasicApp {
                 .backgroundColor(new ColorComponent(Color.orange))
                 .build();
 
-        View basicWindowSubView = new View.Builder<>()
+        View basicWindowSubView = new View.Builder<>() //BUG doesn't fill screen
                 .marginX(new StaticDimensionComponent.Builder<>().val(10).build())
                 .marginY(new StaticDimensionComponent.Builder<>().val(10).build())
                 .backgroundColor(new ColorComponent(Color.GRAY))

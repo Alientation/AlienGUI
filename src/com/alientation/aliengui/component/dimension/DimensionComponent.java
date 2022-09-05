@@ -1,5 +1,6 @@
 package com.alientation.aliengui.component.dimension;
 
+import com.alientation.aliengui.api.view.View;
 import com.alientation.aliengui.component.Component;
 import com.alientation.aliengui.component.Observer;
 import com.alientation.aliengui.component.Subscriber;
@@ -61,6 +62,10 @@ public abstract class DimensionComponent extends Component {
     public void notifySubscribers() {
         super.notifySubscribers();
         dimensionsSubscriber.notifySubscribers();
+    }
+
+    public boolean isSubscriberOfThis(View view) {
+        return subscribers.getSubscribed().contains(view);
     }
 
 

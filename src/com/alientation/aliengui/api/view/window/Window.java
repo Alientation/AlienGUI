@@ -54,17 +54,28 @@ public class Window extends Canvas implements Runnable {
      */
     protected Window(Builder<?> builder) {
         //sets up JFrame window, the only Java Swing connection in this library
-        frame = new JFrame(builder.title);
+        frame = new JFrame(builder.title) {
+            @Override
+            public void paint(Graphics g) {
+                super.paint(g);
+                if (windowView != null) {
+                    windowView.requestRenderUpdate();
+                    if (windowView.windowRenderer != null)
+                        windowView.windowRenderer.render(g);
+                }
+            }
+        };
+        System.setProperty("sun.awt.noerasebackground", "true");
 
         frame.setPreferredSize(new Dimension(builder.preferredWidth, builder.preferredHeight));
         frame.setSize(new Dimension(builder.width,builder.height));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(builder.resizable);
         frame.setLocationRelativeTo(null);
-        frame.add(this);
         frame.setVisible(true);
         Toolkit.getDefaultToolkit().setDynamicLayout(false); //IDK what this is for
         frame.setIgnoreRepaint(true); //probably not needed
+        this.setIgnoreRepaint(true);
 
         //register the proper timing for the internal loop
         targetTPS = builder.targetTPS;
@@ -178,6 +189,7 @@ public class Window extends Canvas implements Runnable {
                 windowView.getViewListeners().dispatch(listener -> listener.viewHidden(new ViewEvent(windowView)));
             }
         });
+        frame.add(this);
         start();
     }
 
