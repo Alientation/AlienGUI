@@ -52,7 +52,7 @@ public class Window extends Canvas implements Runnable {
      *
      * @param builder   Builder
      */
-    public Window(Builder<?> builder) {
+    protected Window(Builder<?> builder) {
         //sets up JFrame window, the only Java Swing connection in this library
         frame = new JFrame(builder.title);
 

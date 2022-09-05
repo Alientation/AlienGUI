@@ -36,7 +36,7 @@ public abstract class StackView extends CollectionView {
      *
      * @param builder Builder for this view
      */
-    public StackView(Builder<?> builder) {
+    protected StackView(Builder<?> builder) {
         super(builder);
         this.spacing = builder.spacing;
         this.spacing.registerSubscriber(this);

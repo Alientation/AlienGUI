@@ -25,7 +25,7 @@ public abstract class CollectionView extends View {
      *
      * @param builder Builder for this CollectionView
      */
-    public CollectionView(Builder<?> builder) {
+    protected CollectionView(Builder<?> builder) {
         super(builder);
         for (CollectionElementView view : builder.collection) add(view);
     }

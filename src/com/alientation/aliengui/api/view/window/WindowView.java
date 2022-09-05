@@ -51,7 +51,7 @@ public class WindowView extends View {
      *
      * @param builder   Builder
      */
-    public WindowView(Builder<?> builder) {
+    protected WindowView(Builder<?> builder) {
         super(builder);
 
         window = builder.window; //used if the user creates a Window object (the Window object instantiation will create a WindowView)

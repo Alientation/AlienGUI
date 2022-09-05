@@ -12,7 +12,7 @@ public class VerticalStackView extends StackView { //TODO implement
      *
      * @param builder Builder for this view
      */
-    public VerticalStackView(Builder<?> builder) {
+    protected VerticalStackView(Builder<?> builder) {
         super(builder);
     }
 

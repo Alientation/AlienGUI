@@ -51,7 +51,7 @@ public abstract class DimensionComponent extends Component {
      * @param builder   Builder
      */
 
-    public DimensionComponent(Builder<?> builder) {
+    protected DimensionComponent(Builder<?> builder) {
 
     }
 

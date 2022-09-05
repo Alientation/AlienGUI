@@ -25,7 +25,7 @@ public class TextLabelView extends View {
      *
      * @param builder Builder for this view
      */
-    public TextLabelView(Builder<?> builder) {
+    protected TextLabelView(Builder<?> builder) {
         super(builder);
         textLabel = builder.textLabel;
         textLabel.registerSubscriber(this);

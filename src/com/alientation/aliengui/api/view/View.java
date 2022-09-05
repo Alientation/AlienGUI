@@ -82,7 +82,7 @@ public class View {
      *
      * @param builder   Builder for this view
      */
-    public View(Builder<?> builder) {
+    protected View(Builder<?> builder) {
         x = builder.x;
         y = builder.y;
         width = builder.width;
@@ -561,15 +561,15 @@ public class View {
     //BUILDER
     @SuppressWarnings({"unused", "unchecked"})
     public static class Builder<T extends Builder<T>> {
-        protected DimensionComponent x = StaticDimensionComponent.MIN; //duplicate subscriber bug TODO
-        protected DimensionComponent y = StaticDimensionComponent.MIN;
-        protected DimensionComponent width = StaticDimensionComponent.BASE;
-        protected DimensionComponent height = StaticDimensionComponent.BASE;
-        protected DimensionComponent borderRadiusWidth = StaticDimensionComponent.MIN;
-        protected DimensionComponent borderRadiusHeight = StaticDimensionComponent.MIN;
-        protected DimensionComponent borderThickness = StaticDimensionComponent.MIN;
-        protected DimensionComponent marginX = StaticDimensionComponent.MIN;
-        protected DimensionComponent marginY = StaticDimensionComponent.MIN;
+        protected DimensionComponent x = StaticDimensionComponent.ZERO();
+        protected DimensionComponent y = StaticDimensionComponent.ZERO();
+        protected DimensionComponent width = StaticDimensionComponent.BASE_WIDTH();
+        protected DimensionComponent height = StaticDimensionComponent.BASE_HEIGHT();
+        protected DimensionComponent borderRadiusWidth = StaticDimensionComponent.ZERO();
+        protected DimensionComponent borderRadiusHeight = StaticDimensionComponent.ZERO();
+        protected DimensionComponent borderThickness = StaticDimensionComponent.ZERO();
+        protected DimensionComponent marginX = StaticDimensionComponent.ZERO();
+        protected DimensionComponent marginY = StaticDimensionComponent.ZERO();
         protected boolean isVisible = true;
         protected boolean isActive = true;
         protected boolean visibilityAppliesToChildren= false;

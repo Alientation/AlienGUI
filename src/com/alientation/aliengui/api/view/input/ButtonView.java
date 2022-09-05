@@ -26,7 +26,7 @@ public class ButtonView extends TextLabelView {
      *
      * @param builder Builder for this view
      */
-    public ButtonView(Builder<?> builder) {
+    protected ButtonView(Builder<?> builder) {
         super(builder);
         this.hoveredPopup = builder.hoveredPopup;
         this.animationComponent = builder.animationComponent;

@@ -59,7 +59,7 @@ public class RelativeDimensionComponent extends DimensionComponent {
      *
      * @param builder   Builder
      */
-    public RelativeDimensionComponent(Builder<?> builder) {
+    protected RelativeDimensionComponent(Builder<?> builder) {
         super(builder);
         relTo = builder.relTo;
         relVal = builder.relVal;

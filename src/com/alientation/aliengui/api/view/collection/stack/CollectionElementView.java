@@ -19,7 +19,7 @@ public class CollectionElementView extends View {
      *
      * @param builder Builder for this view
      */
-    public CollectionElementView(Builder<?> builder) {
+    protected CollectionElementView(Builder<?> builder) {
         super(builder);
         setCollectionElement(builder.collectionElement);
         dynamicCollectionElementJoin = builder.dynamicCollectionElementJoin;

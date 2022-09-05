@@ -50,7 +50,7 @@ public class WindowRelativeDimensionComponent extends DimensionComponent {
      *
      * @param builder Builder
      */
-    public WindowRelativeDimensionComponent(Builder<?> builder) {
+    protected WindowRelativeDimensionComponent(Builder<?> builder) {
         super(builder);
         relTo = builder.relTo;
         relVal = builder.relVal;

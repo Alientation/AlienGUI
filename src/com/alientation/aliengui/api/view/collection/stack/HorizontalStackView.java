@@ -11,7 +11,7 @@ public class HorizontalStackView extends StackView { //TODO implement
      *
      * @param builder Builder for this view
      */
-    public HorizontalStackView(Builder<?> builder) {
+    protected HorizontalStackView(Builder<?> builder) {
         super(builder);
     }
 

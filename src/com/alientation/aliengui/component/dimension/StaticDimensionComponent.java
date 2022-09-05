@@ -3,13 +3,19 @@ package com.alientation.aliengui.component.dimension;
 
 @SuppressWarnings("unused")
 public class StaticDimensionComponent extends DimensionComponent {
-    public static StaticDimensionComponent MIN = new Builder<>().val(0).build();
-    public static StaticDimensionComponent MAX = new Builder<>().val(Integer.MAX_VALUE).build();
-    public static StaticDimensionComponent BASE = new Builder<>().val(200).build();
-
-    public StaticDimensionComponent(Builder<?> builder) {
+    protected StaticDimensionComponent(Builder<?> builder) {
         super(builder);
         this.val = builder.val;
+    }
+
+    public static StaticDimensionComponent ZERO() {
+        return new Builder<>().val(0).build();
+    }
+    public static StaticDimensionComponent BASE_HEIGHT() {
+        return new Builder<>().val(225).build();
+    }
+    public static StaticDimensionComponent BASE_WIDTH() {
+        return new Builder<>().val(400).build();
     }
 
     @SuppressWarnings("unchecked")
