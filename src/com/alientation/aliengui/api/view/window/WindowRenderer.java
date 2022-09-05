@@ -33,9 +33,9 @@ public class WindowRenderer {
         // precalculate by iterating from the least z index to the highest
         // having a 2d array of pointers to the top most view at the point
 
-        for (View view : sortedViewsByZIndex)
-            if (view.getAbsoluteArea().contains(absX,absY))
-                return view;
+        for (int i = 0; i < sortedViewsByZIndex.size(); i++) //don't use enhanced for loop because of potential concurrent modification
+            if (sortedViewsByZIndex.get(i).getAbsoluteArea().contains(absX,absY))
+                return sortedViewsByZIndex.get(i);
         return null;
     }
 
@@ -62,7 +62,7 @@ public class WindowRenderer {
                 throw new IllegalStateException("View " + cur + " is a subview of multiple views");
             visitedViews.add(cur);
             sortedViewsByZIndex.add(cur);
-            for (View view : cur.getChildViews()) {
+            for (View view : cur.getChildViews()) { //potential concurrent modification?
                 if (view.getZIndex() <= cur.getZIndex()) //updates if required
                     view.setZIndex(cur.getZIndex()+1);
                 bfs.offer(view);
@@ -78,8 +78,8 @@ public class WindowRenderer {
      */
     public boolean render(Graphics g) {
         if (!windowView.doesRequireRenderUpdate()) return false;
-        for (View view : sortedViewsByZIndex)
-            view.render(g);
+        for (int i = 0; i < sortedViewsByZIndex.size(); i++) //don't use enhanced for loop because of potential concurrent modification
+            sortedViewsByZIndex.get(i).render(g);
         return true;
     }
 

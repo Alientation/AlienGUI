@@ -209,8 +209,6 @@ public class View {
     public void render(Graphics g) {
         if (!initialized || !isVisible) return;
 
-        System.out.println("frame width " + width());
-
         //frame outline
         frameColor.draw(this,g,getFrameShape());
 

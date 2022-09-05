@@ -21,3 +21,4 @@
             - Fixed RelativeDimensions not updating the value of that dimension upon creation
             - Fixed abs dimensions causing null pointer exceptions in a windowView with no parent view
             - Fixed method infinite recursion with mouse events firing events to itself
+            - Fixed concurrent modification when iterating through a collection using a for each loop
