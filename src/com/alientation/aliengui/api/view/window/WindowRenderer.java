@@ -45,6 +45,7 @@ public class WindowRenderer {
      */
     public void updateZIndexing() {
         if (!windowView.requireZIndexUpdate) return;
+        windowView.requireZIndexUpdate = false;
         windowView.requireRenderUpdate = true; //when z index has been updated, it needs to render
 
         this.sortedViewsByZIndex.clear();
@@ -77,7 +78,8 @@ public class WindowRenderer {
      * @param g Graphical output
      */
     public boolean render(Graphics g) {
-        if (!windowView.doesRequireRenderUpdate()) return false;
+        if (!windowView.requireRenderUpdate) return false;
+        windowView.requireRenderUpdate = false;
         for (int i = 0; i < sortedViewsByZIndex.size(); i++) //don't use enhanced for loop because of potential concurrent modification
             sortedViewsByZIndex.get(i).render(g);
         return true;

@@ -58,8 +58,6 @@ public class WindowView extends View {
         if (window == null) //used if the user creates a WindowView object (the Window object will be created automatically)
             window = new Window.Builder<>().windowView(this).build();
 
-        System.out.println("windowView width and height + " + width() + ", " + height());
-
         setX(new WindowRelativeDimensionComponent.Builder<>()
                 .relTo(window)
                 .windowDimensionRelation(WindowRelativeDimensionComponent.WindowDimensionRelation.LEFT_X)
