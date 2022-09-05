@@ -18,6 +18,7 @@ import com.alientation.aliengui.event.view.ViewListener;
 
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -45,7 +46,7 @@ public class View {
     protected WindowView windowView;
 
     //Views that are enclosed in this view
-    protected Set<View> childViews;
+    protected Set<View> childViews = new HashSet<>();
 
     //Whether this view is ready to be used after all properties are initialized
     protected boolean initialized;
@@ -107,15 +108,15 @@ public class View {
         getViewListeners().addListenerAtBeginning(new ViewListener() {
             @Override public void childViewAdded(ViewHierarchyEvent event) {
                 super.childViewAdded(event);
-                getWindowView().requestZIndexUpdate();
+                requestZIndexUpdate();
             }
             @Override public void childViewRemoved(ViewHierarchyEvent event) {
                 super.childViewRemoved(event);
-                getWindowView().requestZIndexUpdate();
+                requestZIndexUpdate();
             }
             @Override public void parentViewChanged(ViewHierarchyEvent event) {
                 super.parentViewChanged(event);
-                getWindowView().requestRenderUpdate();
+                requestRenderUpdate();
             }
             @Override public void viewFocused(ViewEvent event) {
                 super.viewFocused(event);
@@ -128,11 +129,11 @@ public class View {
             }
             @Override public void viewHidden(ViewEvent event) {
                 super.viewHidden(event);
-                getWindowView().requestRenderUpdate();
+                requestRenderUpdate();
             }
             @Override public void viewShown(ViewEvent event) {
                 super.viewShown(event);
-                getWindowView().requestRenderUpdate();
+                requestRenderUpdate();
             }
             @Override public void viewDimensionChanged(ViewDimensionEvent event) {
                 super.viewDimensionChanged(event);
@@ -149,11 +150,11 @@ public class View {
                 absoluteArea = new RoundRectangle2D.Float(absX(), absY(), width(), height(), borderRadiusX(), borderRadiusY());
                 absoluteSafeArea = new RoundRectangle2D.Float(absSafeX(), absSafeY(), safeWidth(), safeHeight(), borderRadiusX(), borderRadiusY());
 
-                getWindowView().requestRenderUpdate();
+                requestRenderUpdate();
             }
             @Override public void viewStateChanged(ViewEvent event) {
                 super.viewStateChanged(event);
-                getWindowView().requestZIndexUpdate();
+                requestZIndexUpdate();
             }
         });
 
@@ -225,6 +226,16 @@ public class View {
     public void tick() {
         if (!initialized || !isActive) return;
         for (View childView : childViews) childView.tick();
+    }
+
+    public void requestZIndexUpdate() {
+        if (getWindowView() != null)
+            getWindowView().requestZIndexUpdate();
+    }
+
+    public void requestRenderUpdate() {
+        if (getWindowView() != null)
+            getWindowView().requestRenderUpdate();
     }
 
 

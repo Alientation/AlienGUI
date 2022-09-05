@@ -16,4 +16,5 @@
             - Fixed WindowView - View relationship causing unresolvable dependency issue
             (both depend on each other, impossible to create both as each needs the other to exist already)
             - Fixed ColorComponent setColor not checking if previous Color was null before checking if they are equal
-            - TODO fixed Views having default dimensions causing multiple of the same subscriber to the observable dimension
+            - Fixed Views having default dimensions causing multiple of the same subscriber to the observable dimension
+            - Fixed WindowView's null windowView causing update requests to act on null object, instead, extracted into its own method to check
