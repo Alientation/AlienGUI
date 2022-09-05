@@ -1,4 +1,4 @@
-package com.alientation.aliengui.test.basicapp.gui;
+package com.alientation.aliengui.test.basicapp;
 
 import com.alientation.aliengui.api.view.View;
 import com.alientation.aliengui.api.view.window.WindowView;
