@@ -53,13 +53,8 @@ public class Window extends Canvas implements Runnable {
      * @param builder   Builder
      */
     public Window(Builder<?> builder) {
+        //sets up JFrame window, the only Java Swing connection in this library
         frame = new JFrame(builder.title);
-
-        windowView = builder.windowView;
-        if (windowView == null)
-            windowView = new WindowView.Builder<>().window(this).build();
-        //TODO windowView when constructed with a window object passed should create relative dimensions to that window object
-
 
         frame.setPreferredSize(new Dimension(builder.preferredWidth, builder.preferredHeight));
         frame.setSize(new Dimension(builder.width,builder.height));
@@ -68,12 +63,19 @@ public class Window extends Canvas implements Runnable {
         frame.setLocationRelativeTo(null);
         frame.add(this);
         frame.setVisible(true);
-        Toolkit.getDefaultToolkit().setDynamicLayout(false);
-        frame.setIgnoreRepaint(true);
+        Toolkit.getDefaultToolkit().setDynamicLayout(false); //IDK what this is for
+        frame.setIgnoreRepaint(true); //probably not needed
 
+        //register the proper timing for the internal loop
         targetTPS = builder.targetTPS;
         targetFPS = builder.targetFPS;
         updateTimeBetweenUpdates();
+
+        //sets the window view (instantiates one if not present)
+        //NOTE: user should not have to create both WindowView and Window
+        windowView = builder.windowView; //used if user creates a WindowView object (the WindowView object instantiation will create a Window)
+        if (windowView == null) //used if user creates a Window object (the WindowView object will be created automatically
+            windowView = new WindowView.Builder<>().window(this).build();
 
         windowView.getKeyListeners().addListener(new KeyListener() {
             @Override public void keyPressed(com.alientation.aliengui.event.key.KeyEvent event) {

@@ -56,8 +56,8 @@ public class WindowView extends View {
     public WindowView(Builder<?> builder) {
         super(builder);
 
-        window = builder.window;
-        if (window == null)
+        window = builder.window; //used if the user creates a Window object (the Window object instantiation will create a WindowView)
+        if (window == null) //used if the user creates a WindowView object (the Window object will be created automatically)
             window = new Window.Builder<>().windowView(this).build();
         setX(new WindowRelativeDimensionComponent.Builder<>()
                 .relTo(window)
@@ -216,6 +216,15 @@ public class WindowView extends View {
                 WindowView.this.viewStateChanged(event);
             }
         });
+
+
+
+        initialized = true;
+    }
+
+    @Override
+    public void init(View parentView) {
+        throw new IllegalCallerException("WindowView is by default initialized on creation");
     }
 
     public void mouseClicked(MouseEvent event) {
@@ -332,6 +341,10 @@ public class WindowView extends View {
     //SETTERS
     public void requestRenderUpdate() { requireRenderUpdate = true; } //maybe have events for these
     public void requestZIndexUpdate() { requireZIndexUpdate = true; } //maybe have events for these
+
+
+
+
 
     //GETTERS
 
