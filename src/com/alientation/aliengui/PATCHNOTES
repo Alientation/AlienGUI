@@ -1,0 +1,18 @@
+0.1.0 GUI Framework setup
+    - View, ButtonView, StackView, WindowView, Window
+        - Builder Pattern
+    - Subscriber/Observer pattern
+    - Component system
+    - Static/Relative Dimension System
+        - DimensionRelation
+    - Event Dispatch and Handling/Listeners
+    - Render
+        - Z Index ordered
+    - Base Model View Controller Pattern
+
+    0.1.0.1 Test BasicApp - Proof of Concept
+        - Bugfixes
+            - Fixed WindowView - View relationship causing unresolvable dependency issue
+            (both depend on each other, impossible to create both as each needs the other to exist already)
+            - Fixed ColorComponent setColor not checking if previous Color was null before checking if they are equal
+            - TODO fixed Views having default dimensions causing multiple of the same subscriber to the observable dimension

@@ -561,7 +561,7 @@ public class View {
     //BUILDER
     @SuppressWarnings({"unused", "unchecked"})
     public static class Builder<T extends Builder<T>> {
-        protected DimensionComponent x = StaticDimensionComponent.MIN;
+        protected DimensionComponent x = StaticDimensionComponent.MIN; //duplicate subscriber bug TODO
         protected DimensionComponent y = StaticDimensionComponent.MIN;
         protected DimensionComponent width = StaticDimensionComponent.BASE;
         protected DimensionComponent height = StaticDimensionComponent.BASE;
