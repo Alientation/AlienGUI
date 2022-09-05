@@ -135,6 +135,145 @@ public class RelativeDimensionComponent extends DimensionComponent {
     public Observer<RelativeDimensionComponent,DimensionComponent> getAddedDimensionsObserver() { return addedDimensions; }
     public Observer<RelativeDimensionComponent,DimensionComponent> getSubtractedDimensionsObserver() { return subtractedDimensions; }
 
+
+    /**
+     * Dimension accessor of a supplied view, simply for convenience
+     */
+    @SuppressWarnings("unused")
+    public static abstract class DimensionRelation {
+        public static final DimensionRelation LEFT_X = new DimensionRelation() {
+            @Override
+            public DimensionComponent getDimension(View view) {
+                return view.getX();
+            }
+        };
+        public static final DimensionRelation LEFT_SAFE_X = new DimensionRelation() { //todo
+            @Override
+            public DimensionComponent getDimension(View view) {
+                return null;
+            }
+        };
+        public static final DimensionRelation RIGHT_X = new DimensionRelation() {
+            @Override
+            public DimensionComponent getDimension(View view) {
+                return null;
+            }
+        }; //todo
+        public static final DimensionRelation RIGHT_SAFE_X = new DimensionRelation() { //todo
+            @Override
+            public DimensionComponent getDimension(View view) {
+                return null;
+            }
+        };
+        public static final DimensionRelation X = LEFT_X;
+
+        public static final DimensionRelation TOP_Y = new DimensionRelation() {
+            @Override
+            public DimensionComponent getDimension(View view) {
+                return view.getY();
+            }
+        };
+        public static final DimensionRelation TOP_SAFE_Y = new DimensionRelation() { //todo
+            @Override
+            public DimensionComponent getDimension(View view) {
+                return null;
+            }
+        };
+        public static final DimensionRelation BOTTOM_Y = new DimensionRelation() { //todo
+            @Override
+            public DimensionComponent getDimension(View view) {
+                return null;
+            }
+        };
+        public static final DimensionRelation BOTTOM_SAFE_Y = new DimensionRelation() { //todo
+            @Override
+            public DimensionComponent getDimension(View view) {
+                return null;
+            }
+        };
+        public static final DimensionRelation Y = TOP_Y;
+
+        public static final DimensionRelation WIDTH = new DimensionRelation() {
+            @Override
+            public DimensionComponent getDimension(View view) {
+                return view.getWidth();
+            }
+        };
+        public static final DimensionRelation SAFE_WIDTH = new DimensionRelation() { //todo
+            @Override
+            public DimensionComponent getDimension(View view) {
+                return null;
+            }
+        };
+
+        public static final DimensionRelation HEIGHT = new DimensionRelation() {
+            @Override
+            public DimensionComponent getDimension(View view) {
+                return view.getHeight();
+            }
+        };
+        public static final DimensionRelation SAFE_HEIGHT = new DimensionRelation() { //todo
+            @Override
+            public DimensionComponent getDimension(View view) {
+                return null;
+            }
+        };
+
+        public static final DimensionRelation MARGIN_X = new DimensionRelation() {
+            @Override
+            public DimensionComponent getDimension(View view) {
+                return view.getMarginX();
+            }
+        };
+
+        public static final DimensionRelation MARGIN_Y = new DimensionRelation() {
+            @Override
+            public DimensionComponent getDimension(View view) {
+                return view.getMarginY();
+            }
+        };
+        public static final DimensionRelation BORDER_RADIUS_WIDTH = new DimensionRelation() {
+            @Override
+            public DimensionComponent getDimension(View view) {
+                return view.getBorderRadiusWidth();
+            }
+        };
+
+        public static final DimensionRelation BORDER_RADIUS_HEIGHT = new DimensionRelation() {
+            @Override
+            public DimensionComponent getDimension(View view) {
+                return view.getBorderRadiusHeight();
+            }
+        };
+
+        public static final DimensionRelation BORDER_RADIUS_X = new DimensionRelation() {
+            @Override
+            public DimensionComponent getDimension(View view) {
+                return view.getBorderRadiusWidth();
+            }
+        };
+
+        public static final DimensionRelation BORDER_RADIUS_Y = new DimensionRelation() {
+            @Override
+            public DimensionComponent getDimension(View view) {
+                return view.getBorderRadiusHeight();
+            }
+        };
+
+        public static final DimensionRelation STACK_SPACING = new DimensionRelation() {
+            @Override
+            public DimensionComponent getDimension(View view) {
+                return ((StackView) view).getSpacing();
+            }
+        };
+
+        public DimensionRelation() {
+
+        }
+
+        public abstract DimensionComponent getDimension(View view);
+    }
+
     @SuppressWarnings("unchecked")
     public static class Builder<T extends Builder<T>> extends DimensionComponent.Builder<T> {
         protected View relTo;
@@ -179,141 +318,4 @@ public class RelativeDimensionComponent extends DimensionComponent {
         }
     }
 
-}
-
-/**
- * Dimension accessor of a supplied view, simply for convenience
- */
-@SuppressWarnings("unused")
-abstract class DimensionRelation {
-    public static final DimensionRelation LEFT_X = new DimensionRelation() {
-        @Override
-        public DimensionComponent getDimension(View view) {
-            return view.getX();
-        }
-    };
-    public static final DimensionRelation LEFT_SAFE_X = new DimensionRelation() { //todo
-        @Override
-        public DimensionComponent getDimension(View view) {
-            return null;
-        }
-    };
-
-    public static final DimensionRelation RIGHT_X = new DimensionRelation() {
-        @Override
-        public DimensionComponent getDimension(View view) {
-            return null;
-        }
-    }; //todo
-    public static final DimensionRelation RIGHT_SAFE_X = new DimensionRelation() { //todo
-        @Override
-        public DimensionComponent getDimension(View view) {
-            return null;
-        }
-    };
-
-    public static final DimensionRelation TOP_Y = new DimensionRelation() {
-        @Override
-        public DimensionComponent getDimension(View view) {
-            return view.getY();
-        }
-    };
-    public static final DimensionRelation TOP_SAFE_Y = new DimensionRelation() { //todo
-        @Override
-        public DimensionComponent getDimension(View view) {
-            return null;
-        }
-    };
-    public static final DimensionRelation BOTTOM_Y = new DimensionRelation() { //todo
-        @Override
-        public DimensionComponent getDimension(View view) {
-            return null;
-        }
-    };
-    public static final DimensionRelation BOTTOM_SAFE_Y = new DimensionRelation() { //todo
-        @Override
-        public DimensionComponent getDimension(View view) {
-            return null;
-        }
-    };
-
-    public static final DimensionRelation WIDTH = new DimensionRelation() {
-        @Override
-        public DimensionComponent getDimension(View view) {
-            return view.getWidth();
-        }
-    };
-    public static final DimensionRelation SAFE_WIDTH = new DimensionRelation() { //todo
-        @Override
-        public DimensionComponent getDimension(View view) {
-            return null;
-        }
-    };
-
-    public static final DimensionRelation HEIGHT = new DimensionRelation() {
-        @Override
-        public DimensionComponent getDimension(View view) {
-            return view.getHeight();
-        }
-    };
-    public static final DimensionRelation SAFE_HEIGHT = new DimensionRelation() { //todo
-        @Override
-        public DimensionComponent getDimension(View view) {
-            return null;
-        }
-    };
-
-    public static final DimensionRelation MARGIN_X = new DimensionRelation() {
-        @Override
-        public DimensionComponent getDimension(View view) {
-            return view.getMarginX();
-        }
-    };
-
-    public static final DimensionRelation MARGIN_Y = new DimensionRelation() {
-        @Override
-        public DimensionComponent getDimension(View view) {
-            return view.getMarginY();
-        }
-    };
-    public static final DimensionRelation BORDER_RADIUS_WIDTH = new DimensionRelation() {
-        @Override
-        public DimensionComponent getDimension(View view) {
-            return view.getBorderRadiusWidth();
-        }
-    };
-
-    public static final DimensionRelation BORDER_RADIUS_HEIGHT = new DimensionRelation() {
-        @Override
-        public DimensionComponent getDimension(View view) {
-            return view.getBorderRadiusHeight();
-        }
-    };
-
-    public static final DimensionRelation BORDER_RADIUS_X = new DimensionRelation() {
-        @Override
-        public DimensionComponent getDimension(View view) {
-            return view.getBorderRadiusWidth();
-        }
-    };
-
-    public static final DimensionRelation BORDER_RADIUS_Y = new DimensionRelation() {
-        @Override
-        public DimensionComponent getDimension(View view) {
-            return view.getBorderRadiusHeight();
-        }
-    };
-
-    public static final DimensionRelation STACK_SPACING = new DimensionRelation() {
-        @Override
-        public DimensionComponent getDimension(View view) {
-            return ((StackView) view).getSpacing();
-        }
-    };
-
-    public DimensionRelation() {
-
-    }
-
-    public abstract DimensionComponent getDimension(View view);
 }

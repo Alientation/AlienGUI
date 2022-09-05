@@ -114,6 +114,51 @@ public class WindowRelativeDimensionComponent extends DimensionComponent {
     public void addSubtractedDimension(DimensionComponent subtractedDimension) { this.subtractedDimensions.registerObserved(subtractedDimension); }
 
 
+
+    @SuppressWarnings("unused")
+    public static abstract class WindowDimensionRelation {
+        public static final WindowDimensionRelation LEFT_X = new WindowDimensionRelation() {
+            @Override
+            public int getDimensionValue(Window window) {
+                return window.getX();
+            }
+        };
+        public static final WindowDimensionRelation RIGHT_X = new WindowDimensionRelation() {
+            @Override
+            public int getDimensionValue(Window window) {
+                return window.getX() + window.getWidth();
+            }
+        };
+        public static final WindowDimensionRelation X = LEFT_X;
+        public static final WindowDimensionRelation TOP_Y = new WindowDimensionRelation() {
+            @Override
+            public int getDimensionValue(Window window) {
+                return window.getY();
+            }
+        };
+        public static final WindowDimensionRelation BOTTOM_Y = new WindowDimensionRelation() {
+            @Override
+            public int getDimensionValue(Window window) {
+                return window.getY() + window.getHeight();
+            }
+        };
+        public static final WindowDimensionRelation Y = TOP_Y;
+        public static final WindowDimensionRelation WIDTH = new WindowDimensionRelation() {
+            @Override
+            public int getDimensionValue(Window window) {
+                return window.getWidth();
+            }
+        };
+        public static final WindowDimensionRelation HEIGHT = new WindowDimensionRelation() {
+            @Override
+            public int getDimensionValue(Window window) {
+                return window.getHeight();
+            }
+        };
+
+        public abstract int getDimensionValue(Window window);
+    }
+
     @SuppressWarnings("unchecked")
     public static class Builder<T extends Builder<T>> extends DimensionComponent.Builder<T> {
         protected Window relTo;
@@ -152,46 +197,4 @@ public class WindowRelativeDimensionComponent extends DimensionComponent {
         }
     }
 
-}
-
-@SuppressWarnings("unused")
-abstract class WindowDimensionRelation {
-    public static final WindowDimensionRelation LEFT_X = new WindowDimensionRelation() {
-        @Override
-        public int getDimensionValue(Window window) {
-            return window.getX();
-        }
-    };
-    public static final WindowDimensionRelation RIGHT_X = new WindowDimensionRelation() {
-        @Override
-        public int getDimensionValue(Window window) {
-            return window.getX() + window.getWidth();
-        }
-    };
-    public static final WindowDimensionRelation TOP_Y = new WindowDimensionRelation() {
-        @Override
-        public int getDimensionValue(Window window) {
-            return window.getY();
-        }
-    };
-    public static final WindowDimensionRelation BOTTOM_Y = new WindowDimensionRelation() {
-        @Override
-        public int getDimensionValue(Window window) {
-            return window.getY() + window.getHeight();
-        }
-    };
-    public static final WindowDimensionRelation WIDTH = new WindowDimensionRelation() {
-        @Override
-        public int getDimensionValue(Window window) {
-            return window.getWidth();
-        }
-    };
-    public static final WindowDimensionRelation HEIGHT = new WindowDimensionRelation() {
-        @Override
-        public int getDimensionValue(Window window) {
-            return window.getHeight();
-        }
-    };
-
-    public abstract int getDimensionValue(Window window);
 }
