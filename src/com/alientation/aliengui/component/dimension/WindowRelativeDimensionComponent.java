@@ -58,6 +58,7 @@ public class WindowRelativeDimensionComponent extends DimensionComponent {
         windowDimensionRelation = builder.windowDimensionRelation;
 
         relTo.addComponentListener(componentListener);
+        notifySubscribers();
     }
 
     /**
@@ -80,6 +81,8 @@ public class WindowRelativeDimensionComponent extends DimensionComponent {
         //super call - notifies any observing dimensions/views that this object has changed state
         super.notifySubscribers();
     }
+
+
 
     //SETTERS
 

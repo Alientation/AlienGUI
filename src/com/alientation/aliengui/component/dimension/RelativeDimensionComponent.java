@@ -67,6 +67,7 @@ public class RelativeDimensionComponent extends DimensionComponent {
         dimensionRelation = builder.dimensionRelation;
 
         relTo.getViewListeners().addListenerAtBeginning(viewListener);
+        notifySubscribers();
     }
 
     /**

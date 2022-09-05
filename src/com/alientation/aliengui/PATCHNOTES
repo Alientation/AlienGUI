@@ -18,3 +18,4 @@
             - Fixed ColorComponent setColor not checking if previous Color was null before checking if they are equal
             - Fixed Views having default dimensions causing multiple of the same subscriber to the observable dimension
             - Fixed WindowView's null windowView causing update requests to act on null object, instead, extracted into its own method to check
+            - Fixed RelativeDimensions not updating the value of that dimension upon creation
