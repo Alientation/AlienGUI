@@ -7,7 +7,6 @@ import com.aliengui.component.dimension.StaticDimensionComponent;
 
 import java.awt.*;
 
-@SuppressWarnings("unused")
 public class BasicApp {
     public static void main(String[] args) {
         WindowView basicWindowView = new WindowView.Builder<>()

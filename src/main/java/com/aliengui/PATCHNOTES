@@ -25,3 +25,6 @@
             - Fixed render optimization not working because update requests have not been set to false once processed
             - Fixed flickering when resizing/moving window
             - todo fix windowView not binding to window's dimensions
+        - Maven Refactor
+        - Unit Tests (JUnit 5)
+            -
