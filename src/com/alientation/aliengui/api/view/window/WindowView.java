@@ -19,10 +19,6 @@ import java.awt.*;
  */
 @SuppressWarnings("unused")
 public class WindowView extends View {
-    // TODO: 9/4/2022
-    //When initializing a WindowView, it should automatically create a Window for it without the user having to do so
-    //simultaneously, when initializing a Window, it should automatically create a WindowView for it
-
     //Base properties
     public static final int INIT_WIDTH = 800, INIT_HEIGHT = 1000, INIT_TPS = 120, INIT_FPS = 60;
     public static final String INIT_TITLE = "Untitled";
