@@ -1,6 +1,7 @@
 package com.alientation.aliengui.api.view.window;
 
 import com.alientation.aliengui.api.view.View;
+import com.alientation.aliengui.component.dimension.WindowRelativeDimensionComponent;
 import com.alientation.aliengui.event.key.KeyEvent;
 import com.alientation.aliengui.event.key.KeyListener;
 import com.alientation.aliengui.event.mouse.MouseEvent;
@@ -58,6 +59,22 @@ public class WindowView extends View {
         window = builder.window;
         if (window == null)
             window = new Window.Builder<>().windowView(this).build();
+        setX(new WindowRelativeDimensionComponent.Builder<>()
+                .relTo(window)
+                .windowDimensionRelation(WindowRelativeDimensionComponent.WindowDimensionRelation.LEFT_X)
+                .build());
+        setY(new WindowRelativeDimensionComponent.Builder<>()
+                .relTo(window)
+                .windowDimensionRelation(WindowRelativeDimensionComponent.WindowDimensionRelation.TOP_Y)
+                .build());
+        setWidth(new WindowRelativeDimensionComponent.Builder<>()
+                .relTo(window)
+                .windowDimensionRelation(WindowRelativeDimensionComponent.WindowDimensionRelation.WIDTH)
+                .build());
+        setHeight(new WindowRelativeDimensionComponent.Builder<>()
+                .relTo(window)
+                .windowDimensionRelation(WindowRelativeDimensionComponent.WindowDimensionRelation.HEIGHT)
+                .build());
 
         windowRenderer = new WindowRenderer(this);
         mouseListeners.addListenerAtBeginning(new MouseListener() {
