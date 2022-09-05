@@ -232,7 +232,8 @@ public class WindowView extends View {
 
     public void mouseClicked(MouseEvent event) {
         View viewClicked = windowRenderer.getViewAtPoint(event.getX(),event.getY());
-        if (viewClicked != null) viewClicked.getMouseListeners().dispatch(listener -> listener.mouseClicked(event));
+        if (viewClicked != null && viewClicked != this)
+            viewClicked.getMouseListeners().dispatch(listener -> listener.mouseClicked(event));
     }
     public void mouseEntered(MouseEvent event) { //only fired when the mouse enters this Window
 
@@ -244,33 +245,41 @@ public class WindowView extends View {
 
     public void mousePressed(MouseEvent event) {
         View viewPressed = windowRenderer.getViewAtPoint(event.getX(),event.getY());
-        if (viewPressed != null) viewPressed.getMouseListeners().dispatch(listener -> listener.mousePressed(event));
+        if (viewPressed != null && viewPressed != this)
+            viewPressed.getMouseListeners().dispatch(listener -> listener.mousePressed(event));
     }
 
     public void mouseReleased(MouseEvent event) {
         View viewReleased = windowRenderer.getViewAtPoint(event.getX(),event.getY());
-        if (viewReleased != null) viewReleased.getMouseListeners().dispatch(listener -> listener.mouseReleased(event));
+        if (viewReleased != null && viewReleased != this)
+            viewReleased.getMouseListeners().dispatch(listener -> listener.mouseReleased(event));
     }
 
     public void mouseDragged(MouseEvent event) {
         View viewDragged = windowRenderer.getViewAtPoint(event.getX(),event.getY());
-        if (viewDragged != null) viewDragged.getMouseListeners().dispatch(listener -> listener.mouseDragged(event));
+        if (viewDragged != null && viewDragged != this)
+            viewDragged.getMouseListeners().dispatch(listener -> listener.mouseDragged(event));
     }
     public void mouseMoved(MouseEvent event) {
         View viewMoved = windowRenderer.getViewAtPoint(event.getX(),event.getY());
-        if (viewMoved != null) viewMoved.getMouseListeners().dispatch(listener -> listener.mouseMoved(event));
+        if (viewMoved != null && viewMoved != this)
+            viewMoved.getMouseListeners().dispatch(listener -> listener.mouseMoved(event));
     }
 
     public void mouseWheelMoved(MouseScrollEvent event) {
         View viewWheelMoved = windowRenderer.getViewAtPoint(event.getX(),event.getY());
-        if (viewWheelMoved != null) viewWheelMoved.getMouseListeners().dispatch(listener -> listener.mouseWheelMoved(event));
+        if (viewWheelMoved != null && viewWheelMoved != this)
+            viewWheelMoved.getMouseListeners().dispatch(listener -> listener.mouseWheelMoved(event));
     }
 
     public void mouseAction(MouseEvent event) {
         View viewOver = windowRenderer.getViewAtPoint(event.getX(),event.getY());
         if (recentlyEnteredView != viewOver) { //mouse has exited a component and hovered over another component
-            if (recentlyEnteredView != null) recentlyEnteredView.getMouseListeners().dispatch(listener -> listener.mouseExited(event));
-            if (viewOver != null) viewOver.getMouseListeners().dispatch(listener -> listener.mouseEntered(event));
+            if (recentlyEnteredView != null && recentlyEnteredView != this)
+                recentlyEnteredView.getMouseListeners().dispatch(listener -> listener.mouseExited(event));
+
+            if (viewOver != null && viewOver != this)
+                viewOver.getMouseListeners().dispatch(listener -> listener.mouseEntered(event));
             recentlyEnteredView = viewOver;
         }
     }
