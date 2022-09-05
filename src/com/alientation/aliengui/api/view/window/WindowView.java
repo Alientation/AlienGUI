@@ -54,6 +54,11 @@ public class WindowView extends View {
      */
     public WindowView(Builder<?> builder) {
         super(builder);
+
+        window = builder.window;
+        if (window == null)
+            window = new Window.Builder<>().windowView(this).build();
+
         windowRenderer = new WindowRenderer(this);
         mouseListeners.addListenerAtBeginning(new MouseListener() {
             @Override
@@ -196,12 +201,6 @@ public class WindowView extends View {
         });
     }
 
-    public void init(Window window) {
-        if (initialized) throw new IllegalStateException("Already initialized");
-        initialized = true;
-        this.window = window;
-    }
-
     public void mouseClicked(MouseEvent event) {
         View viewClicked = windowRenderer.getViewAtPoint(event.getX(),event.getY());
         if (viewClicked != null) viewClicked.getMouseListeners().dispatch(listener -> listener.mouseClicked(event));
@@ -332,8 +331,15 @@ public class WindowView extends View {
     public WindowView getWindowView() { return this; }
 
 
+    @SuppressWarnings("unchecked")
     public static class Builder<T extends Builder<T>> extends View.Builder<T> {
+        protected Window window;
         public Builder() {
+        }
+
+        public T window(Window window) {
+            this.window = window;
+            return (T) this;
         }
 
         public void validate() {

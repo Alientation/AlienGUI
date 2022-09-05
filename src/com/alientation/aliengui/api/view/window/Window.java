@@ -55,6 +55,12 @@ public class Window extends Canvas implements Runnable {
     public Window(Builder<?> builder) {
         frame = new JFrame(builder.title);
 
+        windowView = builder.windowView;
+        if (windowView == null)
+            windowView = new WindowView.Builder<>().window(this).build();
+        //TODO windowView when constructed with a window object passed should create relative dimensions to that window object
+
+
         frame.setPreferredSize(new Dimension(builder.preferredWidth, builder.preferredHeight));
         frame.setSize(new Dimension(builder.width,builder.height));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -69,6 +75,16 @@ public class Window extends Canvas implements Runnable {
         targetFPS = builder.targetFPS;
         updateTimeBetweenUpdates();
 
+        windowView.getKeyListeners().addListener(new KeyListener() {
+            @Override public void keyPressed(com.alientation.aliengui.event.key.KeyEvent event) {
+                super.keyPressed(event);
+                getKeysDown().add(event.getKeyCode());
+            }
+            @Override public void keyReleased(com.alientation.aliengui.event.key.KeyEvent event) {
+                super.keyPressed(event);
+                getKeysDown().remove(event.getKeyCode());
+            }
+        }, EventListenerContainer.PRIORITY_FIRST);
 
         //TODO potentially slow and unresponsive at times depending on when the thread is active or not
         //could use concurrent threads (start up a new thread to listen to user input and instantly handle them)
@@ -160,21 +176,6 @@ public class Window extends Canvas implements Runnable {
                 windowView.getViewListeners().dispatch(listener -> listener.viewHidden(new ViewEvent(windowView)));
             }
         });
-    }
-
-    public void init(WindowView windowView) {
-        if (running) throw new IllegalStateException("Window is already running");
-        this.windowView = windowView;
-        windowView.getKeyListeners().addListener(new KeyListener() {
-            @Override public void keyPressed(com.alientation.aliengui.event.key.KeyEvent event) {
-                super.keyPressed(event);
-                getKeysDown().add(event.getKeyCode());
-            }
-            @Override public void keyReleased(com.alientation.aliengui.event.key.KeyEvent event) {
-                super.keyPressed(event);
-                getKeysDown().remove(event.getKeyCode());
-            }
-        }, EventListenerContainer.PRIORITY_FIRST);
         start();
     }
 
@@ -371,65 +372,67 @@ public class Window extends Canvas implements Runnable {
     public int getFps() { return fps; }
     public boolean isRunning() { return running; }
 
+    //DIMENSIONS
+    public int getScreenX() { return frame.getLocationOnScreen().x; }
+    public int getScreenY() { return frame.getLocationOnScreen().y; }
+    public int getWidth() { return frame.getWidth(); }
+    public int getHeight() { return frame.getHeight(); }
+
 
     //BUILDER
 
     @SuppressWarnings("unchecked")
     public static class Builder<T extends Builder<T>> {
-        protected String title;
-        protected int preferredWidth, preferredHeight, width, height;
-        protected boolean resizable;
-
-        protected int targetFPS, targetTPS;
+        protected WindowView windowView;
+        protected String title = WindowView.INIT_TITLE;
+        protected int preferredWidth = WindowView.INIT_WIDTH, preferredHeight = WindowView.INIT_HEIGHT,
+                width = WindowView.INIT_WIDTH, height = WindowView.INIT_HEIGHT;
+        protected boolean resizable = true;
+        protected int targetFPS = WindowView.INIT_FPS, targetTPS = WindowView.INIT_TPS;
 
         public Builder() {
 
         }
 
+        public T windowView(WindowView windowView) {
+            this.windowView = windowView;
+            return (T) this;
+        }
         public T title(String title) {
             this.title = title;
             return (T) this;
         }
-
         public T preferredWidth(int preferredWidth) {
             this.preferredWidth = preferredWidth;
             return (T) this;
         }
-
         public T preferredHeight(int preferredHeight) {
             this.preferredHeight = preferredHeight;
             return (T) this;
         }
-
         public T width(int width) {
             this.width = width;
             return (T) this;
         }
-
         public T height(int height) {
             this.height = height;
             return (T) this;
         }
-
         public T resizable(boolean resizable) {
             this.resizable = resizable;
             return (T) this;
         }
-
         public T targetFPS(int targetFPS) {
             this.targetFPS = targetFPS;
             return (T) this;
         }
-
         public T targetTPS(int targetTPS) {
             this.targetTPS = targetTPS;
             return (T) this;
         }
-
         public void validate() throws IllegalStateException {
 
         }
-
         public Window build() {
             validate();
             return new Window(this);

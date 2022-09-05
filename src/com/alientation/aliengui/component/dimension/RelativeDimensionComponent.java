@@ -174,6 +174,7 @@ public class RelativeDimensionComponent extends DimensionComponent {
 
         @Override
         public RelativeDimensionComponent build() {
+            validate();
             return new RelativeDimensionComponent(this);
         }
     }
@@ -181,7 +182,7 @@ public class RelativeDimensionComponent extends DimensionComponent {
 }
 
 /**
- * Dimension accessor of a supplied view, simply for conveniency
+ * Dimension accessor of a supplied view, simply for convenience
  */
 @SuppressWarnings("unused")
 abstract class DimensionRelation {
