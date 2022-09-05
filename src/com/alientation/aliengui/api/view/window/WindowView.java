@@ -16,6 +16,8 @@ import java.awt.*;
 
 /**
  * Wrapper view for a Window
+ * <p>
+ * TODO determine whether to combine the Window implementation to the WindowView wrapper as it is creating a lot of unnecessary code duplication
  */
 @SuppressWarnings("unused")
 public class WindowView extends View {
