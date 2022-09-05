@@ -12,6 +12,7 @@ import java.util.*;
 @SuppressWarnings("unused")
 public class EventListenerContainer<T extends EventListener> {
     public static final int PRIORITY_FIRST = 0;
+    public static final int DEFAULT_BEGINNING = 100;
     public static final int PRIORITY_LAST = 1000;
     private final TreeMap<Integer, ArrayList<T>> eventListenerMap = new TreeMap<>(Comparator.reverseOrder());
 
@@ -32,19 +33,24 @@ public class EventListenerContainer<T extends EventListener> {
         else eventListenerMap.get(priority).add(listener);
     }
 
+    public void addListenerAtCurrentEnd(T listener) {
+        addListener(listener,getCurrentEnd() + 1);
+    }
+
     public void addListenerAtEnd(T listener) {
-        int currentEnd = eventListenerMap.lastKey() + 1;
-        addListener(listener,currentEnd+1);
+        addListener(listener,PRIORITY_LAST);
     }
 
     public void addListenerAtBeginning(T listener) {
-        int currentBeginning = eventListenerMap.firstKey() - 1;
-        if (currentBeginning < PRIORITY_FIRST) currentBeginning = PRIORITY_FIRST;
-        addListener(listener,currentBeginning);
+        addListener(listener,PRIORITY_FIRST);
+    }
+
+    public void addListenerAtCurrentBeginning(T listener) {
+        addListener(listener,getCurrentBeginning());
     }
 
     public void addListener(T listener) {
-        addListenerAtEnd(listener);
+        addListenerAtCurrentEnd(listener);
     }
 
     public void removeListener(T listener) {
@@ -57,5 +63,12 @@ public class EventListenerContainer<T extends EventListener> {
             if (eventListenerMap.get(i).contains(listener))
                 return true;
         return false;
+    }
+
+    public int getCurrentEnd() {
+        return eventListenerMap.size() == 0 ? DEFAULT_BEGINNING : eventListenerMap.firstKey();
+    }
+    public int getCurrentBeginning() {
+        return eventListenerMap.size() == 0 ? DEFAULT_BEGINNING : eventListenerMap.lastKey();
     }
 }

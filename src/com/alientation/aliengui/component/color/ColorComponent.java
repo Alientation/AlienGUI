@@ -76,7 +76,7 @@ public class ColorComponent extends Component {
     //SETTERS
 
     public void setColor(Color color) {
-        if (this.color.equals(color)) return;
+        if (this.color != null && this.color.equals(color)) return;
         this.color = color;
         notifySubscribers();
     }

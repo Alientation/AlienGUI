@@ -66,8 +66,8 @@ public abstract class Subscriber<D,T> {
     }
 
     public void registerSubscribed(T subscribed) {
-        if (this.subscribed.contains(subscribed)) throw new IllegalStateException("Subscriber::registerSubscribed Duplicate Subscribed");
-        if (this.subscribed.size() == maxSubscribers) throw new IllegalStateException("Subscriber::registerSubscribed maxSubscribers limit reached");
+        if (this.subscribed.contains(subscribed)) throw new IllegalStateException("Duplicate Subscribed");
+        if (this.subscribed.size() == maxSubscribers) throw new IllegalStateException("maxSubscribers limit reached");
         this.subscribed.add(subscribed);
         register(subscribed);
         notifySubscribers();
