@@ -7,7 +7,7 @@ import com.alientation.aliengui.api.view.window.WindowView;
 @SuppressWarnings("unused")
 public class BasicApp {
     public static void main(String[] args) {
-        Window basicWindow = new Window.Builder<>().build(); //todo fix
+        Window basicWindow = new Window.Builder<>().build();
         WindowView basicWindowView = new WindowView.Builder<>().build();
 
         View basicWindowSubView = new View.Builder<>().build();
