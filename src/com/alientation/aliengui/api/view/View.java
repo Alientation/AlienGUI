@@ -389,7 +389,7 @@ public class View {
     public void setParentView(View parentView) {
         if (this.parentView == parentView) return;
         ViewHierarchyEvent event = new ViewHierarchyEvent(this, this.parentView, parentView);
-        this.parentView.getChildViews().remove(this);
+        if ( this.parentView != null) this.parentView.getChildViews().remove(this);
         this.parentView = parentView;
         this.parentView.getChildViews().add(this);
         this.getViewListeners().dispatch(listener -> listener.parentViewChanged(event));
@@ -530,14 +530,16 @@ public class View {
     //DIMENSIONS
     public DimensionComponent getX() { return x; }
     public int x() { return x.val(); }
-    public int absX() { return x() + parentView.absX(); } //potentially compose a new dimension component - perhaps a new type of component that is essentially a combination of 2 dimensions
+    public int absX() { return x() + parentAbsX(); } //potentially compose a new dimension component - perhaps a new type of component that is essentially a combination of 2 dimensions
     public int safeX() { return x() + marginX(); }
     public int absSafeX() { return marginX() + absX(); }
+    private int parentAbsX() { return parentView == null ? 0 : parentView.absX(); }
     public DimensionComponent getY() { return y; }
     public int y() { return y.val(); }
-    public int absY() { return y() + parentView.absY(); }
+    public int absY() { return y() + parentAbsY(); }
     public int safeY() { return y() + marginY(); }
     public int absSafeY() { return marginY() + absY(); }
+    private int parentAbsY() { return parentView == null ? 0 : parentView.absY(); }
     public DimensionComponent getWidth() { return width; }
     public int width() { return width.val(); }
     public int safeWidth() { return width() - marginX() << 1; }

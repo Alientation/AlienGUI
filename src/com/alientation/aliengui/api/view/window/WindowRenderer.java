@@ -26,8 +26,15 @@ public class WindowRenderer {
      * @return      Topmost view at the given point if it exists
      */
     public View getViewAtPoint(int absX, int absY) {
+        // TODO: 9/5/2022
+        // instead of finding the topmost view every single time,
+        // precalculate the topmost view at every single point on the windowView display area
+        // and update every single time a render update happens
+        // precalculate by iterating from the least z index to the highest
+        // having a 2d array of pointers to the top most view at the point
+
         for (View view : sortedViewsByZIndex)
-            if (view.getAbsoluteArea().contains(absX,absY)) //determine if the absolute area actually works properly
+            if (view.getAbsoluteArea().contains(absX,absY))
                 return view;
         return null;
     }
