@@ -5,6 +5,6 @@ Refactored version of Wordle (backend GUI) to implement proper design patterns l
 Should ideally make development less time consuming.
 
 
-#Dependencies
-###JUnit 5
+# Dependencies
+### JUnit 5
  Used for unit testing, not completely necessary for usage
