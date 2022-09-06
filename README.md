@@ -1,8 +1,13 @@
 # AlienGUI
 
-Refactored version of Wordle (backend GUI) to implement proper design patterns like MVC, Builder, Observer, Event Listening, Singletons, and more
+Refactored version of the Wordle repo (backend GUI) to implement proper design patterns like MVC, Builder, Observer, Event Listening, Singletons, and more
 
 Should ideally make development less time consuming.
+
+# Features
+#### XCode-like GUI construction
+#### Builder pattern to simply creation
+#### Simplistic design, but heavily customizable
 
 
 # Dependencies
