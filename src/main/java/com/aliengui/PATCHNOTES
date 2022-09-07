@@ -27,4 +27,4 @@
             - todo fix windowView not binding to window's dimensions
         - Maven Refactor
         - Unit Tests (JUnit 5)
-            - View test
+            - Dimension Component Tests
