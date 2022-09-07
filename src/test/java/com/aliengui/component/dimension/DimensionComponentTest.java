@@ -2,10 +2,8 @@ package com.aliengui.component.dimension;
 
 
 import org.junit.jupiter.api.*;
-import org.junit.runners.Suite;
 
-@Suite.SuiteClasses(DimensionComponentTests.class)
-public class DimensionComponentTests {
+public class DimensionComponentTest {
 
     @BeforeAll
     public static void setup() {
@@ -19,7 +17,6 @@ public class DimensionComponentTests {
 
     @Test
     @DisplayName("testing creating a test")
-    //@Disabled("Just a test")
     public void test() {
         System.out.println("running a test");
     }
