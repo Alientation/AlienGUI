@@ -11,7 +11,7 @@ public class ObserverTest {
 
     @BeforeEach
     public void setup() {
-        list = new ArrayList<>(List.of(new Integer[]{1, 2, 3,4,5,6,7,8,9}));
+        list = new ArrayList<>(List.of(new Integer[]{1,2,3,4,5,6,7,8,9}));
 
         observer = new Observer<>(0, list) {
             @Override
@@ -94,18 +94,31 @@ public class ObserverTest {
     @Test
     @DisplayName("Observer::unregisterObserved")
     public void testUnregisterObserved() {
-
+        int size = observer.getObservedCount() - 1;
+        observer.unregisterObserved(1);
+        Assertions.assertFalse(observer.containsObserved(1));
+        Assertions.assertEquals(observer.getObservedCount(),size);
     }
 
     @Test
     @DisplayName("Observer::unregisterObserved")
     public void testUnregisterObservedCollection() {
-
+        ArrayList<Integer> addedList = new ArrayList<>(List.of(new Integer[]{1,2,3,4,5}));
+        int size = observer.getObservedCount() - addedList.size();
+        observer.unregisterObserved(addedList);
+        for (int observed : addedList)
+            Assertions.assertFalse(observer.containsObserved(observed));
+        Assertions.assertEquals(observer.getObservedCount(),size);
     }
 
     @Test
     @DisplayName("Observer::unregisterObserved")
     public void testUnregisterObservedParams() {
-
+        ArrayList<Integer> addedList = new ArrayList<>(List.of(new Integer[]{1,2,3,4,5}));
+        int size = observer.getObservedCount() - addedList.size();
+        observer.unregisterObserved(addedList.get(0),addedList.get(1),addedList.get(2),addedList.get(3),addedList.get(4));
+        for (int observed : addedList)
+            Assertions.assertFalse(observer.containsObserved(observed));
+        Assertions.assertEquals(observer.getObservedCount(),size);
     }
 }
