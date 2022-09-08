@@ -15,7 +15,7 @@ import java.util.*;
 @SuppressWarnings({"unused", "unchecked"})
 public abstract class Observer<P, O> {
     protected P parent;
-    protected Set<O> observed = new HashSet<>();
+    protected HashSet<O> observed = new HashSet<>();
     private final int maxObservers;
 
     public Observer(P parent) {
@@ -44,7 +44,8 @@ public abstract class Observer<P, O> {
     }
 
     public void clearObserved() {
-        for (O obs : this.observed)
+        O[] arr = (O[]) observed.toArray();
+        for (O obs : arr)
             unregisterObserved(obs);
         notifyObservers();
     }
@@ -99,6 +100,7 @@ public abstract class Observer<P, O> {
     }
 
     public int getObservedCount() { return observed.size(); }
+    public boolean containsObserved(O observed) { return getObserved().contains(observed); }
 
     public P getParent() { return parent; }
     public List<O> getObserved() { return new ArrayList<>(observed); }

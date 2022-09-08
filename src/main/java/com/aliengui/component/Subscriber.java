@@ -12,12 +12,12 @@ import java.util.*;
  * and calls each other to register/unregister - THINK THIS IS FIXED
  *
  * @param <P>   Parent object type
- * @param <O>   Subscribed objects type
+ * @param <S>   Subscribed objects type
  */
 @SuppressWarnings({"unused", "unchecked"})
-public abstract class Subscriber<P, O> {
+public abstract class Subscriber<P, S> {
     protected P parent;
-    protected Set<O> subscribed = new HashSet<>();
+    protected HashSet<S> subscribed = new HashSet<>();
     private final int maxSubscribers;
 
     public Subscriber(P parent) {
@@ -29,43 +29,44 @@ public abstract class Subscriber<P, O> {
         this.maxSubscribers = maxSubscribers;
     }
 
-    public Subscriber(P parent, Collection<O> subscribed) {
+    public Subscriber(P parent, Collection<S> subscribed) {
         this(parent);
         registerSubscribed(subscribed);
     }
 
-    public Subscriber(P parent, Collection<O> subscribed, int maxSubscribers) {
+    public Subscriber(P parent, Collection<S> subscribed, int maxSubscribers) {
         this(parent, maxSubscribers);
         registerSubscribed(subscribed);
     }
 
-    public void replaceSubscribed(O toBeReplaced, O replacedWith) {
+    public void replaceSubscribed(S toBeReplaced, S replacedWith) {
         if (toBeReplaced == replacedWith) return;
         unregisterSubscribed(toBeReplaced);
         registerSubscribed(replacedWith);
     }
 
     public void clearSubscribed() {
-        for (O sub : this.subscribed)
+        S[] arr = (S[]) subscribed.toArray();
+        for (S sub : arr)
             unregisterSubscribed(sub);
         notifySubscribers();
     }
 
-    public void setSubscribed(Collection<O> subscribed) {
+    public void setSubscribed(Collection<S> subscribed) {
         clearSubscribed();
-        for (O sub : subscribed)
+        for (S sub : subscribed)
             registerSubscribed(sub);
         notifySubscribers();
     }
 
-    public final void setSubscribed(O... subscribed) {
+    public final void setSubscribed(S... subscribed) {
         clearSubscribed();
-        for (O sub : subscribed)
+        for (S sub : subscribed)
             registerSubscribed(sub);
         notifySubscribers();
     }
 
-    public void registerSubscribed(O subscribed) {
+    public void registerSubscribed(S subscribed) {
         if (this.subscribed.contains(subscribed)) throw new IllegalStateException("Duplicate Subscribed");
         if (this.subscribed.size() == maxSubscribers) throw new IllegalStateException("maxSubscribers limit reached");
         this.subscribed.add(subscribed);
@@ -73,33 +74,33 @@ public abstract class Subscriber<P, O> {
         notifySubscribers();
     }
 
-    public void registerSubscribed(O... subscribed) {
-        for (O sub : subscribed)
+    public void registerSubscribed(S... subscribed) {
+        for (S sub : subscribed)
             registerSubscribed(sub);
         notifySubscribers();
     }
 
-    public void registerSubscribed(Collection<O> subscribed) {
-        for (O sub : subscribed)
+    public void registerSubscribed(Collection<S> subscribed) {
+        for (S sub : subscribed)
             this.registerSubscribed(sub);
         notifySubscribers();
     }
 
-    public void unregisterSubscribed(O subscribed) {
+    public void unregisterSubscribed(S subscribed) {
         if (!this.subscribed.contains(subscribed)) return;
         this.subscribed.remove(subscribed);
         unregister(subscribed);
         notifySubscribers();
     }
 
-    public void unregisterSubscribed(O... subscribed) {
-        for (O sub : subscribed)
+    public void unregisterSubscribed(S... subscribed) {
+        for (S sub : subscribed)
             unregisterSubscribed(sub);
         notifySubscribers();
     }
 
-    public void unregisterSubscribed(Collection<O> subscribed) {
-        for (O sub : subscribed)
+    public void unregisterSubscribed(Collection<S> subscribed) {
+        for (S sub : subscribed)
             unregisterSubscribed(sub);
         notifySubscribers();
     }
@@ -107,7 +108,7 @@ public abstract class Subscriber<P, O> {
     public int getSubscribedCount() { return subscribed.size(); }
 
     public P getParent() { return parent; }
-    public List<O> getSubscribed() { return new ArrayList<>(subscribed); }
+    public List<S> getSubscribed() { return new ArrayList<>(subscribed); }
     public int getMaxSubscribers() { return maxSubscribers; }
 
 
@@ -116,6 +117,6 @@ public abstract class Subscriber<P, O> {
     //same with the parents for 'notifySubscribers'
 
     public abstract void notifySubscribers();
-    public abstract void unregister(O subscribed);
-    public abstract void register(O subscribed);
+    public abstract void unregister(S subscribed);
+    public abstract void register(S subscribed);
 }
