@@ -112,11 +112,6 @@ public abstract class Subscriber<P, S> {
     public List<S> getSubscribed() { return new ArrayList<>(subscribed); }
     public int getMaxSubscribers() { return maxSubscribers; }
 
-
-    // TODO: 9/7/2022
-    //should instead make interfaces for 'subscribed' so 'unregister' and 'register' methods can be offloaded to the subscribed class
-    //same with the parents for 'notifySubscribers'
-
     public abstract void notifySubscribers();
     public abstract void unregister(S subscribed);
     public abstract void register(S subscribed);

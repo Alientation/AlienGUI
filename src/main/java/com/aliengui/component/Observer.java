@@ -105,10 +105,6 @@ public abstract class Observer<P, O> {
     public P getParent() { return parent; }
     public List<O> getObserved() { return new ArrayList<>(observed); }
     public int getMaxObservers() { return maxObservers; }
-
-    // TODO: 9/7/2022  
-    //should instead make interfaces for 'observed' so 'unregister' and 'register' methods can be offloaded to the observed class
-    //same with the parents for 'notifyObservers'
     
     public abstract void notifyObservers();
     public abstract void unregister(O observed);

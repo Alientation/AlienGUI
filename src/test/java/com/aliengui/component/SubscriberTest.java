@@ -1,4 +1,4 @@
-package com.aliengui;
+package com.aliengui.component;
 
 import com.aliengui.component.Subscriber;
 import org.junit.jupiter.api.Assertions;

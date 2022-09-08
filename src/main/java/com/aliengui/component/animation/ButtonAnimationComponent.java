@@ -154,7 +154,7 @@ public class ButtonAnimationComponent extends AnimationComponent {
     }
 
     @Override
-    public void unregisterSubscriber(Collection<View> subscribers) {
+    public void unregisterSubscribers(Collection<View> subscribers) {
         for (View view : subscribers)
             unregisterSubscriber(view);
     }

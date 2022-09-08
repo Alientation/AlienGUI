@@ -7,6 +7,9 @@ import java.util.*;
 
 @SuppressWarnings("unused")
 public abstract class Component {
+    //Views that depend on this component
+    protected Subscriber<Component,View> subscribers;
+
     public Component() {
         this(Integer.MAX_VALUE);
     }
@@ -26,9 +29,6 @@ public abstract class Component {
         };
     }
 
-    //Views that depend on this component
-    protected Subscriber<Component,View> subscribers;
-
     /**
      * Notifies all subscribers of state change
      */
@@ -43,7 +43,7 @@ public abstract class Component {
     public void registerSubscribers(Collection<View> subscribers) { this.subscribers.registerSubscribed(subscribers); }
     public void unregisterSubscriber(View subscriber) { this.subscribers.unregisterSubscribed(subscriber); }
     public void unregisterSubscribers(View... subscribers) { this.subscribers.unregisterSubscribed(subscribers); }
-    public void unregisterSubscriber(Collection<View> subscribers) { this.subscribers.unregisterSubscribed(subscribers); }
+    public void unregisterSubscribers(Collection<View> subscribers) { this.subscribers.unregisterSubscribed(subscribers); }
 
 
     //public Subscriber<Component, View> getSubscribers() { return subscribers; }
