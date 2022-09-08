@@ -9,61 +9,61 @@ import java.util.*;
  * Therefore, all this does is link the parent object to the observed set of objects by registering the parent
  * as a subscriber to the set of objects
  *
- * @param <D>   Parent object type
- * @param <T>   Observed objects type
+ * @param <P>   Parent object type
+ * @param <O>   Observed objects type
  */
 @SuppressWarnings({"unused", "unchecked"})
-public abstract class Observer<D,T> {
-    protected D parent;
-    protected Set<T> observed = new HashSet<>();
+public abstract class Observer<P, O> {
+    protected P parent;
+    protected Set<O> observed = new HashSet<>();
     private final int maxObservers;
 
-    public Observer(D parent) {
+    public Observer(P parent) {
         this(parent,Integer.MAX_VALUE);
     }
 
-    public Observer(D parent, int maxObservers) {
+    public Observer(P parent, int maxObservers) {
         this.parent = parent;
         this.maxObservers = maxObservers;
     }
 
-    public Observer(D parent, Collection<T> observed) {
+    public Observer(P parent, Collection<O> observed) {
         this(parent);
         setObserved(observed);
     }
 
-    public Observer(D parent, Collection<T> observed, int maxObservers) {
+    public Observer(P parent, Collection<O> observed, int maxObservers) {
         this(parent, maxObservers);
         setObserved(observed);
     }
 
-    public void replaceObserved(T toBeReplaced, T replacedWith) {
+    public void replaceObserved(O toBeReplaced, O replacedWith) {
         if (toBeReplaced == replacedWith) return;
         unregisterObserved(toBeReplaced);
         registerObserved(replacedWith);
     }
 
     public void clearObserved() {
-        for (T obs : this.observed)
+        for (O obs : this.observed)
             unregisterObserved(obs);
         notifyObservers();
     }
 
-    public void setObserved(Collection<T> observed) {
+    public void setObserved(Collection<O> observed) {
         clearObserved();
-        for (T obs : observed)
+        for (O obs : observed)
             registerObserved(obs);
         notifyObservers();
     }
 
-    public final void setObserved(T... observed) {
+    public final void setObserved(O... observed) {
         clearObserved();
-        for (T obs : observed)
+        for (O obs : observed)
             registerObserved(obs);
         notifyObservers();
     }
 
-    public void registerObserved(T observed) {
+    public void registerObserved(O observed) {
         if (this.observed.contains(observed)) throw new IllegalStateException("Observer::registerObserved Duplicate Observed");
         if (this.observed.size() == maxObservers) throw new IllegalStateException("Observer::registerObserved maxObservers limit reached");
         this.observed.add(observed);
@@ -71,40 +71,44 @@ public abstract class Observer<D,T> {
         notifyObservers();
     }
 
-    public void registerObserved(T... observed) {
-        for (T obs : observed)
+    public void registerObserved(O... observed) {
+        for (O obs : observed)
             registerObserved(obs);
     }
 
-    public void registerObserved(Collection<T> observed) {
-        for (T obs : observed)
+    public void registerObserved(Collection<O> observed) {
+        for (O obs : observed)
             registerObserved(obs);
     }
 
-    public void unregisterObserved(T observed) {
+    public void unregisterObserved(O observed) {
         if (!this.observed.contains(observed)) return;
         this.observed.remove(observed);
         unregister(observed);
         notifyObservers();
     }
 
-    public void unregisterObserved(T... observed) {
-        for (T obs : observed)
+    public void unregisterObserved(O... observed) {
+        for (O obs : observed)
             unregisterObserved(obs);
     }
 
-    public void unregisterObserved(Collection<T> observed) {
-        for (T obs : observed)
+    public void unregisterObserved(Collection<O> observed) {
+        for (O obs : observed)
             unregisterObserved(obs);
     }
 
     public int getObservedCount() { return observed.size(); }
 
-    public D getParent() { return parent; }
-    public List<T> getObserved() { return new ArrayList<>(observed); }
+    public P getParent() { return parent; }
+    public List<O> getObserved() { return new ArrayList<>(observed); }
     public int getMaxObservers() { return maxObservers; }
 
+    // TODO: 9/7/2022  
+    //should instead make interfaces for 'observed' so 'unregister' and 'register' methods can be offloaded to the observed class
+    //same with the parents for 'notifyObservers'
+    
     public abstract void notifyObservers();
-    public abstract void unregister(T observed);
-    public abstract void register(T observed);
+    public abstract void unregister(O observed);
+    public abstract void register(O observed);
 }

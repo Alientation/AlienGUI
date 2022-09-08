@@ -11,7 +11,7 @@ import java.util.*;
  * Base DimensionComponent that maintains a dimension value and handles Observers and Subscribers
  */
 @SuppressWarnings("unused")
-public abstract class DimensionComponent extends Component {
+public abstract class DimensionComponent extends Component { //todo remove builder pattern (its unnecessary)
     //TODO add center dimensioning (and other related types)
     //This dimension's value
     protected int val;
