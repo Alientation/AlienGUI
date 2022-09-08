@@ -100,7 +100,7 @@ public abstract class Observer<P, O> {
     }
 
     public int getObservedCount() { return observed.size(); }
-    public boolean containsObserved(O observed) { return getObserved().contains(observed); }
+    public boolean containsObserved(O obs) { return observed.contains(obs); }
 
     public P getParent() { return parent; }
     public List<O> getObserved() { return new ArrayList<>(observed); }

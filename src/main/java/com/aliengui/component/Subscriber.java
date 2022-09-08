@@ -106,6 +106,7 @@ public abstract class Subscriber<P, S> {
     }
 
     public int getSubscribedCount() { return subscribed.size(); }
+    public boolean containsSubscribed(S sub) { return subscribed.contains(sub); }
 
     public P getParent() { return parent; }
     public List<S> getSubscribed() { return new ArrayList<>(subscribed); }
