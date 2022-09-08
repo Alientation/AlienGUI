@@ -107,21 +107,21 @@ public class SubscriberTest {
     @Test
     @DisplayName("Observer::unregisterObserved")
     public void testUnregisterObservedCollection() {
-        ArrayList<Integer> addedList = new ArrayList<>(List.of(new Integer[]{1,2,3,4,5}));
-        int size = subscriber.getSubscribedCount() - addedList.size();
-        subscriber.unregisterSubscribed(addedList);
-        for (int observed : addedList)
+        ArrayList<Integer> removedList = new ArrayList<>(List.of(new Integer[]{1,2,3,4,5}));
+        int size = subscriber.getSubscribedCount() - removedList.size();
+        subscriber.unregisterSubscribed(removedList);
+        for (int observed : removedList)
             Assertions.assertFalse(subscriber.containsSubscribed(observed));
-        Assertions.assertEquals(subscriber.getMaxSubscribers(),size);
+        Assertions.assertEquals(subscriber.getSubscribedCount(),size);
     }
 
     @Test
     @DisplayName("Observer::unregisterObserved")
     public void testUnregisterObservedParams() {
-        ArrayList<Integer> addedList = new ArrayList<>(List.of(new Integer[]{1,2,3,4,5}));
-        int size = subscriber.getSubscribedCount() - addedList.size();
-        subscriber.unregisterSubscribed(addedList.get(0),addedList.get(1),addedList.get(2),addedList.get(3),addedList.get(4));
-        for (int observed : addedList)
+        ArrayList<Integer> removedList = new ArrayList<>(List.of(new Integer[]{1,2,3,4,5}));
+        int size = subscriber.getSubscribedCount() - removedList.size();
+        subscriber.unregisterSubscribed(removedList.get(0),removedList.get(1),removedList.get(2),removedList.get(3),removedList.get(4));
+        for (int observed : removedList)
             Assertions.assertFalse(subscriber.containsSubscribed(observed));
         Assertions.assertEquals(subscriber.getSubscribedCount(),size);
     }

@@ -103,10 +103,10 @@ public class ObserverTest {
     @Test
     @DisplayName("Observer::unregisterObserved")
     public void testUnregisterObservedCollection() {
-        ArrayList<Integer> addedList = new ArrayList<>(List.of(new Integer[]{1,2,3,4,5}));
-        int size = observer.getObservedCount() - addedList.size();
-        observer.unregisterObserved(addedList);
-        for (int observed : addedList)
+        ArrayList<Integer> removedList = new ArrayList<>(List.of(new Integer[]{1,2,3,4,5}));
+        int size = observer.getObservedCount() - removedList.size();
+        observer.unregisterObserved(removedList);
+        for (int observed : removedList)
             Assertions.assertFalse(observer.containsObserved(observed));
         Assertions.assertEquals(observer.getObservedCount(),size);
     }
@@ -114,10 +114,10 @@ public class ObserverTest {
     @Test
     @DisplayName("Observer::unregisterObserved")
     public void testUnregisterObservedParams() {
-        ArrayList<Integer> addedList = new ArrayList<>(List.of(new Integer[]{1,2,3,4,5}));
-        int size = observer.getObservedCount() - addedList.size();
-        observer.unregisterObserved(addedList.get(0),addedList.get(1),addedList.get(2),addedList.get(3),addedList.get(4));
-        for (int observed : addedList)
+        ArrayList<Integer> removedList = new ArrayList<>(List.of(new Integer[]{1,2,3,4,5}));
+        int size = observer.getObservedCount() - removedList.size();
+        observer.unregisterObserved(removedList.get(0),removedList.get(1),removedList.get(2),removedList.get(3),removedList.get(4));
+        for (int observed : removedList)
             Assertions.assertFalse(observer.containsObserved(observed));
         Assertions.assertEquals(observer.getObservedCount(),size);
     }
