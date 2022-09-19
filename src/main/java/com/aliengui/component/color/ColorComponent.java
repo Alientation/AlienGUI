@@ -65,7 +65,6 @@ public class ColorComponent extends Component {
             for (int x = 0; x < bounds.width; x++)
                 if (shape.contains(x,y))
                     image.setRGB(x, y, color.getRGB() & ((getAlpha() << 24) | 0x00ffffff));
-
         g.drawImage(image,view.x(),view.y(),null);
     }
 

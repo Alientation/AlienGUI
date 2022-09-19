@@ -79,6 +79,7 @@ public class WindowRenderer {
      */
     public boolean render(Graphics g) {
         if (!windowView.requireRenderUpdate) return false;
+        System.out.println("render " + sortedViewsByZIndex.size());
         windowView.requireRenderUpdate = false;
         for (int i = 0; i < sortedViewsByZIndex.size(); i++) //don't use enhanced for loop because of potential concurrent modification
             sortedViewsByZIndex.get(i).render(g);

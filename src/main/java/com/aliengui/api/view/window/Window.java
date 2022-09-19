@@ -54,19 +54,12 @@ public class Window extends Canvas implements Runnable {
      * @param builder   Builder
      */
     protected Window(Builder<?> builder) {
-        //sets up JFrame window, the only Java Swing connection in this library
-        frame = new JFrame(builder.title) {
-            @Override
-            public void paint(Graphics g) {
-                super.paint(g);
-                if (windowView != null) {
-                    windowView.requestRenderUpdate();
-                    if (windowView.windowRenderer != null)
-                        windowView.windowRenderer.render(g);
-                }
-            }
-        };
+        //TODO scheduler so we can schedule a render like 10 ticks into the future
+
+
         System.setProperty("sun.awt.noerasebackground", "true");
+        //sets up JFrame window, the only Java Swing connection in this library
+        frame = new JFrame(builder.title);
 
         frame.setPreferredSize(new Dimension(builder.preferredWidth, builder.preferredHeight));
         frame.setSize(new Dimension(builder.width,builder.height));
@@ -75,8 +68,9 @@ public class Window extends Canvas implements Runnable {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         Toolkit.getDefaultToolkit().setDynamicLayout(false); //IDK what this is for
-        frame.setIgnoreRepaint(true); //probably not needed
+        frame.setIgnoreRepaint(true);
         this.setIgnoreRepaint(true);
+
 
         //register the proper timing for the internal loop
         targetTPS = builder.targetTPS;
@@ -193,19 +187,6 @@ public class Window extends Canvas implements Runnable {
         frame.add(this);
         start();
     }
-
-    /**
-     * Override paint to allow this window to render immediately after to eliminate flickering (I think)
-     *
-     * @param g   the specified Graphics context
-     */
-    @Override
-    public void paint(Graphics g) {
-        super.paint(g);
-        windowView.requestRenderUpdate();
-        windowView.windowRenderer.render(g);
-    }
-
 
     /**
      * Updates current Graphics context, requests a render update in window renderer

@@ -22,7 +22,7 @@ import java.awt.*;
 @SuppressWarnings("unused")
 public class WindowView extends View {
     //Base properties
-    public static final int INIT_WIDTH = 800, INIT_HEIGHT = 1000, INIT_TPS = 120, INIT_FPS = 60;
+    public static final int INIT_WIDTH = 800, INIT_HEIGHT = 1000, INIT_TPS = 120, INIT_FPS = 120;
     public static final String INIT_TITLE = "Untitled";
 
     //Use Resource Manager or something like that

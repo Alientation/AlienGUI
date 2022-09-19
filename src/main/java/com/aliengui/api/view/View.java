@@ -199,6 +199,8 @@ public class View {
         if (controller == null) controller = new ViewController();
 
         initialized = true;
+
+        windowView.requestZIndexUpdate();
     }
 
     /**
@@ -208,7 +210,6 @@ public class View {
      */
     public void render(Graphics g) {
         if (!initialized || !isVisible) return;
-
         //frame outline
         frameColor.draw(this,g,getFrameShape());
 
