@@ -4,7 +4,7 @@ Refactored version of the Wordle repo (backend GUI) to implement proper design p
 
 Should ideally make development less time consuming.
 
-# Features
+# Planned Features
 #### XCode-like GUI construction
 #### Builder pattern to simply creation
 #### Simplistic design, but heavily customizable
